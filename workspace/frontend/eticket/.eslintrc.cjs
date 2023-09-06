@@ -22,4 +22,11 @@ module.exports = {
       { extensions: ['.js', '.jsx', '.tsx'] },
     ],
   },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src"]
+      }
+    }
+  }
 };
