@@ -1,6 +1,5 @@
 package org.oao.eticket.web.adapter.inbound;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.oao.eticket.domain.port.inbound.JoinMembershipCommand;
-import org.oao.eticket.domain.port.inbound.JoinMembershipPort;
+import org.oao.eticket.domain.port.inbound.JoinMembershipUseCase;
 import org.oao.eticket.exception.UserDuplicateException;
 import org.oao.eticket.web.common.ApiException;
 import org.springframework.http.HttpStatus;
@@ -44,29 +43,22 @@ class JoinMembershipController {
             String walletAddress,
             String role) {}
 
-    private final JoinMembershipPort joinMembershipPort;
-    private final ObjectMapper objectMapper;
+    private final JoinMembershipUseCase joinMembershipUseCase;
 
     @PostMapping(
             value = "/membership/join",
             consumes = "application/json",
             produces = "application/json; charset=utf-8")
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<?> joinMembership(@Valid @RequestBody JoinMembershipRequestBody payload) throws URISyntaxException {
-        final var cmd = new JoinMembershipCommand(
-                payload.getUsername(),
-                payload.getPassword(),
-                payload.getEmail(),
-                payload.getNickname()
-        );
-
+    ResponseEntity<JoinMembershipResponseBody>
+    joinMembership(@Valid @RequestBody JoinMembershipRequestBody payload) throws URISyntaxException {
         try {
-            final var user = joinMembershipPort.join(cmd);
-
-            final var responseObject = objectMapper.createObjectNode();
-            responseObject.put("username", user.getUsername());
-            responseObject.put("email", user.getEmail());
-            responseObject.put("nickname", user.getNickname());
+            final var user = joinMembershipUseCase.join(new JoinMembershipCommand(
+                    payload.getUsername(),
+                    payload.getPassword(),
+                    payload.getEmail(),
+                    payload.getNickname()
+            ));
 
             return ResponseEntity
                     .created(new URI("/users/" + user.getUsername()))
@@ -77,8 +69,7 @@ class JoinMembershipController {
                             user.getBlockChainWallet().toString(),
                             user.getRole().toString()
                     ));
-        }
-        catch (final UserDuplicateException e) {
+        } catch (final UserDuplicateException e) {
             // TODO(meo-s): add description
             throw ApiException.builder()
                     .withCause(e)
