@@ -1,6 +1,5 @@
 package org.oao.eticket.web.adapter.inbound;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -51,7 +50,8 @@ class JoinMembershipController {
             consumes = "application/json",
             produces = "application/json; charset=utf-8")
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<?> joinMembership(@Valid @RequestBody JoinMembershipRequestBody payload) throws URISyntaxException {
+    ResponseEntity<JoinMembershipResponseBody>
+    joinMembership(@Valid @RequestBody JoinMembershipRequestBody payload) throws URISyntaxException {
         try {
             final var user = joinMembershipUseCase.join(new JoinMembershipCommand(
                     payload.getUsername(),
