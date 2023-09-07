@@ -1,5 +1,9 @@
 package org.oao.eticket.web.adapter.inbound;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,6 +13,7 @@ import lombok.Value;
 import org.oao.eticket.domain.port.inbound.JoinMembershipCommand;
 import org.oao.eticket.domain.port.inbound.JoinMembershipUseCase;
 import org.oao.eticket.exception.UserDuplicateException;
+import org.oao.eticket.web.common.ApiErrorResponse;
 import org.oao.eticket.web.common.ApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +50,15 @@ class JoinMembershipController {
 
     private final JoinMembershipUseCase joinMembershipUseCase;
 
+    @Operation(
+            summary = "회원가입",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "이미 존재하는 ID다.",
+                            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
+            }
+    )
     @PostMapping(
             value = "/membership/join",
             consumes = "application/json",
