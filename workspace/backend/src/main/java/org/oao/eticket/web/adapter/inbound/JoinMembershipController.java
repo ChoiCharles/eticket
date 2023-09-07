@@ -53,20 +53,13 @@ class JoinMembershipController {
             produces = "application/json; charset=utf-8")
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<?> joinMembership(@Valid @RequestBody JoinMembershipRequestBody payload) throws URISyntaxException {
-        final var cmd = new JoinMembershipCommand(
-                payload.getUsername(),
-                payload.getPassword(),
-                payload.getEmail(),
-                payload.getNickname()
-        );
-
         try {
-            final var user = joinMembershipPort.join(cmd);
-
-            final var responseObject = objectMapper.createObjectNode();
-            responseObject.put("username", user.getUsername());
-            responseObject.put("email", user.getEmail());
-            responseObject.put("nickname", user.getNickname());
+            final var user = joinMembershipPort.join(new JoinMembershipCommand(
+                    payload.getUsername(),
+                    payload.getPassword(),
+                    payload.getEmail(),
+                    payload.getNickname()
+            ));
 
             return ResponseEntity
                     .created(new URI("/users/" + user.getUsername()))
@@ -77,8 +70,7 @@ class JoinMembershipController {
                             user.getBlockChainWallet().toString(),
                             user.getRole().toString()
                     ));
-        }
-        catch (final UserDuplicateException e) {
+        } catch (final UserDuplicateException e) {
             // TODO(meo-s): add description
             throw ApiException.builder()
                     .withCause(e)
