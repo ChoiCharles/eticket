@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.oao.eticket.domain.port.inbound.JoinMembershipCommand;
-import org.oao.eticket.domain.port.inbound.JoinMembershipPort;
+import org.oao.eticket.domain.port.inbound.JoinMembershipUseCase;
 import org.oao.eticket.exception.UserDuplicateException;
 import org.oao.eticket.web.common.ApiException;
 import org.springframework.http.HttpStatus;
@@ -44,8 +44,7 @@ class JoinMembershipController {
             String walletAddress,
             String role) {}
 
-    private final JoinMembershipPort joinMembershipPort;
-    private final ObjectMapper objectMapper;
+    private final JoinMembershipUseCase joinMembershipUseCase;
 
     @PostMapping(
             value = "/membership/join",
@@ -54,7 +53,7 @@ class JoinMembershipController {
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<?> joinMembership(@Valid @RequestBody JoinMembershipRequestBody payload) throws URISyntaxException {
         try {
-            final var user = joinMembershipPort.join(new JoinMembershipCommand(
+            final var user = joinMembershipUseCase.join(new JoinMembershipCommand(
                     payload.getUsername(),
                     payload.getPassword(),
                     payload.getEmail(),

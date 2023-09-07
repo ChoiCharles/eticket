@@ -5,14 +5,14 @@ import org.oao.eticket.domain.application.model.BlockChainWallet;
 import org.oao.eticket.domain.application.model.User;
 import org.oao.eticket.domain.application.model.UserRole;
 import org.oao.eticket.domain.port.inbound.JoinMembershipCommand;
-import org.oao.eticket.domain.port.inbound.JoinMembershipPort;
+import org.oao.eticket.domain.port.inbound.JoinMembershipUseCase;
 import org.oao.eticket.domain.port.outbound.CreateUserCommand;
 import org.oao.eticket.domain.port.outbound.CreateUserPort;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-class JoinMembershipService implements JoinMembershipPort {
+class JoinMembershipService implements JoinMembershipUseCase {
     private final CreateUserPort createUserPort;
 
     @Override
