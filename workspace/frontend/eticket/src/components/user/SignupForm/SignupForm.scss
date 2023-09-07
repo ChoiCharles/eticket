@@ -1,0 +1,33 @@
+.Signup-outer-box {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  height: 100%;
+  width: 450px;
+  padding: 100px 0px;
+  gap: 20px;
+
+}
+
+.Signup-box {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.Signup-bottom-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.check-login{
+    display: flex;
+    gap: 10px;
+}
