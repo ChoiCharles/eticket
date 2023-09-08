@@ -1,0 +1,33 @@
+.concert-item-outer-box {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 120px;
+    margin-right: 120px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border: 1px solid silver;
+    border-radius: 6px;
+    height: 100px;
+}
+
+.concert-right-box {
+    display: flex;
+    gap: 50px;
+}
+
+.concert-left-box{
+    display: flex;
+    gap: 100px;
+}
+
+.concert-context{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.concert-number {
+    font-weight: bold;
+    width: 20px;
+    
+}
