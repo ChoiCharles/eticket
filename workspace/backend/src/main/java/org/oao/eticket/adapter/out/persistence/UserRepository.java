@@ -8,11 +8,12 @@ import org.oao.eticket.application.domain.model.User;
 import org.oao.eticket.application.port.out.CreateUserCommand;
 import org.oao.eticket.application.port.out.LoadUserPort;
 import org.oao.eticket.application.port.out.CreateUserPort;
+import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.UserDuplicateException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+@PersistenceAdapter
 @RequiredArgsConstructor
 class UserRepository implements CreateUserPort, LoadUserPort {
 

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.oao.eticket.application.port.in.JoinMembershipCommand;
 import org.oao.eticket.application.port.in.JoinMembershipUseCase;
+import org.oao.eticket.common.annotation.WebAdapter;
 import org.oao.eticket.exception.UserDuplicateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-@RestController
+@WebAdapter
 @RequiredArgsConstructor
 class JoinMembershipController {
 

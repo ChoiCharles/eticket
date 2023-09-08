@@ -8,9 +8,10 @@ import org.oao.eticket.application.port.in.JoinMembershipCommand;
 import org.oao.eticket.application.port.in.JoinMembershipUseCase;
 import org.oao.eticket.application.port.out.CreateUserCommand;
 import org.oao.eticket.application.port.out.CreateUserPort;
+import org.oao.eticket.common.annotation.UseCase;
 import org.springframework.stereotype.Service;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 class JoinMembershipService implements JoinMembershipUseCase {
     private final CreateUserPort createUserPort;
