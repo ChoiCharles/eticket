@@ -5,6 +5,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.oao.eticket.application.domain.model.AccessTokenMetadata;
+import org.oao.eticket.application.domain.model.RefreshTokenMetadata;
 import org.oao.eticket.application.port.in.CreateAuthTokenUseCase;
 import org.oao.eticket.common.Pair;
 import org.springframework.http.HttpStatus;
@@ -55,7 +57,7 @@ public class EticketAuthenticationResultHandler
       throw new IllegalArgumentException(); // TODO(meo-s): write error message
     }
 
-    Pair<String, String> tokenPair;
+    Pair<Pair<AccessTokenMetadata, String>, Pair<RefreshTokenMetadata, String>> tokenPair;
     try {
       final var userDetails = ((EticketUserDetails) authentication.getPrincipal());
       tokenPair = createAuthTokenUseCase.create(userDetails.unwrap());
@@ -70,7 +72,7 @@ public class EticketAuthenticationResultHandler
 
     response.setStatus(HttpStatus.OK.value());
     response.setContentType("application/json; charset=utf-8");
-    response.getWriter().write(String.format(MESSAGE_FOR_SUCCESS, tokenPair.x, tokenPair.y));
+    response.getWriter().write(String.format(MESSAGE_FOR_SUCCESS, tokenPair.x.y, tokenPair.y.y));
   }
 
   @Override
