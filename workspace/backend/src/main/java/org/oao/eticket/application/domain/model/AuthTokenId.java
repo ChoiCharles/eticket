@@ -7,6 +7,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthTokenId {
+
   private final UUID value;
 
   public static AuthTokenId of(final UUID value) {
