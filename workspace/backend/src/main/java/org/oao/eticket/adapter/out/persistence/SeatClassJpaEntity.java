@@ -14,13 +14,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "seat_class")
 public class SeatClassJpaEntity {
-  // @EmbeddedId로 식별 관계 구성
-  @EmbeddedId private SeatClassId id;
-
-  @MapsId("performanceId") // SeatClassId.performanceId로 매핑
-  @ManyToOne
-  @JoinColumn(name = "performance_id")
-  private PerformanceJpaEntity performance;
+  @Id
+  @Column(name = "seat_class_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
   @Column(nullable = false)
   @NotBlank
@@ -29,4 +26,8 @@ public class SeatClassJpaEntity {
   @Column(nullable = false)
   @NotBlank
   private Integer price;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "performance_id")
+  private PerformanceJpaEntity performance;
 }
