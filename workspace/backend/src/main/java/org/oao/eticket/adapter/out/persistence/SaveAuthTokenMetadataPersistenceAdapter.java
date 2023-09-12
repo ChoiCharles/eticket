@@ -12,7 +12,7 @@ import org.springframework.data.redis.core.*;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-class SaveAuthTokenMetadataPersistenceAdapter implements SaveAuthTokenMetadataPort {
+public class SaveAuthTokenMetadataPersistenceAdapter implements SaveAuthTokenMetadataPort {
 
   private final RedisTemplate<String, String> eticketAuthRedisTemplate;
   private final AccessTokenMetadataMapper accessTokenMetadataMapper;
