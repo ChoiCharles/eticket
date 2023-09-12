@@ -26,9 +26,9 @@ public class RedisConfig {
   RedisConnectionFactory eticketAuthRedisConnectionFactory(
       @Value("${eticket.redis.auth.host}") final String host,
       @Value("${eticket.redis.auth.port}") final int port,
-      @Value("${eticket.redis.auth.database}") final int database) {
+      @Value("${eticket.redis.auth.database}") final String database) {
     final var connectionFactory = new LettuceConnectionFactory(host, port);
-    connectionFactory.setDatabase(database);
+    connectionFactory.setDatabase(Integer.parseInt(database));
     return connectionFactory;
   }
 
