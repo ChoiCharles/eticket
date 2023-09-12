@@ -41,6 +41,7 @@ public class JWTConfig {
     final var pem =
         new ClassPathResource(insecureKeyPath)
             .getContentAsString(StandardCharsets.US_ASCII)
+            .replaceAll("\r\n", "\n")
             .replace("-----BEGIN PRIVATE KEY-----\n", "")
             .replace("\n-----END PRIVATE KEY-----\n", "");
 
