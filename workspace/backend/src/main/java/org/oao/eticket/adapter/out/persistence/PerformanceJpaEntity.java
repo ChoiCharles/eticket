@@ -3,17 +3,12 @@ package org.oao.eticket.adapter.out.persistence;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.oao.eticket.application.domain.model.PerformanceGenre;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "performance")
 public class PerformanceJpaEntity {
   @Id
@@ -41,4 +36,22 @@ public class PerformanceJpaEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private UserJpaEntity host;
+
+  @Builder
+  public PerformanceJpaEntity(
+      Integer id,
+      String title,
+      PerformanceGenre genre,
+      String cast,
+      String description,
+      VenueJpaEntitiy venue,
+      UserJpaEntity host) {
+    this.id = id;
+    this.title = title;
+    this.genre = genre;
+    this.cast = cast;
+    this.description = description;
+    this.venue = venue;
+    this.host = host;
+  }
 }

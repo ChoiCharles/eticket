@@ -2,16 +2,11 @@ package org.oao.eticket.adapter.out.persistence;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "seat_class")
 public class SeatClassJpaEntity {
   @Id
@@ -30,4 +25,13 @@ public class SeatClassJpaEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "performance_id")
   private PerformanceJpaEntity performance;
+
+  @Builder
+  public SeatClassJpaEntity(
+      Integer id, String className, Integer price, PerformanceJpaEntity performance) {
+    this.id = id;
+    this.className = className;
+    this.price = price;
+    this.performance = performance;
+  }
 }

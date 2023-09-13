@@ -9,9 +9,9 @@ import java.time.Duration;
 
 @Value
 public class SaveAuthTokenMetadataCommand {
-    User.UserId ownerId;
-    AccessTokenMetadata accessTokenMetadata;
-    Duration accessTokenLifetime;
-    RefreshTokenMetadata refreshTokenMetadata;
-    Duration refreshTokenLifetime;
+  User.UserId ownerId;
+  AccessTokenMetadata accessTokenMetadata;
+  Duration accessTokenLifetime;
+  RefreshTokenMetadata refreshTokenMetadata;
+  Duration refreshTokenLifetime;
 }

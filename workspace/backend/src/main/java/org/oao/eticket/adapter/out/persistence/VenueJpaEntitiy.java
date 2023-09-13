@@ -2,18 +2,13 @@ package org.oao.eticket.adapter.out.persistence;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "venue")
 public class VenueJpaEntitiy {
   @Id
@@ -36,4 +31,14 @@ public class VenueJpaEntitiy {
   @Column(nullable = false)
   @NotBlank
   private BigDecimal longitude;
+
+  @Builder
+  public VenueJpaEntitiy(
+      Integer id, String name, String address, BigDecimal latitude, BigDecimal longitude) {
+    this.id = id;
+    this.name = name;
+    this.address = address;
+    this.latitude = latitude;
+    this.longitude = longitude;
+  }
 }
