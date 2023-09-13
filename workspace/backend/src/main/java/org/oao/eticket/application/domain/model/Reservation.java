@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class Reservation {
-  private Integer reservationId;
+  private Integer id;
   private User user;
   private PerformanceSchedule performanceSchedule;
   private Seat seat;

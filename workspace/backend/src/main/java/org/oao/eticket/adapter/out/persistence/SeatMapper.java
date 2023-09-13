@@ -1,33 +1,18 @@
 package org.oao.eticket.adapter.out.persistence;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 import org.oao.eticket.application.domain.model.Seat;
 
-@Mapper
-public class SeatMapper {
+@Mapper(
+    componentModel = MappingConstants.ComponentModel.SPRING,
+    uses = {ConcertHallMapper.class})
+interface SeatMapper {
 
-  private final ConcertHallMapper concertHallMapper;
+  @Mapping(target = "concertHall", source = "concertHallJpaEntity")
+  Seat mapToDomainEntity(SeatJpaEntity seatJpaEntity);
 
-  Seat mapToDomainEntity(SeatJpaEntity seatJpaEntity) {
-    return Seat.builder()
-        .seatId(seatJpaEntity.getId())
-        .concertHall(concertHallMapper.mapToDomainEntity(seatJpaEntity.getId()))
-        .section(seatJpaEntity.getSection())
-        .row(seatJpaEntity.getRow())
-        .number(seatJpaEntity.getNumber())
-        .positionX(seatJpaEntity.getPositionX())
-        .positionY(seatJpaEntity.getPositionY())
-        .build();
-  }
-
-  SeatJpaEntity mapToJpaEntity(Seat seat) {
-    return SeatJpaEntity.builder()
-        .concertHall(concertHallMapper.mapToJpaEntity(seat.getConcertHall()))
-        .section(seat.getSection())
-        .row(seat.getRow())
-        .number(seat.getNumber())
-        .positionX(seat.getPositionX())
-        .positionY(seat.getPositionY())
-        .build();
-  }
+  @Mapping(target = "concertHallJpaEntity", source = "concertHall")
+  SeatJpaEntity mapToJpaEntity(Seat seat);
 }

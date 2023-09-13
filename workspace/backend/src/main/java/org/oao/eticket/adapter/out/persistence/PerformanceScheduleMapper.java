@@ -1,33 +1,15 @@
 package org.oao.eticket.adapter.out.persistence;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 import org.oao.eticket.application.domain.model.PerformanceSchedule;
 
-@Mapper
-public class PerformanceScheduleMapper {
+@Mapper(
+    componentModel = MappingConstants.ComponentModel.SPRING,
+    uses = {PerformanceMapper.class})
+interface PerformanceScheduleMapper {
 
-  private final PerformanceMapper performanceMapper;
-
-  public PerformanceSchedule mapToDomainEntity(
-      PerformanceScheduleJpaEntity performanceScheduleJpaEntity) {
-    return PerformanceSchedule.builder()
-        .performanceScheduleId(performanceScheduleJpaEntity.getId())
-        .performance(
-            performanceMapper.mapToDomainEntity(
-                performanceScheduleJpaEntity.getPerformanceJpaEntity()))
-        .startDateTime((performanceScheduleJpaEntity.getStartDateTime()))
-        .runningTime(performanceScheduleJpaEntity.getRunningTime())
-        .ticketingDateTime(performanceScheduleJpaEntity.getTicketingDateTime())
-        .build();
-  }
-
-  public PerformanceScheduleJpaEntity mapToJpaEntity(PerformanceSchedule performanceSchedule) {
-    return PerformanceScheduleJpaEntity.builder()
-        .performanceJpaEntity(
-            performanceMapper.mapToJpaEntity(performanceSchedule.getPerformance()))
-        .startDateTime(performanceSchedule.getStartDateTime())
-        .runningTime(performanceSchedule.getRunningTime())
-        .ticketingDateTime(performanceSchedule.getTicketingDateTime())
-        .build();
-  }
+  @Mapping(target = "performance", source = "performanceJpaEntity")
+  PerformanceSchedule mapToDomainEntity(PerformanceScheduleJpaEntity performanceScheduleJpaEntity);
 }

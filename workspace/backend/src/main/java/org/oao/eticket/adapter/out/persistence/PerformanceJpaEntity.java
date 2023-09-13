@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.oao.eticket.application.domain.model.PerformanceGenre;
+import org.oao.eticket.application.domain.model.PerformanceSchedule;
 
 import java.util.List;
 
@@ -35,17 +36,17 @@ public class PerformanceJpaEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "venue_id")
-  private VenueJpaEntitiy venue;
+  private VenueJpaEntitiy venueJpaEntitiy;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
-  private UserJpaEntity host;
+  private UserJpaEntity hostJpaEntity;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performance")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performanceJpaEntity")
   private List<SeatClassJpaEntity> seatClassList; // 양방향
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performance")
-  private List<SeatClassJpaEntity> performanceScheduleList; // 양방향
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performanceJpaEntity")
+  private List<PerformanceScheduleJpaEntity> performanceScheduleList; // 양방향
 
   @Builder
   public PerformanceJpaEntity(
@@ -55,18 +56,18 @@ public class PerformanceJpaEntity {
       String cast,
       String description,
       String posterImagePath,
-      VenueJpaEntitiy venue,
-      UserJpaEntity host,
+      VenueJpaEntitiy venueJpaEntitiy,
+      UserJpaEntity hostJpaEntity,
       List<SeatClassJpaEntity> seatClassList,
-      List<SeatClassJpaEntity> performanceScheduleList) {
+      List<PerformanceScheduleJpaEntity> performanceScheduleList) {
     this.id = id;
     this.title = title;
     this.genre = genre;
     this.cast = cast;
     this.description = description;
     this.posterImagePath = posterImagePath;
-    this.venue = venue;
-    this.host = host;
+    this.venueJpaEntitiy = venueJpaEntitiy;
+    this.hostJpaEntity = hostJpaEntity;
     this.seatClassList = seatClassList;
     this.performanceScheduleList = performanceScheduleList;
   }

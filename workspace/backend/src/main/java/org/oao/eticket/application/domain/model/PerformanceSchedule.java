@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class PerformanceSchedule {
-  private Integer performanceScheduleId;
+  private Integer id;
   private Performance performance;
   private LocalDateTime startDateTime;
   private Integer runningTime;
