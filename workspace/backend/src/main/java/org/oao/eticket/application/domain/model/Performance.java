@@ -5,22 +5,26 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
+import java.util.List;
+
 @Value
 public class Performance {
   PerformanceId id;
-  String cast;
+  String title;
   PerformanceGenre genre;
+  String cast;
   String description;
   String posterImagePath;
-  // Venue
-  // SeatClass
-  // Host user
-  // Performance Schedule
+
+  Venue venue;
+  List<SeatClass> seatClassList;
+  User host;
+  List<PerformanceSchedule> performanceScheduleList;
 
   @Getter
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   public static class PerformanceId {
-    private final int id;
+    private final int value;
 
     public static PerformanceId of(final int id) {
       return new PerformanceId(id);

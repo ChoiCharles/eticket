@@ -17,7 +17,7 @@ public class PerformanceRepository implements LoadPerformanceDetailPort {
   @Override
   public Performance loadById(Performance.PerformanceId performanceId) {
     try {
-      final var performance =
+      final var performanceJpaEntity =
           entityManager
               .createQuery(
                   """
@@ -26,9 +26,9 @@ public class PerformanceRepository implements LoadPerformanceDetailPort {
                           WHERE p.id=:performanceId
                           """,
                   PerformanceJpaEntity.class)
-              .setParameter("id", performanceId.getId())
+              .setParameter("id", performanceId.getValue())
               .getSingleResult();
-      return performanceMapper.mapToDomainEntity(performance);
+      return performanceMapper.mapToDomainEntity(performanceJpaEntity);
     } catch (Exception e) {
       // TODO(yoo): exception handling
       throw e;
