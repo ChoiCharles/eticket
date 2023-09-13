@@ -9,11 +9,12 @@ import org.oao.eticket.common.annotation.PersistenceAdapter;
 @RequiredArgsConstructor
 public class LoadPerformanceSchedulePersistenceAdapter implements LoadPerformanceSchedulePort {
 
-    private final PerformanceScheduleRepository performanceScheduleRepository;
-    private final PerformanceScheduleMapper performanceScheduleMapper;
+  private final PerformanceScheduleRepository performanceScheduleRepository;
+  private final PerformanceScheduleMapper performanceScheduleMapper;
 
-    @Override
-    public PerformanceSchedule loadById(Integer id) {
-        return performanceScheduleMapper.mapToDomainEntity(performanceScheduleRepository.findById(id).get());
-    }
+  @Override
+  public PerformanceSchedule loadById(Integer id) {
+    return performanceScheduleMapper.mapToDomainEntity(
+        performanceScheduleRepository.findById(id).get());
+  }
 }
