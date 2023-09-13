@@ -22,15 +22,15 @@ public class ReservationJpaEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
-  private UserJpaEntity user;
+  private UserJpaEntity userJpaEntity;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "performance_schedule_id")
-  private PerformanceScheduleJpaEntity performanceSchedule;
+  private PerformanceScheduleJpaEntity performanceScheduleJpaEntity;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "seat_id")
-  private SeatJpaEntity seat;
+  private SeatJpaEntity seatJpaEntity;
 
   @Column(name = "payment_amount")
   private Integer paymentAmount;
@@ -45,16 +45,16 @@ public class ReservationJpaEntity {
   @Builder
   public ReservationJpaEntity(
       Integer id,
-      UserJpaEntity user,
-      PerformanceScheduleJpaEntity performanceSchedule,
-      SeatJpaEntity seat,
+      UserJpaEntity userJpaEntity,
+      PerformanceScheduleJpaEntity performanceScheduleJpaEntity,
+      SeatJpaEntity seatJpaEntity,
       Integer paymentAmount,
       TicketStatus ticketStatus,
       LocalDateTime reservationTime) {
     this.id = id;
-    this.user = user;
-    this.performanceSchedule = performanceSchedule;
-    this.seat = seat;
+    this.userJpaEntity = userJpaEntity;
+    this.performanceScheduleJpaEntity = performanceScheduleJpaEntity;
+    this.seatJpaEntity = seatJpaEntity;
     this.paymentAmount = paymentAmount;
     this.ticketStatus = ticketStatus;
     this.reservationTime = reservationTime;

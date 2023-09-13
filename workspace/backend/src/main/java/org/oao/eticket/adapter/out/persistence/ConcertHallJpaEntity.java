@@ -26,7 +26,7 @@ public class ConcertHallJpaEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "venue_id")
-  private VenueJpaEntitiy venue;
+  private VenueJpaEntitiy venueJpaEntitiy;
 
   @Builder
   public ConcertHallJpaEntity(
@@ -34,11 +34,11 @@ public class ConcertHallJpaEntity {
       String name,
       String hallWholeViewImage,
       Integer seatCount,
-      VenueJpaEntitiy venue) {
+      VenueJpaEntitiy venueJpaEntitiy) {
     this.id = id;
     this.name = name;
     this.hallWholeViewImage = hallWholeViewImage;
     this.seatCount = seatCount;
-    this.venue = venue;
+    this.venueJpaEntitiy = venueJpaEntitiy;
   }
 }

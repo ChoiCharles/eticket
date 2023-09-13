@@ -10,7 +10,6 @@ public class SeatClass {
   SeatClassId id;
   String className;
   Integer price;
-
   Performance performance;
 
   @Getter

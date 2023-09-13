@@ -8,10 +8,13 @@ import org.oao.eticket.application.domain.model.Performance;
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,
     uses = {VenueMapper.class, SeatClassMapper.class, UserMapper.class, PerformanceScheduleMapper.class})
-public interface PerformanceMapper {
+interface PerformanceMapper {
 
-  @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))")
+  @Mapping(target = "venue", source = "venueJpaEntity")
+  @Mapping(target = "host", source = "hostJpaEntity")
   Performance mapToDomainEntity(PerformanceJpaEntity jpaEntity);
 
+  @Mapping(target = "venueJpaEntitiy", source = "venue")
+  @Mapping(target = "hostJpaEntity", source = "host")
   PerformanceJpaEntity mapToJpaEntity(Performance performance);
 }

@@ -18,7 +18,7 @@ public class SeatJpaEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "concert_hall_id")
-  private ConcertHallJpaEntity concertHall;
+  private ConcertHallJpaEntity concertHallJpaEntity;
 
   @Column(name = "section")
   private String section;
@@ -38,14 +38,14 @@ public class SeatJpaEntity {
   @Builder
   public SeatJpaEntity(
       Integer id,
-      ConcertHallJpaEntity concertHall,
+      ConcertHallJpaEntity concertHallJpaEntity,
       String section,
       String row,
       String number,
       Integer positionX,
       Integer positionY) {
     this.id = id;
-    this.concertHall = concertHall;
+    this.concertHallJpaEntity = concertHallJpaEntity;
     this.section = section;
     this.row = row;
     this.number = number;

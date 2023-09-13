@@ -15,7 +15,6 @@ public class Performance {
   String cast;
   String description;
   String posterImagePath;
-
   Venue venue;
   List<SeatClass> seatClassList;
   User host;

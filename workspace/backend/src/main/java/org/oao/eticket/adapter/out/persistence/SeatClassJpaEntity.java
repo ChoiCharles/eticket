@@ -24,14 +24,14 @@ public class SeatClassJpaEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "performance_id")
-  private PerformanceJpaEntity performance;
+  private PerformanceJpaEntity performanceJpaEntity;
 
   @Builder
   public SeatClassJpaEntity(
-      Integer id, String className, Integer price, PerformanceJpaEntity performance) {
+      Integer id, String className, Integer price, PerformanceJpaEntity performanceJpaEntity) {
     this.id = id;
     this.className = className;
     this.price = price;
-    this.performance = performance;
+    this.performanceJpaEntity = performanceJpaEntity;
   }
 }
