@@ -1,8 +1,6 @@
 package org.oao.eticket.adapter.out.persistence;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
+import org.mapstruct.*;
 import org.oao.eticket.application.domain.model.Performance;
 
 @Mapper(
@@ -10,8 +8,17 @@ import org.oao.eticket.application.domain.model.Performance;
     uses = {VenueMapper.class, SeatClassMapper.class, UserMapper.class, PerformanceScheduleMapper.class})
 public interface PerformanceMapper {
 
-  @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getValue()))")
+  @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))")
+  @Mapping(target = "venue", source = "venueJpaEntity")
+  @Mapping(target = "host", source = "hostJpaEntity")
+  @Mapping(target = "seatClassList", source = "seatClassJpaEntityList")
+  @Mapping(target = "performanceScheduleList", source = "performanceScheduleJpaEntityList")
   Performance mapToDomainEntity(PerformanceJpaEntity jpaEntity);
 
-  PerformanceJpaEntity mapToJpaEntity(Performance performance);
+  @Mapping(target = "id", expression = "java(null)")
+  @Mapping(target = "venueJpaEntity", source = "venue")
+  @Mapping(target = "hostJpaEntity", source = "host")
+  @Mapping(target = "seatClassJpaEntityList", source = "seatClassList")
+  @Mapping(target = "performanceScheduleJpaEntityList", source = "performanceScheduleList")
+  PerformanceJpaEntity mapToJpaEntity(Performance model);
 }

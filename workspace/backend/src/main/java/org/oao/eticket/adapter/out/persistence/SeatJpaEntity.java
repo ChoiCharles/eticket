@@ -23,7 +23,7 @@ public class SeatJpaEntity {
   @Column(name = "section")
   private String section;
 
-  @Column(name = "row")
+  @Column(name = "seat_row")
   private String row;
 
   @Column(name = "number")

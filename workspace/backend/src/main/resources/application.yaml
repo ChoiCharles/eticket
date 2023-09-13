@@ -11,7 +11,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+  # Mapper 간의 순환 참조가 필요 해서 넣어 뒀는데 나중에 괜찮으면 빼겠습니다.
+  #main:
+   # allow-circular-references: true
 eticket:
   redis:
     auth:
