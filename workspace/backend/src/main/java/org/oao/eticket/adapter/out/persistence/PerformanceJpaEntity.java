@@ -41,12 +41,10 @@ public class PerformanceJpaEntity {
   @JoinColumn(name = "user_id")
   private UserJpaEntity host;
 
-  @OneToMany(fetch = FetchType.LAZY)
-  @JoinColumn(name = "seat_class_id")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performance")
   private List<SeatClassJpaEntity> seatClassList; // 양방향
 
-  @OneToMany(fetch = FetchType.LAZY)
-  @JoinColumn(name = "performance_schedule_id")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performance")
   private List<SeatClassJpaEntity> performanceScheduleList; // 양방향
 
   @Builder
