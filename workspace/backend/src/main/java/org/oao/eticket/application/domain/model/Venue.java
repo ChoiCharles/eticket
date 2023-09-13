@@ -20,8 +20,8 @@ public class Venue {
     public static class VenueId {
         private final int value;
 
-        public static VenueId of(final int id) {
-            return new VenueId(id);
+        public static VenueId of(final int value) {
+            return new VenueId(value);
         }
     }
 

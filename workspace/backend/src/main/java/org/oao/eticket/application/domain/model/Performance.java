@@ -26,8 +26,8 @@ public class Performance {
   public static class PerformanceId {
     private final int value;
 
-    public static PerformanceId of(final int id) {
-      return new PerformanceId(id);
+    public static PerformanceId of(final int value) {
+      return new PerformanceId(value);
     }
   }
 }

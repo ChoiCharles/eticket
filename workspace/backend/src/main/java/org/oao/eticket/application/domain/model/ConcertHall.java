@@ -6,20 +6,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 @Value
-public class SeatClass {
-  SeatClassId id;
-  String className;
-  Integer price;
-
-  Performance performance;
+public class ConcertHall {
+  ConcertHallId id;
+  String name;
+  String hallWholeViewImage;
+  Integer seatCount;
+  Venue venue;
 
   @Getter
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class SeatClassId {
+  public static class ConcertHallId {
     private final int value;
 
-    public static SeatClassId of(final int value) {
-      return new SeatClassId(value);
+    public static ConcertHallId of(final int value) {
+      return new ConcertHallId(value);
     }
   }
 }
