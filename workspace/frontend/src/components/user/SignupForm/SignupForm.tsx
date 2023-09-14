@@ -173,7 +173,7 @@ function SignupForm() {
         <TextField fullWidth onChange={nicknameData} />
         <div className="signup-bottom-box">
           <div className="check-login">
-            <div>이미 계정이 있으신가요?</div>
+            {/* <div>이미 계정이 있으신가요?</div> */}
             <div
               className="text-underline"
               onClick={() => navigate('/login')}

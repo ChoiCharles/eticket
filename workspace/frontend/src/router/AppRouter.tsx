@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import ConcertList from 'pages/ConcertList.tsx';
+import ConcertList from 'pages/Concert/ConcertList.tsx';
 import Home from '../pages/Home/Home.tsx';
-import Login from '../pages/Login.tsx';
-import Signup from '../pages/Signup.tsx';
+import Login from '../pages/User/Login.tsx';
+import Signup from '../pages/User/Signup.tsx';
 
 function AppRouter() {
   return (

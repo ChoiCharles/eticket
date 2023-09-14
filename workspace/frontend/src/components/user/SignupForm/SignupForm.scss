@@ -4,8 +4,9 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 450px; /* 고정 크기 데스크톱 뷰 */
-  padding: 100px 0px;
+  width: 80%; /* 고정 크기 데스크톱 뷰 */
+  max-width: 450px;
+  padding: 50px 0px;
   gap: 20px;
 }
 
@@ -25,17 +26,18 @@
 }
 
 /* 모바일 환경에서의 스타일 */
-@media (max-width: 767px) {
-  .signup-outer-box {
-    width: 100%; /* 화면 너비에 맞게 100%로 조절 */
-    padding: 20px; /* 패딩을 작게 조절 */
-  }
+// @media (max-width: 767px) {
+//   .signup-outer-box {
+//     width: 80%; /* 화면 너비에 맞게 100%로 조절 */
+//     padding: 20px; /* 패딩을 작게 조절 */
+//   }
 
-  .signup-box {
-    flex-direction: column; /* 세로로 정렬 */
-    align-items: center; /* 가운데 정렬 */
-  }
-}
+//   .signup-box {
+//     flex-direction: column; /* 세로로 정렬 */
+//     align-items: center; /* 가운데 정렬 */
+  
+//   }
+// }
 
 
 .signup-bottom-box {

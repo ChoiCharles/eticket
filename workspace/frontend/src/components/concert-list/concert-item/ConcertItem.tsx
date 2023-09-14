@@ -1,5 +1,5 @@
 import React from 'react';
-import './ConsertItem.scss';
+import './ConcertItem.scss';
 
 interface ConcertListItem {
   id: number;
@@ -12,14 +12,23 @@ interface ConcertListItem {
 function ConcertItem({ concertInfo }: { concertInfo: ConcertListItem }) {
   return (
     <div className="concert-item-outer-box">
-      <div className="concert-right-box">
-        <div className="concert-context concert-number">{concertInfo.id}</div>
-        <div className="concert-context">{concertInfo.image}</div>
-        <div className="concert-context">{concertInfo.title}</div>
-      </div>
       <div className="concert-left-box">
-        <div className="concert-context">{concertInfo.location}</div>
-        <div className="concert-context">{concertInfo.date}</div>
+        <img
+          className="rank-frame concert-context"
+          src="https://tickets.interpark.com/contents/_next/static/media/ranking_badge_purple.ea646533.svg"
+          alt="1"
+        />
+        <span className="concert-number">{concertInfo.id}</span>
+      </div>
+      <div className="concert-center-box">
+        <div className="concert-context">
+          <img src={concertInfo.image} alt="사진" />
+        </div>
+      </div>
+      <div className="concert-right-box">
+        <div className="concert-title">{concertInfo.title}</div>
+        <div className="concert-location">{concertInfo.location}</div>
+        <div className="concert-date">{concertInfo.date}</div>
       </div>
     </div>
   );
