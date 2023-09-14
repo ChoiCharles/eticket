@@ -3,6 +3,7 @@ package org.oao.eticket.adapter.out.persistence;
 import org.mapstruct.*;
 import org.oao.eticket.application.domain.model.Performance;
 
+import java.util.List;
 import java.util.Optional;
 
 @Mapper(
@@ -14,13 +15,18 @@ import java.util.Optional;
       PerformanceScheduleMapper.class
     })
 public interface PerformanceMapper {
-
-  @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))")
-  @Mapping(target = "venue", source = "venueJpaEntity")
-  @Mapping(target = "host", source = "hostJpaEntity")
-  @Mapping(target = "seatClassList", source = "seatClassJpaEntityList")
-  @Mapping(target = "performanceScheduleList", source = "performanceScheduleJpaEntityList")
+  @Named("performanceMapToDomain")
+  @Mappings({
+    @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))"),
+    @Mapping(target = "venue", source = "venueJpaEntity"),
+    @Mapping(target = "host", source = "hostJpaEntity"),
+    @Mapping(target = "seatClassList", source = "seatClassJpaEntityList"),
+    @Mapping(target = "performanceScheduleList", source = "performanceScheduleJpaEntityList")
+  })
   Performance mapToDomainEntity(PerformanceJpaEntity jpaEntity);
+
+  @IterableMapping(qualifiedByName = "performanceMapToDomain")
+  List<Performance> mapToDomainEntity(List<PerformanceJpaEntity> jpaEntityList);
 
   @AfterMapping
   default void setPerformance(@MappingTarget Performance performance) {
@@ -31,10 +37,12 @@ public interface PerformanceMapper {
         .ifPresent(it -> it.forEach(item -> item.setPerformance(performance)));
   }
 
-  @Mapping(target = "id", expression = "java(null)")
-  @Mapping(target = "venueJpaEntity", source = "venue")
-  @Mapping(target = "hostJpaEntity", source = "host")
-  @Mapping(target = "seatClassJpaEntityList", source = "seatClassList")
-  @Mapping(target = "performanceScheduleJpaEntityList", source = "performanceScheduleList")
+  @Mappings({
+    @Mapping(target = "id", expression = "java(null)"),
+    @Mapping(target = "venueJpaEntity", source = "venue"),
+    @Mapping(target = "hostJpaEntity", source = "host"),
+    @Mapping(target = "seatClassJpaEntityList", source = "seatClassList"),
+    @Mapping(target = "performanceScheduleJpaEntityList", source = "performanceScheduleList")
+  })
   PerformanceJpaEntity mapToJpaEntity(Performance model);
 }

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.oao.eticket.application.domain.model.Performance;
 import org.oao.eticket.application.port.in.GetPerformanceDetailUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequiredArgsConstructor
 public class GetPerformanceDetailController {
     record GetPerformanceDetailResponseBody() {
-
     }
 
     private final GetPerformanceDetailUseCase getPerformanceDetailUseCase;
@@ -47,6 +47,5 @@ public class GetPerformanceDetailController {
             // TODO (yoo) : exception handling
             throw e;
         }
-
     }
 }
