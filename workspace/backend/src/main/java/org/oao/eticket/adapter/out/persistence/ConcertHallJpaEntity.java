@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "concert_hall")
 public class ConcertHallJpaEntity {
   @Id
@@ -28,5 +26,19 @@ public class ConcertHallJpaEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "venue_id")
-  private VenueJpaEntitiy venue;
+  private VenueJpaEntity venueJpaEntity;
+
+  @Builder
+  public ConcertHallJpaEntity(
+      Integer id,
+      String name,
+      String hallWholeViewImage,
+      Integer seatCount,
+      VenueJpaEntity venueJpaEntity) {
+    this.id = id;
+    this.name = name;
+    this.hallWholeViewImage = hallWholeViewImage;
+    this.seatCount = seatCount;
+    this.venueJpaEntity = venueJpaEntity;
+  }
 }

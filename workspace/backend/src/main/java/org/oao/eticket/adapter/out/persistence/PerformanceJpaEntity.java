@@ -3,17 +3,14 @@ package org.oao.eticket.adapter.out.persistence;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.oao.eticket.application.domain.model.PerformanceGenre;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+import java.util.List;
+
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "performance")
 public class PerformanceJpaEntity {
   @Id
@@ -34,11 +31,43 @@ public class PerformanceJpaEntity {
 
   @Column private String description;
 
+  @Column private String posterImagePath;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "venue_id")
-  private VenueJpaEntitiy venue;
+  private VenueJpaEntity venueJpaEntity;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
-  private UserJpaEntity host;
+  private UserJpaEntity hostJpaEntity;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performanceJpaEntity")
+  private List<SeatClassJpaEntity> seatClassJpaEntityList; // 양방향
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performanceJpaEntity")
+  private List<PerformanceScheduleJpaEntity> performanceScheduleJpaEntityList; // 양방향
+
+  @Builder
+  public PerformanceJpaEntity(
+      Integer id,
+      String title,
+      PerformanceGenre genre,
+      String cast,
+      String description,
+      String posterImagePath,
+      VenueJpaEntity venueJpaEntity,
+      UserJpaEntity hostJpaEntity,
+      List<SeatClassJpaEntity> seatClassJpaEntityList,
+      List<PerformanceScheduleJpaEntity> performanceScheduleJpaEntityList) {
+    this.id = id;
+    this.title = title;
+    this.genre = genre;
+    this.cast = cast;
+    this.description = description;
+    this.posterImagePath = posterImagePath;
+    this.venueJpaEntity = venueJpaEntity;
+    this.hostJpaEntity = hostJpaEntity;
+    this.seatClassJpaEntityList = seatClassJpaEntityList;
+    this.performanceScheduleJpaEntityList = performanceScheduleJpaEntityList;
+  }
 }
