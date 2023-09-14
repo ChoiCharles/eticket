@@ -1,5 +1,9 @@
 package org.oao.eticket.adapter.in.web;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.port.in.GetPerformanceDetailUseCase;
@@ -19,7 +23,14 @@ public class GetPerformanceDetailController {
 
     private final GetPerformanceDetailUseCase getPerformanceDetailUseCase;
 
-    // TODO(yoo) : @Operation SWAGGER
+    @Operation(
+            summary = "공연 상세 정보 불러 오기",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "특정 공연 상세 정보 불러 오기 성공",
+                            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
+            })
     @GetMapping(
             value = "/performances/{performanceId}",
             produces = "application/json; charset=utf-8"
