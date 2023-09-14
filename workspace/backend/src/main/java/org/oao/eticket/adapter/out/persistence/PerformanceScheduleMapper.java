@@ -12,12 +12,18 @@ import java.util.List;
 interface PerformanceScheduleMapper {
 
   @Named("toDomain")
-  @Mapping(target = "performance", source = "performanceJpaEntity")
+//  @Mapping(target = "performance", source = "performanceJpaEntity")
+  @Mapping(target = "performance", ignore = true)
   PerformanceSchedule mapToDomainEntity(PerformanceScheduleJpaEntity performanceScheduleJpaEntity);
 
   @IterableMapping(qualifiedByName = "toDomain")
   List<PerformanceSchedule> mapToDomainEntity(List<PerformanceScheduleJpaEntity> performanceScheduleJpaEntityList);
 
-  @Mapping(target = "performanceJpaEntity", source = "performance")
+  @Named("toJpa")
+//  @Mapping(target = "performanceJpaEntity", source = "performance")
+  @Mapping(target = "performanceJpaEntity", ignore = true)
   PerformanceScheduleJpaEntity mapToJpaEntity(PerformanceSchedule performanceSchedule);
+
+  @IterableMapping(qualifiedByName = "toJpa")
+  List<PerformanceScheduleJpaEntity> mapToJpaEntity(List<PerformanceSchedule> performanceScheduleJpaEntityList);
 }

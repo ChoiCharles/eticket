@@ -20,11 +20,13 @@ interface ReservationMapper {
   @Mapping(target = "userJpaEntity", source = "user")
   @Mapping(target = "seatJpaEntity", source = "seat")
   @Mapping(target = "performanceScheduleJpaEntity", source = "performanceSchedule")
+  @Mapping(target = "performanceScheduleJpaEntity.performanceJpaEntity", source = "performanceSchedule.performance")  // 수정 필요할 수도 임시 방편
   ReservationJpaEntity mapToJpaEntity(Reservation reservationDomainEntity);
 
   @Mapping(target = "userJpaEntity", source = "user")
   @Mapping(target = "seatJpaEntity", source = "seat")
   @Mapping(target = "performanceScheduleJpaEntity", source = "performanceSchedule")
+  @Mapping(target = "performanceScheduleJpaEntity.performanceJpaEntity", source = "performanceSchedule.performance")  // 수정 필요할 수도 임시 방편
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "reservationTime", ignore = true)
   ReservationJpaEntity mapToJpaEntity(CreateReservationCommand createReservationCommand);

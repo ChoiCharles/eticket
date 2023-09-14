@@ -1,13 +1,10 @@
 package org.oao.eticket.application.domain.model;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import lombok.*;
 
 import java.util.List;
 
-@Value
+@Data
 public class Performance {
   PerformanceId id;
   String title;
