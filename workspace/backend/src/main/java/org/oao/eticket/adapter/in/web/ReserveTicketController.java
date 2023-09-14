@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.oao.eticket.application.domain.model.Reservation;
@@ -24,10 +25,10 @@ public class ReserveTicketController {
 
   @Value
   static class ReservationDetail {
-    @NotBlank Integer userId;
-    @NotBlank Integer performanceScheduleId;
-    @NotBlank Integer seatId;
-    @NotBlank Integer paymentAmount;
+    @NotNull Integer userId;
+    @NotNull Integer performanceScheduleId;
+    @NotNull Integer seatId;
+    @NotNull Integer paymentAmount;
   }
 
   @Operation(

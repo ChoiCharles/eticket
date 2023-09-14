@@ -1,4 +1,5 @@
 package org.oao.eticket.adapter.out.persistence;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
