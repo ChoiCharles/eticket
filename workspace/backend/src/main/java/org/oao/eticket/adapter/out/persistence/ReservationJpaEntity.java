@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.oao.eticket.application.domain.model.TicketStatus;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Getter
@@ -57,6 +58,6 @@ public class ReservationJpaEntity {
     this.seatJpaEntity = seatJpaEntity;
     this.paymentAmount = paymentAmount;
     this.ticketStatus = ticketStatus;
-    this.reservationTime = reservationTime;
+    this.reservationTime = LocalDateTime.now(ZoneId.of("KST"));
   }
 }

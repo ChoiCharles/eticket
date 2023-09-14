@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.oao.eticket.application.domain.model.PerformanceGenre;
-import org.oao.eticket.application.domain.model.PerformanceSchedule;
 
 import java.util.List;
 
@@ -36,17 +35,17 @@ public class PerformanceJpaEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "venue_id")
-  private VenueJpaEntitiy venueJpaEntitiy;
+  private VenueJpaEntity venue;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
-  private UserJpaEntity hostJpaEntity;
+  private UserJpaEntity host;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performanceJpaEntity")
-  private List<SeatClassJpaEntity> seatClassList; // 양방향
+//  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performanceJpaEntity")
+//  private List<SeatClassJpaEntity> seatClassList; // 양방향
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performanceJpaEntity")
-  private List<PerformanceScheduleJpaEntity> performanceScheduleList; // 양방향
+//  @OneToMany(fetch = FetchType.LAZY, mappedBy = "performanceJpaEntity")
+//  private List<PerformanceScheduleJpaEntity> performanceScheduleList; // 양방향
 
   @Builder
   public PerformanceJpaEntity(
@@ -56,19 +55,21 @@ public class PerformanceJpaEntity {
       String cast,
       String description,
       String posterImagePath,
-      VenueJpaEntitiy venueJpaEntitiy,
-      UserJpaEntity hostJpaEntity,
-      List<SeatClassJpaEntity> seatClassList,
-      List<PerformanceScheduleJpaEntity> performanceScheduleList) {
+      VenueJpaEntity venue,
+      UserJpaEntity host
+//      List<SeatClassJpaEntity> seatClassList,
+//      List<PerformanceScheduleJpaEntity> performanceScheduleList
+      )
+  {
     this.id = id;
     this.title = title;
     this.genre = genre;
     this.cast = cast;
     this.description = description;
     this.posterImagePath = posterImagePath;
-    this.venueJpaEntitiy = venueJpaEntitiy;
-    this.hostJpaEntity = hostJpaEntity;
-    this.seatClassList = seatClassList;
-    this.performanceScheduleList = performanceScheduleList;
+    this.venue = venue;
+    this.host = host;
+//    this.seatClassList = seatClassList;
+//    this.performanceScheduleList = performanceScheduleList;
   }
 }

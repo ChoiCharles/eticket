@@ -9,5 +9,10 @@ import org.oao.eticket.application.domain.model.SeatClass;
 interface SeatClassMapper {
 
   @Mapping(target = "performance", source = "performanceJpaEntity")
+  @Mapping(target = "id", expression = "java(SeatClass.SeatClassId.of(jpaEntity.getId()))")
   SeatClass mapToDomainEntity(SeatClassJpaEntity jpaEntity);
+
+  @Mapping(target = "performanceJpaEntity", source = "performance")
+  @Mapping(target = "id", source = "id.value")
+  SeatClassJpaEntity mapToJpaEntity(SeatClass domainEntity);
 }

@@ -8,5 +8,9 @@ import org.oao.eticket.application.domain.model.Venue;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 interface VenueMapper {
 
-  Venue mapToDomainEntity(VenueJpaEntitiy jpaEntity);
+  @Mapping(target = "id", expression = "java(Venue.VenueId.of(jpaEntity.getId()))")
+  Venue mapToDomainEntity(VenueJpaEntity jpaEntity);
+
+  @Mapping(target = "id", source="id.value")
+  VenueJpaEntity mapToJpaEntity(Venue domainEntity);
 }

@@ -11,5 +11,5 @@ import org.oao.eticket.application.domain.model.PerformanceSchedule;
 interface PerformanceScheduleMapper {
 
   @Mapping(target = "performance", source = "performanceJpaEntity")
-  PerformanceSchedule mapToDomainEntity(PerformanceScheduleJpaEntity performanceScheduleJpaEntity);
+  PerformanceSchedule mapToDomainEntity(PerformanceScheduleJpaEntity jpaEntity);
 }
