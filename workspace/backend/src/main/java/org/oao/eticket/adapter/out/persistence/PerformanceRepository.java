@@ -1,6 +1,7 @@
 package org.oao.eticket.adapter.out.persistence;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Performance;
@@ -26,11 +27,13 @@ public class PerformanceRepository implements LoadPerformanceDetailPort {
                           WHERE p.id=:performanceId
                           """,
                   PerformanceJpaEntity.class)
-              .setParameter("id", performanceId.getValue())
+              .setParameter("performanceId", performanceId.getValue())
               .getSingleResult();
       return performanceMapper.mapToDomainEntity(performanceJpaEntity);
-    } catch (Exception e) {
+    } catch (NoResultException e) {
       // TODO(yoo): exception handling
+      throw e;
+    } catch (Exception e) {
       throw e;
     }
   }

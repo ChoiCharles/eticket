@@ -18,7 +18,7 @@ import org.oao.eticket.application.domain.model.UserRole;
 @Table(name = "user")
 public class UserJpaEntity {
     @Id
-    @Column(name = "user_id")
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(nullable = false, unique = true)

@@ -22,7 +22,6 @@ public class GetPerformanceDetailController {
     // TODO(yoo) : @Operation SWAGGER
     @GetMapping(
             value = "/performances/{performanceId}",
-            consumes = "application/json",
             produces = "application/json; charset=utf-8"
     )
     @ResponseStatus(HttpStatus.OK)
