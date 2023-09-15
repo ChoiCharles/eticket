@@ -8,21 +8,29 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = PerformanceMapper.class)
 public interface SeatClassMapper {
 
-  @Named("toDomain")
-  @Mapping(target = "id", expression = "java(SeatClass.SeatClassId.of(jpaEntity.getId()))")
-//  @Mapping(target = "performance", source = "performanceJpaEntity")
-  @Mapping(target = "performance", ignore = true)
+  @Named("seatClassMapToDomain")
+  @Mappings({
+    @Mapping(target = "id", expression = "java(SeatClass.SeatClassId.of(jpaEntity.getId()))"),
+    //  @Mapping(target = "performance", source = "performanceJpaEntity", qualifiedByName =
+    // "performanceMapToDomain")
+    @Mapping(target = "performance", ignore = true)
+  })
   SeatClass mapToDomainEntity(SeatClassJpaEntity jpaEntity);
 
-  @IterableMapping(qualifiedByName = "toDomain")
+  @IterableMapping(qualifiedByName = "seatClassMapToDomain")
   List<SeatClass> mapToDomainEntity(List<SeatClassJpaEntity> seatClassJpaEntityList);
 
-  @Named("toJpa")
-  @Mapping(target = "id", expression  = "java(null)")
-  @Mapping(target = "performanceJpaEntity", ignore = true)
-//  @Mapping(target = "performanceJpaEntity", source = "performance")
+  @Named("seatClassMapToJpa")
+  @Mappings({
+    @Mapping(target = "id", expression = "java(null)"),
+    @Mapping(target = "performanceJpaEntity", ignore = true)
+    //    @Mapping(
+    //        target = "performanceJpaEntity",
+    //        source = "performance",
+    //        qualifiedByName = "performanceMapToJpa")
+  })
   SeatClassJpaEntity mapToJpaEntity(SeatClass jpaEntity);
 
-  @IterableMapping(qualifiedByName = "toJpa")
+  @IterableMapping(qualifiedByName = "seatClassMapToJpa")
   List<SeatClassJpaEntity> mapToJpaEntity(List<SeatClass> seatClassList);
 }
