@@ -8,9 +8,9 @@ import org.oao.eticket.application.domain.model.Performance;
 import org.oao.eticket.application.port.out.LoadHotPerformancesPort;
 import org.oao.eticket.application.port.out.LoadPerformanceDetailPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
+import org.oao.eticket.exception.PerformanceNotFoundException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -35,8 +35,7 @@ public class PerformanceRepository implements LoadPerformanceDetailPort, LoadHot
               .getSingleResult();
       return performanceMapper.mapToDomainEntity(performanceJpaEntity);
     } catch (NoResultException e) {
-      // TODO(yoo): exception handling
-      throw e;
+      throw new PerformanceNotFoundException(String.valueOf(performanceId.getValue()),e);
     } catch (Exception e) {
       throw e;
     }
@@ -56,6 +55,7 @@ public class PerformanceRepository implements LoadPerformanceDetailPort, LoadHot
                   PerformanceJpaEntity.class)
               .setMaxResults(10)
               .getResultList();
+
       System.out.println(hotPerformances.toString());
       return performanceMapper.mapToDomainEntity(hotPerformances);
     } catch (Exception e) {

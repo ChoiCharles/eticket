@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Performance;
 import org.oao.eticket.application.port.in.GetPerformanceDetailUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
+import org.oao.eticket.exception.PerformanceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @WebAdapter
 @RequiredArgsConstructor
 public class GetPerformanceDetailController {
-    record GetPerformanceDetailResponseBody() {
+    record GetPerformanceDetailResponseBody(Performance performance) {
     }
 
     private final GetPerformanceDetailUseCase getPerformanceDetailUseCase;
@@ -41,11 +42,20 @@ public class GetPerformanceDetailController {
         try {
             final var performance =
                     getPerformanceDetailUseCase.getPerformance(payload);
-            return ResponseEntity.ok(new GetPerformanceDetailResponseBody());
+            return ResponseEntity.ok(new GetPerformanceDetailResponseBody(performance));
 
-        } catch (final Exception e) {
-            // TODO (yoo) : exception handling
-            throw e;
+        } catch (PerformanceNotFoundException e) {
+            // TODO(yoo) :
+            throw ApiException.builder()
+                    .withStatus(HttpStatus.NO_CONTENT)
+                    .withCause(e)
+                    .withSummary(String.format("%s 공연이 존재 하지 않습니다.", e.getMessage()))
+                    .build();
+        } catch (Exception e) {
+            throw ApiException.builder()
+                    .withCause(e)
+                    .withSummary(e.getMessage())
+                    .build();
         }
     }
 }
