@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.oao.eticket.application.domain.model.Reservation;
+import org.oao.eticket.application.port.in.CancelMyReservationCommand;
 import org.oao.eticket.application.port.out.CreateReservationCommand;
 
 @Mapper(
@@ -25,7 +26,10 @@ interface ReservationMapper {
   @Mapping(target = "seatJpaEntity", source = "seat")
   @Mapping(target = "performanceScheduleJpaEntity", source = "performanceSchedule")
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "reservationTime", ignore = true)
-  @Mapping(target = "cancellationTime", ignore = true)
   ReservationJpaEntity mapToJpaEntity(CreateReservationCommand createReservationCommand);
+
+  @Mapping(target = "userJpaEntity", source = "user")
+  @Mapping(target = "seatJpaEntity", source = "seat")
+  @Mapping(target = "performanceScheduleJpaEntity", source = "performanceSchedule")
+  ReservationJpaEntity mapToJpaEntity(CancelMyReservationCommand cancelMyReservationCommand);
 }
