@@ -19,43 +19,35 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @WebAdapter
 @RequiredArgsConstructor
 public class GetPerformanceDetailController {
-    record GetPerformanceDetailResponseBody(Performance performance) {
+  record GetPerformanceDetailResponseBody(Performance performance) {}
+
+  private final GetPerformanceDetailUseCase getPerformanceDetailUseCase;
+
+  @Operation(
+      summary = "공연 상세 정보 불러 오기",
+      responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "특정 공연 상세 정보 불러 오기 성공",
+            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
+      })
+  @GetMapping(value = "/performances/{performanceId}", produces = "application/json; charset=utf-8")
+  @ResponseStatus(HttpStatus.OK)
+  ResponseEntity<GetPerformanceDetailResponseBody> getPerformanceDetail(
+      @Valid @PathVariable("performanceId") Integer payload) {
+    // TODO (yoo) : body type
+    try {
+      final var performance = getPerformanceDetailUseCase.getPerformance(payload);
+      return ResponseEntity.ok(new GetPerformanceDetailResponseBody(performance));
+    } catch (PerformanceNotFoundException e) {
+      // TODO(yoo) :
+      throw ApiException.builder()
+          .withStatus(HttpStatus.NO_CONTENT)
+          .withCause(e)
+          .withSummary(String.format("%s 공연이 존재 하지 않습니다.", e.getMessage()))
+          .build();
+    } catch (Exception e) {
+      throw ApiException.builder().withCause(e).withSummary(e.getMessage()).build();
     }
-
-    private final GetPerformanceDetailUseCase getPerformanceDetailUseCase;
-
-    @Operation(
-            summary = "공연 상세 정보 불러 오기",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "특정 공연 상세 정보 불러 오기 성공",
-                            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
-            })
-    @GetMapping(
-            value = "/performances/{performanceId}",
-            produces = "application/json; charset=utf-8"
-    )
-    @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<GetPerformanceDetailResponseBody> getPerformanceDetail(@Valid @PathVariable("performanceId") Integer payload) {
-        //TODO (yoo) : body type
-        try {
-            final var performance =
-                    getPerformanceDetailUseCase.getPerformance(payload);
-            return ResponseEntity.ok(new GetPerformanceDetailResponseBody(performance));
-
-        } catch (PerformanceNotFoundException e) {
-            // TODO(yoo) :
-            throw ApiException.builder()
-                    .withStatus(HttpStatus.NO_CONTENT)
-                    .withCause(e)
-                    .withSummary(String.format("%s 공연이 존재 하지 않습니다.", e.getMessage()))
-                    .build();
-        } catch (Exception e) {
-            throw ApiException.builder()
-                    .withCause(e)
-                    .withSummary(e.getMessage())
-                    .build();
-        }
-    }
+  }
 }

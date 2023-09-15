@@ -10,8 +10,8 @@ import java.util.List;
 @UseCase
 @RequiredArgsConstructor
 public class GetUpcomingPerformancesService implements GetUpcomingPerformancesUsecase {
-    @Override
-    public List<Performance> getUpcomingPerformances() {
-        return null;
-    }
+  @Override
+  public List<Performance> getUpcomingPerformances() {
+    return null;
+  }
 }

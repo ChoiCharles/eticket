@@ -4,6 +4,6 @@ import org.oao.eticket.application.domain.model.Performance;
 
 import java.util.List;
 
-public interface GetHotPerformancesUseCase {
-  List<Performance> getHotPerformanceList();
+public interface SearchPerformancesUseCase {
+  List<Performance> search(String keyword);
 }

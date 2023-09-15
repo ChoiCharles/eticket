@@ -11,11 +11,11 @@ import java.util.List;
 @UseCase
 @RequiredArgsConstructor
 public class GetHotPerformancesService implements GetHotPerformancesUseCase {
-    private final LoadHotPerformancesPort loadHotPerformancesPort;
+  private final LoadHotPerformancesPort loadHotPerformancesPort;
 
-    @Override
-    public List<Performance> getHotPerformanceList() {
-        return loadHotPerformancesPort.loadHotPerformances();
-    }
-    // DB에 조회 메서드
+  @Override
+  public List<Performance> getHotPerformanceList() {
+    return loadHotPerformancesPort.loadHotPerformances();
+  }
+  // DB에 조회 메서드
 }

@@ -35,7 +35,7 @@ public class PerformanceRepository implements LoadPerformanceDetailPort, LoadHot
               .getSingleResult();
       return performanceMapper.mapToDomainEntity(performanceJpaEntity);
     } catch (NoResultException e) {
-      throw new PerformanceNotFoundException(String.valueOf(performanceId.getValue()),e);
+      throw new PerformanceNotFoundException(String.valueOf(performanceId.getValue()), e);
     } catch (Exception e) {
       throw e;
     }
