@@ -2,22 +2,18 @@ package org.oao.eticket.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Reservation;
-import org.oao.eticket.application.port.out.LoadMyReservationsPort;
+import org.oao.eticket.application.port.out.LoadReservationPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
-
-import java.util.List;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class LoadMyReservationsPersistenceAdapter implements LoadMyReservationsPort {
+public class LoadReservationPersistenceAdapter implements LoadReservationPort {
 
   private final ReservationRepository reservationRepository;
   private final ReservationMapper reservationMapper;
 
   @Override
-  public List<Reservation> findMyReservations(Integer userId) {
-    return reservationRepository.findByUserJpaEntity_Id(userId).stream()
-        .map(reservationMapper::mapToDomainEntity)
-        .toList();
+  public Reservation loadById(Integer id) {
+    return reservationMapper.mapToDomainEntity(reservationRepository.findById(id).get());
   }
 }

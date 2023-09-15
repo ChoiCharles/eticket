@@ -26,5 +26,6 @@ interface ReservationMapper {
   @Mapping(target = "performanceScheduleJpaEntity", source = "performanceSchedule")
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "reservationTime", ignore = true)
+  @Mapping(target = "cancellationTime", ignore = true)
   ReservationJpaEntity mapToJpaEntity(CreateReservationCommand createReservationCommand);
 }
