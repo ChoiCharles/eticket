@@ -1,14 +1,14 @@
 .concert-item-outer-box {
     display: flex;
     width: 100%;
-    border: 1px solid silver;
+    border: 1px solid whitesmoke;
     border-radius: 6px;
 }
 
 .concert-left-box {
     display: flex;
     justify-content: center;
-    width: 60px;
+    width: 30px;
 }
 
 .concert-center-box {
@@ -18,7 +18,8 @@
 .concert-right-box{
     display: flex;
     flex-direction: column;
-    padding-left: 10px;
+    padding: 10px;
+    gap: 2px;
 }
 
 .concert-context{
@@ -30,6 +31,7 @@
     justify-content: center;
     align-items: center;
     font-weight: bold;
+    font-size: 0.8rem;
     width: 30px;
     position: absolute;
     color: white;   
@@ -38,7 +40,7 @@
 .rank-frame{
     position: absolute;
     align-items: center;
-    width: 30px;
+    width: 20px;
 }
 
 .rank-box{
@@ -46,10 +48,28 @@
     position: relative;
 }
 
-.concert-title{
+.concert-tag{
+    border: 1px solid red;
+    max-width: 50px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    color: red;
+    font-size: 0.6rem;;
+    // margin-top: 5px;
+}
 
+.concert-title{
+    font-weight: bold;
+    font-size: 1rem;
 }
 
 .concert-location {
+    font-size: 0.7rem;
     max-width: 185px;
+}
+
+.concert-date {
+    font-size: 0.5rem;
+    color: lightslategray;
 }

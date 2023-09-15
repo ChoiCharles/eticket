@@ -5,7 +5,7 @@ const dummyConcerts = [
     id: 0,
     image: Img,
     title: '오페라의 유령',
-    location: '광주광역시 광산구 하남로 삼성전자 광주사업장',
+    location: '광주광역시 광산구 하남로 삼성전자',
     date: '2023-09-08 ~ 2023-09-10',
   },
   {
