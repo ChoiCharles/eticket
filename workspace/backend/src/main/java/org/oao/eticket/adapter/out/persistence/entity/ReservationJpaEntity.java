@@ -1,4 +1,4 @@
-package org.oao.eticket.adapter.out.persistence;
+package org.oao.eticket.adapter.out.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

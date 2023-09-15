@@ -1,10 +1,12 @@
-package org.oao.eticket.adapter.out.persistence;
+package org.oao.eticket.adapter.out.persistence.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
+import org.oao.eticket.adapter.out.persistence.entity.UserJpaEntity;
+import org.oao.eticket.adapter.out.persistence.mapper.UserMapper;
 import org.oao.eticket.application.domain.model.User;
 import org.oao.eticket.application.port.out.CreateUserCommand;
 import org.oao.eticket.application.port.out.LoadUserPort;
@@ -12,7 +14,6 @@ import org.oao.eticket.application.port.out.CreateUserPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.UserDuplicateException;
 import org.oao.eticket.exception.UsernameNotFoundException;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @PersistenceAdapter

@@ -1,9 +1,11 @@
-package org.oao.eticket.adapter.out.persistence;
+package org.oao.eticket.adapter.out.persistence.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.oao.eticket.adapter.out.persistence.entity.PerformanceJpaEntity;
+import org.oao.eticket.adapter.out.persistence.mapper.PerformanceMapper;
 import org.oao.eticket.application.domain.model.Performance;
 import org.oao.eticket.application.port.out.LoadHotPerformancesPort;
 import org.oao.eticket.application.port.out.LoadPerformanceDetailPort;
@@ -15,6 +17,7 @@ import java.util.List;
 @PersistenceAdapter
 @RequiredArgsConstructor
 public class PerformanceRepository implements LoadPerformanceDetailPort, LoadHotPerformancesPort {
+
   private final PerformanceMapper performanceMapper;
 
   @PersistenceContext private final EntityManager entityManager;

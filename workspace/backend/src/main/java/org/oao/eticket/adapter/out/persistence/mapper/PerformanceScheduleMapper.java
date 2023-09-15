@@ -1,15 +1,15 @@
-package org.oao.eticket.adapter.out.persistence;
+package org.oao.eticket.adapter.out.persistence.mapper;
 
 import org.mapstruct.*;
+import org.oao.eticket.adapter.out.persistence.entity.PerformanceScheduleJpaEntity;
 import org.oao.eticket.application.domain.model.PerformanceSchedule;
-import org.oao.eticket.application.domain.model.SeatClass;
 
 import java.util.List;
 
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,
     uses = {PerformanceMapper.class})
-interface PerformanceScheduleMapper {
+public interface PerformanceScheduleMapper {
 
   @Named("ScheduleToDomain")
   //  @Mapping(target = "performance", source = "performanceJpaEntity", qualifiedByName =

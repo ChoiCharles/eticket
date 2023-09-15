@@ -3,6 +3,8 @@ package org.oao.eticket.adapter.out.persistence;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.oao.eticket.adapter.out.persistence.entity.AccessTokenMetadataRedisEntity;
+import org.oao.eticket.adapter.out.persistence.mapper.AccessTokenMetadataMapper;
 import org.oao.eticket.application.domain.model.AccessTokenMetadata;
 import org.oao.eticket.application.domain.model.AuthTokenId;
 import org.oao.eticket.application.domain.model.User;

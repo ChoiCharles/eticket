@@ -1,6 +1,7 @@
-package org.oao.eticket.adapter.out.persistence;
+package org.oao.eticket.adapter.out.persistence.mapper;
 
 import org.mapstruct.*;
+import org.oao.eticket.adapter.out.persistence.entity.SeatClassJpaEntity;
 import org.oao.eticket.application.domain.model.SeatClass;
 
 import java.util.List;

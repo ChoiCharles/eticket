@@ -1,9 +1,10 @@
-package org.oao.eticket.adapter.out.persistence;
+package org.oao.eticket.adapter.out.persistence.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.Mappings;
+import org.oao.eticket.adapter.out.persistence.entity.ReservationJpaEntity;
 import org.oao.eticket.application.domain.model.Reservation;
 import org.oao.eticket.application.port.out.CreateReservationCommand;
 
@@ -15,7 +16,7 @@ import org.oao.eticket.application.port.out.CreateReservationCommand;
       PerformanceScheduleMapper.class,
       PerformanceMapper.class
     })
-interface ReservationMapper {
+public interface ReservationMapper {
 
   @Mappings({
     @Mapping(target = "user", source = "userJpaEntity"),

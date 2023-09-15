@@ -1,6 +1,7 @@
-package org.oao.eticket.adapter.out.persistence;
+package org.oao.eticket.adapter.out.persistence.mapper;
 
 import org.mapstruct.*;
+import org.oao.eticket.adapter.out.persistence.entity.PerformanceJpaEntity;
 import org.oao.eticket.application.domain.model.Performance;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Optional;
       PerformanceScheduleMapper.class
     })
 public interface PerformanceMapper {
+
   @Named("performanceMapToDomain")
   @Mappings({
     @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))"),
