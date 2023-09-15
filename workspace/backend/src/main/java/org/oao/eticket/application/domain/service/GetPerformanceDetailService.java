@@ -9,10 +9,10 @@ import org.oao.eticket.common.annotation.UseCase;
 @UseCase
 @RequiredArgsConstructor
 public class GetPerformanceDetailService implements GetPerformanceDetailUseCase {
-    private final LoadPerformanceDetailPort loadPerformanceDetailPort;
+  private final LoadPerformanceDetailPort loadPerformanceDetailPort;
 
-    @Override
-    public Performance getPerformance(Integer performanceId) {
-        return loadPerformanceDetailPort.loadById(Performance.PerformanceId.of(performanceId));
-    }
+  @Override
+  public Performance getPerformance(Integer performanceId) {
+    return loadPerformanceDetailPort.loadById(Performance.PerformanceId.of(performanceId));
+  }
 }

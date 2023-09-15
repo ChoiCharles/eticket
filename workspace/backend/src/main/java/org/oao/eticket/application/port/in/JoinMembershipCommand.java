@@ -4,8 +4,8 @@ import lombok.Value;
 
 @Value
 public class JoinMembershipCommand {
-    String username;
-    String password;
-    String email;
-    String nickname;
+  String username;
+  String password;
+  String email;
+  String nickname;
 }

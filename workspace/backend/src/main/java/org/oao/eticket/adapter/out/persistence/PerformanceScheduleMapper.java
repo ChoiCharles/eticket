@@ -11,19 +11,22 @@ import java.util.List;
     uses = {PerformanceMapper.class})
 interface PerformanceScheduleMapper {
 
-  @Named("toDomain")
-//  @Mapping(target = "performance", source = "performanceJpaEntity")
+  @Named("ScheduleToDomain")
+  //  @Mapping(target = "performance", source = "performanceJpaEntity", qualifiedByName =
+  // "performanceMapToDomain")
   @Mapping(target = "performance", ignore = true)
   PerformanceSchedule mapToDomainEntity(PerformanceScheduleJpaEntity performanceScheduleJpaEntity);
 
-  @IterableMapping(qualifiedByName = "toDomain")
-  List<PerformanceSchedule> mapToDomainEntity(List<PerformanceScheduleJpaEntity> performanceScheduleJpaEntityList);
+  @IterableMapping(qualifiedByName = "ScheduleToDomain")
+  List<PerformanceSchedule> mapToDomainEntity(
+      List<PerformanceScheduleJpaEntity> performanceScheduleJpaEntityList);
 
-  @Named("toJpa")
-//  @Mapping(target = "performanceJpaEntity", source = "performance")
+  @Named("ScheduleToJpa")
+  //  @Mapping(target = "performanceJpaEntity", source = "performance")
   @Mapping(target = "performanceJpaEntity", ignore = true)
   PerformanceScheduleJpaEntity mapToJpaEntity(PerformanceSchedule performanceSchedule);
 
-  @IterableMapping(qualifiedByName = "toJpa")
-  List<PerformanceScheduleJpaEntity> mapToJpaEntity(List<PerformanceSchedule> performanceScheduleJpaEntityList);
+  @IterableMapping(qualifiedByName = "ScheduleToJpa")
+  List<PerformanceScheduleJpaEntity> mapToJpaEntity(
+      List<PerformanceSchedule> performanceScheduleJpaEntityList);
 }

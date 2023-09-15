@@ -8,14 +8,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 class HttpMediaTypeNotSupportedExceptionHandler {
-    private static final String MESSAGE = "Content-Type %s is not supported.";
+  private static final String MESSAGE = "Content-Type %s is not supported.";
 
-    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-    ApiErrorResponse catchHttpMediaTypeNotSupportedException(final HttpMediaTypeNotSupportedException e) {
-        return ApiErrorResponse.builder()
-                .withSummary("http media type not supported")
-                .withMessage(String.format(MESSAGE, e.getContentType()))
-                .build();
-    }
+  @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+  @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+  ApiErrorResponse catchHttpMediaTypeNotSupportedException(
+      final HttpMediaTypeNotSupportedException e) {
+    return ApiErrorResponse.builder()
+        .withSummary("http media type not supported")
+        .withMessage(String.format(MESSAGE, e.getContentType()))
+        .build();
+  }
 }
