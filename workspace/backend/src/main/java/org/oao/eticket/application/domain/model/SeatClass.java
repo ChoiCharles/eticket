@@ -1,11 +1,8 @@
 package org.oao.eticket.application.domain.model;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Data
 public class SeatClass {
   SeatClassId id;
   String className;
@@ -17,8 +14,8 @@ public class SeatClass {
   public static class SeatClassId {
     private final int value;
 
-    public static SeatClassId of(final int id) {
-      return new SeatClassId(id);
+    public static SeatClassId of(final int value) {
+      return new SeatClassId(value);
     }
   }
 }

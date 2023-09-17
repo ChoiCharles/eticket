@@ -1,8 +1,6 @@
 package org.oao.eticket.application.domain.model;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.oao.eticket.adapter.out.persistence.PerformanceJpaEntity;
 
 @Getter
 public enum PerformanceGenre {

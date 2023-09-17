@@ -1,13 +1,10 @@
 package org.oao.eticket.application.domain.model;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import lombok.*;
 
 import java.util.List;
 
-@Value
+@Data
 public class Performance {
   PerformanceId id;
   String title;
@@ -25,8 +22,8 @@ public class Performance {
   public static class PerformanceId {
     private final int value;
 
-    public static PerformanceId of(final int id) {
-      return new PerformanceId(id);
+    public static PerformanceId of(final int value) {
+      return new PerformanceId(value);
     }
   }
 }

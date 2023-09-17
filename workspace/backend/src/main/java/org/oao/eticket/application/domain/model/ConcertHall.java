@@ -1,14 +1,25 @@
 package org.oao.eticket.application.domain.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
-@Data
-@Builder
+@Value
 public class ConcertHall {
-    private Integer id;
-    private String name;
-    private String hallWholeViewImage;
-    private Integer seatCount;
-    private Venue venue;
+  ConcertHallId id;
+  String name;
+  String hallWholeViewImage;
+  Integer seatCount;
+  Venue venue;
+
+  @Getter
+  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+  public static class ConcertHallId {
+    private final int value;
+
+    public static ConcertHallId of(final int value) {
+      return new ConcertHallId(value);
+    }
+  }
 }
