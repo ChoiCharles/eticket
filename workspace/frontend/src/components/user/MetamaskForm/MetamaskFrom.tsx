@@ -6,6 +6,7 @@ function MetamaskFrom() {
     <div>
       <div>Metamask</div>
       <div>고고</div>
+      <div>고고</div>
     </div>
   );
 }
