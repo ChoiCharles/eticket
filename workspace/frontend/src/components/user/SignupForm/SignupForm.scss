@@ -1,11 +1,11 @@
-/* 데스크톱 환경에서의 스타일 */
 .signup-outer-box {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 80%; /* 고정 크기 데스크톱 뷰 */
+  width: 80%;
   max-width: 450px;
+  height: 100vh;
   padding: 50px 0px;
   gap: 20px;
 }
@@ -17,28 +17,28 @@
   height: 100vh; /* 화면 높이에 맞게 조절 */
 }
 
-.page-name-title{
-  color:dimgray;
+.page-name-title {
+  color: dimgray;
   font-size: 1.6rem;
   font-weight: bold;
   margin-top: 20px;
-  margin-bottom: 20px;;
+  margin-bottom: 20px;
 }
 
 .signup-bottom-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
-.check-login{
-    display: flex;
-    gap: 10px;
+.check-login {
+  display: flex;
+  gap: 10px;
 }
 
 .text-underline {
   text-decoration-line: underline;
-  color: #80C0C0;
+  color: #80c0c0;
   cursor: pointer;
 }
