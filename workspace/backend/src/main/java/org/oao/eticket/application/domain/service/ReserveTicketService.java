@@ -6,6 +6,7 @@ import org.oao.eticket.application.port.in.ReserveTicketCommand;
 import org.oao.eticket.application.port.in.ReserveTicketUseCase;
 import org.oao.eticket.application.port.out.*;
 import org.oao.eticket.common.annotation.UseCase;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +19,7 @@ public class ReserveTicketService implements ReserveTicketUseCase {
   private final LoadPerformanceSchedulePort loadPerformanceSchedulePort;
   private final LoadSeatPort loadSeatPort;
 
+  @Transactional
   @Override
   public Reservation reserveTicket(final ReserveTicketCommand cmd) {
     User user = loadUserPort.loadById(cmd.getUserId());
