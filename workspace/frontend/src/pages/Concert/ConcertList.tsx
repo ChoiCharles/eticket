@@ -18,7 +18,7 @@ function ConcertList() {
         })}
       </div>
       {dummyConcert.map(value => (
-        <ConcertItem concertInfo={value} />
+        <ConcertItem concertInfo={value} key={value.title} />
       ))}
     </div>
   );

@@ -1,25 +1,17 @@
 import React from 'react';
 import './concertDetail.scss';
-// import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-// ConcertListItem 타입 임포트
-// interface ConcertListItem {
-//   id: number;
-//   image: string;
-//   title: string;
-//   location: string;
-//   date: string;
-// }
-
-function concertDetail() {
-//   const { idx } = useParams();
-//   console.log(idx);
+function ConcertDetail() {
+  // 이름을 대문자로 변경
+  const { idx } = useParams();
+  //   console.log(idx);
 
   return (
     <div>
-      <div>ㅎㅇ</div>
+      <div>{idx}</div>
     </div>
   );
 }
 
-export default concertDetail;
+export default ConcertDetail; // 파일 이름도 일치하도록 수정
