@@ -1,13 +1,14 @@
 import React from 'react';
-import TopNavBar from 'components/common/TopNavBar/TopNavBar';
+import NavBar from 'components/common/NavBar/NavBar';
+import MainCarousel from 'components/home/MainCarousel/MainCarousel';
 
 const Home = () => {
   return (
     <>
-      <TopNavBar />
-      {/* <HomeCarousel />
-      <HighRankingList />
-      <NftRankingList /> */}
+      <NavBar />
+      <MainCarousel />
+      {/* <HighRankingList /> */}
+      {/* <NftRankingList /> */}
     </>
   );
 };
