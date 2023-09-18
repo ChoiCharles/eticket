@@ -1,14 +1,14 @@
 import ConcertItem from 'components/concert-list/ConcertItem/ConcertItem';
 import React from 'react';
 import dummyConcert from 'dummys.ts';
-import TopNavBar from 'components/common/TopNavBar/TopNavBar';
+import NavBar from 'components/common/NavBar/NavBar';
 
 function ConcertList() {
   const dateData = new Date();
 
   return (
     <div>
-      <TopNavBar />
+      <NavBar />
       <div>
         {dateData.toLocaleDateString('ko-KR', {
           weekday: 'long',

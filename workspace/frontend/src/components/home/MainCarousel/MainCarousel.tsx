@@ -1,86 +1,121 @@
-import React, { useState } from 'react';
+import React, { TouchEventHandler, useEffect, useRef, useState } from 'react';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import './MainCarousel.scss';
 
-const images = [
-  {
-    label: 'San Francisco – Oakland Bay Bridge, United States',
-    imgPath:
-      'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=300&h=250&q=60',
-  },
-  {
-    label: 'Bird',
-    imgPath:
-      'https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=300&h=250&q=60',
-  },
-  {
-    label: 'Bali, Indonesia',
-    imgPath:
-      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=300&h=250',
-  },
-];
+interface Props {
+  concerts: { label: string; imgPath: string }[];
+}
 
-const MainCarousel = () => {
-  const [curConcert, setCurConcert] = useState(0);
-  const [carouselTransition, setCarouselTransition] = useState(
-    'transform 500ms ease-in-out',
-  );
+let touchStartX: number;
+let touchEndX: number;
 
-  const makeNewConcerts = concerts => {
-    const concertStart = concerts[0];
-    const concertEnd = concerts[concerts.length - 1];
-    const modifiedArray = [concertEnd, ...concerts, concertStart];
-    return modifiedArray;
-  };
+const MainCarousel = ({ concerts }: Props) => {
+  const [curIndex, setCurIndex] = useState(1);
+  const [, setCurConcerts] = useState<object[]>([]);
 
-  const moveToNthConcert = (n: number) => {
+  const carouselRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    if (concerts.length !== 0) {
+      const startConcert = concerts[0];
+      const endConcert = concerts[concerts.length - 1];
+      const newConcerts = [endConcert, ...concerts, startConcert];
+
+      setCurConcerts(newConcerts);
+    }
+  }, [concerts]);
+
+  useEffect(() => {
+    if (carouselRef.current !== null) {
+      carouselRef.current.style.transform = `translateX(-${curIndex * 100}%)`;
+    }
+  }, [curIndex]);
+
+  const moveToNthSlide = (index: number) => {
     setTimeout(() => {
-      setCarouselTransition('');
-      setCurConcert(n);
+      setCurIndex(index);
+      if (carouselRef.current !== null) {
+        carouselRef.current.style.transition = '';
+      }
     }, 500);
   };
 
-  const slideNextConcert = () => {
-    const sliderLength = images.length;
-    const newCur = curConcert + 1;
-    setCurConcert(newCur);
+  const handleSwipe = (direction: number) => {
+    console.log(direction);
+    const newIndex = curIndex + direction;
 
-    if (newCur === sliderLength + 1) {
-      moveToNthConcert(1);
+    if (newIndex === concerts.length + 1) {
+      moveToNthSlide(1);
+    } else if (newIndex === 0) {
+      moveToNthSlide(concerts.length);
     }
 
-    setCarouselTransition('transform 500ms ease-in-out');
+    setCurIndex(prev => prev + direction);
+
+    if (carouselRef.current !== null) {
+      carouselRef.current.style.transition = 'all 0.5s ease-in-out';
+    }
   };
 
-  const slidePrevConcert = () => {
-    const sliderLength = images.length;
-    const newCur = curConcert - 1;
-    setCurConcert(newCur);
+  const handleTouchStart: TouchEventHandler<HTMLDivElement> = event => {
+    touchStartX = event.nativeEvent.touches[0].clientX;
+  };
 
-    if (newCur === 0) {
-      moveToNthConcert(sliderLength);
+  const handleTouchMove: TouchEventHandler<HTMLDivElement> = event => {
+    const curTouchX = event.nativeEvent.changedTouches[0].clientX;
+
+    if (carouselRef.current !== null) {
+      carouselRef.current.style.transform = `translateX(calc(-${
+        curIndex * 100
+      }% - ${(touchStartX - curTouchX) * 2 || 0}px))`;
     }
+  };
 
-    setCarouselTransition('transform 500ms ease-in-out');
+  const handleTouchEnd: TouchEventHandler<HTMLDivElement> = event => {
+    touchEndX = event.nativeEvent.changedTouches[0].clientX;
+
+    if (touchStartX >= touchEndX) {
+      handleSwipe(1);
+    } else {
+      handleSwipe(-1);
+    }
   };
 
   return (
-    <div
-      className="main-carousel"
-      style={{
-        transform: `translateX(-${curConcert * 100}%)`,
-        transition: carouselTransition,
-      }}
-    >
-      {images.map(img => {
-        return (
-          <img
-            className="main-carousel__concert"
-            key={img.label}
-            src={img.imgPath}
-            alt="X"
-          />
-        );
-      })}
+    <div className="container">
+      <div
+        className="carouselWrapper"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <button
+          type="button"
+          className="swipeLeft"
+          onClick={() => handleSwipe(-1)}
+        >
+          <KeyboardArrowLeftIcon />
+        </button>
+        <button
+          type="button"
+          className="swipeRight"
+          onClick={() => handleSwipe(1)}
+        >
+          <KeyboardArrowRightIcon />
+        </button>
+        <ul className="carousel" ref={carouselRef}>
+          {concerts?.map((concert, idx) => {
+            const key = `${concert.label}-${idx}`;
+
+            return (
+              <li key={key} className="carouselItem">
+                <img src={concert.imgPath} alt="carousel-img" />
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 };
