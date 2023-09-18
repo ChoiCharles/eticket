@@ -22,6 +22,13 @@ services:
     networks:
     - eticket_net
 
+  eticket_redis:
+    image: 'redis:7.2'
+    container_name: eticket_redis
+    restart: on-failure
+    networks:
+    - eticket_net
+
   eticket_backend:
     build: ./Dockerfile/
     container_name: eticket_backend
@@ -30,6 +37,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://eticket_mysql:3306/eticket
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: hello_eticket
+      ETICKET.REDIS.AUTH.HOST: eticket_redis
+      ETICKET.REDIS.AUTH.PORT: 6379
+      ETICKET.REDIS.AUTH.DATABASE: 1
     ports:
     - 8080:8080
     networks:

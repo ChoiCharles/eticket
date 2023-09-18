@@ -1,10 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import ConcertList from 'pages/Concert/ConcertList.tsx';
-import ConcertDetail from 'components/concertDetail/ConcertDetail.tsx';
-import Home from '../pages/Home/Home.tsx';
-import Login from '../pages/User/Login.tsx';
-import Signup from '../pages/User/Signup.tsx';
+import ConcertList from 'pages/Concert/ConcertList';
+import ConcertDetail from 'components/ConcertDetail/ConcertDetail';
+import Home from 'pages/Home/Home';
+import Login from 'pages/User/Login';
+import Signup from 'pages/User/Signup';
+import Checkout from 'pages/Payments/Checkout';
+import Fail from 'pages/Payments/Fail';
+import Success from 'pages/Payments/Success';
 
 function AppRouter() {
   return (
@@ -15,6 +18,9 @@ function AppRouter() {
         <Route path="/login" element={<Login />} />
         <Route path="/concert" element={<ConcertList />} />
         <Route path="/concert/:idx" element={<ConcertDetail />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/fail" element={<Fail />} />
+        <Route path="/success" element={<Success />} />
       </Routes>
     </BrowserRouter>
   );

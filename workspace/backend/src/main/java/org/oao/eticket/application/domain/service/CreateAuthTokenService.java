@@ -2,6 +2,7 @@ package org.oao.eticket.application.domain.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import jakarta.persistence.Access;
 import org.oao.eticket.application.domain.model.*;
 import org.oao.eticket.application.port.in.CreateAuthTokenUseCase;
 import org.oao.eticket.application.port.out.SaveAuthTokenMetadataCommand;
@@ -31,6 +32,7 @@ public class CreateAuthTokenService implements CreateAuthTokenUseCase {
       @Value("${eticket.auth.jwt.issuer}") final String issuer,
       @Value("${eticket.auth.jwt.access-token-lifetime}") final int accessTokenLifetime,
       @Value("${eticket.auth.jwt.refresh-token-lifetime}") final int refreshTokenLifetime) {
+
     this.saveAuthTokenMetadataPort = saveAuthTokenMetadataPort;
     this.cryptoAlgorithm = cryptoAlgorithm;
     this.issuer = issuer;
@@ -39,7 +41,9 @@ public class CreateAuthTokenService implements CreateAuthTokenUseCase {
   }
 
   @Override
-  public Pair<String, String> create(final User targetUser) {
+  public Pair<Pair<AccessTokenMetadata, String>, Pair<RefreshTokenMetadata, String>> create(
+      final User targetUser) {
+
     final var now = Instant.now().truncatedTo(ChronoUnit.SECONDS);
     final var accessTokenId = AuthTokenId.of(UUID.randomUUID());
     final var refreshTokenId = AuthTokenId.of(UUID.randomUUID());
@@ -79,7 +83,8 @@ public class CreateAuthTokenService implements CreateAuthTokenUseCase {
             refreshTokenMetadata,
             refreshTokenLifetime));
 
-    return Pair.of(accessJWT, refreshJWT);
+    return Pair.of(
+        Pair.of(accessTokenMetadata, accessJWT), Pair.of(refreshTokenMetadata, refreshJWT));
   }
 
   private String signatureOf(final String jwt) {

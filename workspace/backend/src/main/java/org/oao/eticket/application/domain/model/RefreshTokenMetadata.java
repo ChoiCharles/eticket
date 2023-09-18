@@ -13,8 +13,30 @@ public class RefreshTokenMetadata extends AuthTokenMetadata {
       final AuthTokenId accessTokenId,
       final String accessTokenSignature,
       final String signature) {
+
     super(tokenId, signature);
     this.accessTokenId = accessTokenId;
     this.accessTokenSignature = accessTokenSignature;
+  }
+
+  @Override
+  public boolean equals(final Object other) {
+    if (!(other instanceof RefreshTokenMetadata _other)) {
+      return false;
+    }
+
+    return super.equals(_other)
+        && _other.accessTokenId.equals(accessTokenId)
+        && _other.accessTokenSignature.equals(accessTokenSignature);
+  }
+
+  @Override
+  public String toString() {
+    return super.toString();
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
   }
 }

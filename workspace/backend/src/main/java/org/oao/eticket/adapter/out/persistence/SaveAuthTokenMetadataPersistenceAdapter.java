@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.oao.eticket.adapter.out.persistence.mapper.AccessTokenMetadataMapper;
+import org.oao.eticket.adapter.out.persistence.mapper.RefreshTokenMetadataMapper;
 import org.oao.eticket.application.port.out.SaveAuthTokenMetadataCommand;
 import org.oao.eticket.application.port.out.SaveAuthTokenMetadataPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
@@ -12,7 +14,7 @@ import org.springframework.data.redis.core.*;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-class SaveAuthTokenMetadataPersistenceAdapter implements SaveAuthTokenMetadataPort {
+public class SaveAuthTokenMetadataPersistenceAdapter implements SaveAuthTokenMetadataPort {
 
   private final RedisTemplate<String, String> eticketAuthRedisTemplate;
   private final AccessTokenMetadataMapper accessTokenMetadataMapper;

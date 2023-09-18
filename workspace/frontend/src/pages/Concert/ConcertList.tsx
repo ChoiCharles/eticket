@@ -1,7 +1,7 @@
-import ConcertItem from 'components/concert-list/concert-item/ConcertItem.tsx';
+import ConcertItem from 'components/concert-list/ConcertItem/ConcertItem';
 import React from 'react';
 import dummyConcert from 'dummys.ts';
-import TopNavBar from 'components/common/TopNavBar/TopNavBar.tsx';
+import TopNavBar from 'components/common/TopNavBar/TopNavBar';
 
 function ConcertList() {
   const dateData = new Date();
