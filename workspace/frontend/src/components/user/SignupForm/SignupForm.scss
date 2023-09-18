@@ -25,21 +25,6 @@
   margin-bottom: 20px;;
 }
 
-/* 모바일 환경에서의 스타일 */
-// @media (max-width: 767px) {
-//   .signup-outer-box {
-//     width: 80%; /* 화면 너비에 맞게 100%로 조절 */
-//     padding: 20px; /* 패딩을 작게 조절 */
-//   }
-
-//   .signup-box {
-//     flex-direction: column; /* 세로로 정렬 */
-//     align-items: center; /* 가운데 정렬 */
-  
-//   }
-// }
-
-
 .signup-bottom-box {
     display: flex;
     justify-content: space-between;
@@ -54,6 +39,6 @@
 
 .text-underline {
   text-decoration-line: underline;
-  color: #007bff;
+  color: #80C0C0;
   cursor: pointer;
 }

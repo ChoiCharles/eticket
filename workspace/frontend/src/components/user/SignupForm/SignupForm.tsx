@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
+import Eticket from 'assets/ETICKET.svg';
 
 function SignupForm() {
   const navigate = useNavigate();
@@ -110,7 +111,9 @@ function SignupForm() {
     // 이메일, 이름, 생일, role(공연주최자, 사람), 지갑주소, 닉네임,
     <div className="signup-box">
       <div className="signup-outer-box">
-        <div>🦄 ETHICKET</div>
+        <div className="logo-box">
+          <img src={Eticket} alt="" />
+        </div>
         <div className="page-name-title">회원가입</div>
         <div>아이디</div>
         <TextField
@@ -123,7 +126,12 @@ function SignupForm() {
             endAdornment: (
               <Button
                 variant="outlined"
-                style={{ padding: '5px', fontSize: '12px' }}
+                style={{
+                  padding: '5px',
+                  fontSize: '12px',
+                  color: '#80C0C0',
+                  borderColor: '#80C0C0',
+                }}
                 sx={{ height: '30px', width: '40px' }}
                 onClick={validationUsernaem}
               >
@@ -184,7 +192,14 @@ function SignupForm() {
           </div>
 
           <div>
-            <Button variant="contained" onClick={signupData}>
+            <Button
+              variant="contained"
+              onClick={signupData}
+              style={{
+                backgroundColor: '#80C0C0',
+                color: 'white',
+              }}
+            >
               계정 만들기
             </Button>
           </div>

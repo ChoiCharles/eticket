@@ -1,5 +1,5 @@
 import React from 'react';
-import './concertDetail.scss';
+import './ConcertDetail.scss';
 import { useParams } from 'react-router-dom';
 
 function ConcertDetail() {
