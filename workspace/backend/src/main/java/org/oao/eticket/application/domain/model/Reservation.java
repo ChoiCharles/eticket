@@ -15,4 +15,6 @@ public class Reservation {
   private Integer paymentAmount;
   private TicketStatus ticketStatus;
   private LocalDateTime reservationTime;
+  private LocalDateTime cancellationTime;
+
 }

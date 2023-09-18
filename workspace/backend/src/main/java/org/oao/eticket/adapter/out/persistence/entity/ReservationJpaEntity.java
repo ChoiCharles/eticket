@@ -1,14 +1,12 @@
 package org.oao.eticket.adapter.out.persistence.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.oao.eticket.application.domain.model.TicketStatus;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @Entity
 @Getter
@@ -43,6 +41,9 @@ public class ReservationJpaEntity {
   @Column(name = "reservation_time")
   private LocalDateTime reservationTime;
 
+  @Column(name = "cancellation_time")
+  private LocalDateTime cancellationTime;
+
   @Builder
   public ReservationJpaEntity(
       Integer id,
@@ -51,13 +52,15 @@ public class ReservationJpaEntity {
       SeatJpaEntity seatJpaEntity,
       Integer paymentAmount,
       TicketStatus ticketStatus,
-      LocalDateTime reservationTime) {
+      LocalDateTime reservationTime,
+      LocalDateTime cancellationTime) {
     this.id = id;
     this.userJpaEntity = userJpaEntity;
     this.performanceScheduleJpaEntity = performanceScheduleJpaEntity;
     this.seatJpaEntity = seatJpaEntity;
     this.paymentAmount = paymentAmount;
     this.ticketStatus = ticketStatus;
-    this.reservationTime = LocalDateTime.now(ZoneId.of("KST"));
+    this.reservationTime = reservationTime;
+    this.cancellationTime = cancellationTime;
   }
 }
