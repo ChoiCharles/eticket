@@ -1,7 +1,7 @@
 import React from 'react';
 import './MetamaskFrom.scss';
 
-function MetamaskFrom() {
+function MetamaskLogin() {
   return (
     <div>
       <div>Metamask</div>
@@ -12,4 +12,4 @@ function MetamaskFrom() {
   );
 }
 
-export default MetamaskFrom;
+export default MetamaskLogin;
