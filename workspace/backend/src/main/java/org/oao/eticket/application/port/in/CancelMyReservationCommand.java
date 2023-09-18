@@ -1,4 +1,4 @@
-package org.oao.eticket.application.port.out;
+package org.oao.eticket.application.port.in;
 
 import lombok.Builder;
 import lombok.Value;
@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 
 @Value
 @Builder
-public class CreateReservationCommand {
+public class CancelMyReservationCommand {
+  Integer id;
   User user;
   PerformanceSchedule performanceSchedule;
   Seat seat;
@@ -19,5 +20,4 @@ public class CreateReservationCommand {
   TicketStatus ticketStatus;
   LocalDateTime reservationTime;
   LocalDateTime cancellationTime;
-
 }
