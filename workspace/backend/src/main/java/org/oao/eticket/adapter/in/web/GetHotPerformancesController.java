@@ -34,8 +34,10 @@ public class GetHotPerformancesController {
           .build();
     } catch (Exception e) {
       throw ApiException.builder()
-              .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-              .withCause(e).withSummary(e.getMessage()).build();
+          .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+          .withCause(e)
+          .withSummary(e.getMessage())
+          .build();
     }
   }
 }

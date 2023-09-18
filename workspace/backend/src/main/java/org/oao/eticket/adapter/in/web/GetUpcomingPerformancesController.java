@@ -27,12 +27,16 @@ public class GetUpcomingPerformancesController {
     } catch (PerformanceNotFoundException e) {
       // TODO(yoo) :
       throw ApiException.builder()
-              .withCause(e)
-              .withStatus(HttpStatus.NO_CONTENT)
-              .withSummary(e.getMessage())
-              .build();
+          .withCause(e)
+          .withStatus(HttpStatus.NO_CONTENT)
+          .withSummary(e.getMessage())
+          .build();
     } catch (Exception e) {
-      throw ApiException.builder().withCause(e).withSummary(e.getMessage()).build();
+      throw ApiException.builder()
+          .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+          .withCause(e)
+          .withSummary(e.getMessage())
+          .build();
     }
   }
 }
