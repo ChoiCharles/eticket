@@ -6,16 +6,12 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.Mappings;
 import org.oao.eticket.adapter.out.persistence.entity.ReservationJpaEntity;
 import org.oao.eticket.application.domain.model.Reservation;
+import org.oao.eticket.application.port.in.CancelMyReservationCommand;
 import org.oao.eticket.application.port.out.CreateReservationCommand;
 
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,
-    uses = {
-      UserMapper.class,
-      SeatMapper.class,
-      PerformanceScheduleMapper.class,
-      PerformanceMapper.class
-    })
+    uses = {UserMapper.class, SeatMapper.class, PerformanceScheduleMapper.class})
 public interface ReservationMapper {
 
   @Mappings({
@@ -51,8 +47,15 @@ public interface ReservationMapper {
         qualifiedByName = "ScheduleToJpa"),
     //  @Mapping(target = "performanceScheduleJpaEntity.performanceJpaEntity", source =
     // "performanceSchedule.performance")  // 수정 필요할 수도 임시 방편
-    @Mapping(target = "id", ignore = true),
-    @Mapping(target = "reservationTime", ignore = true)
+    @Mapping(target = "id", ignore = true)
   })
   ReservationJpaEntity mapToJpaEntity(CreateReservationCommand createReservationCommand);
+
+  @Mapping(target = "userJpaEntity", source = "user")
+  @Mapping(target = "seatJpaEntity", source = "seat")
+  @Mapping(
+      target = "performanceScheduleJpaEntity",
+      source = "performanceSchedule",
+      qualifiedByName = "ScheduleToJpa")
+  ReservationJpaEntity mapToJpaEntity(CancelMyReservationCommand cancelMyReservationCommand);
 }
