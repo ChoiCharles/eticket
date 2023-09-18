@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './LoginForm.scss';
 import { Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Eticket from 'assets/ETICKET.svg';
 
 function LoginForm() {
   // 이동 로직
@@ -27,7 +28,9 @@ function LoginForm() {
   return (
     <div className="login-box">
       <div className="login-outer-box">
-        <div>🦄 ETHICKET</div>
+        <div className="logo-box">
+          <img src={Eticket} alt="" />
+        </div>
         <div className="page-name-title">로그인</div>
         <div>아이디</div>
         <TextField fullWidth id="fullWidth" onChange={getUsernameData} />
@@ -51,7 +54,12 @@ function LoginForm() {
           </div>
 
           <div>
-            <Button variant="contained" type="button" onClick={ClickBtn}>
+            <Button
+              variant="contained"
+              type="button"
+              onClick={ClickBtn}
+              style={{ background: '#80C0C0', color: 'white' }}
+            >
               로그인
             </Button>
           </div>
