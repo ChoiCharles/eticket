@@ -5,6 +5,7 @@ import org.oao.eticket.application.domain.model.Performance;
 import org.oao.eticket.application.port.in.GetHotPerformancesUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.oao.eticket.exception.NoResultException;
+import org.oao.eticket.exception.PerformanceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,15 +25,17 @@ public class GetHotPerformancesController {
       List<Performance> list = getHotPerformancesUseCase.getHotPerformanceList();
       return ResponseEntity.ok(list);
       // ResponseBody에 넣어서 전달
-    } catch (NoResultException e) {
+    } catch (PerformanceNotFoundException e) {
       // TODO(yoo) :
       throw ApiException.builder()
           .withCause(e)
           .withStatus(HttpStatus.NO_CONTENT)
-          .withSummary("오픈 예정인 공연이 없습니다.")
+          .withSummary(e.getMessage())
           .build();
     } catch (Exception e) {
-      throw ApiException.builder().withCause(e).withSummary(e.getMessage()).build();
+      throw ApiException.builder()
+              .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+              .withCause(e).withSummary(e.getMessage()).build();
     }
   }
 }

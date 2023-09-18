@@ -23,12 +23,8 @@ public interface SeatClassMapper {
 
   @Named("seatClassMapToJpa")
   @Mappings({
-    @Mapping(target = "id", expression = "java(null)"),
+    @Mapping(target = "id", source = "id.value"),
     @Mapping(target = "performanceJpaEntity", ignore = true)
-    //    @Mapping(
-    //        target = "performanceJpaEntity",
-    //        source = "performance",
-    //        qualifiedByName = "performanceMapToJpa")
   })
   SeatClassJpaEntity mapToJpaEntity(SeatClass jpaEntity);
 

@@ -40,7 +40,7 @@ public interface PerformanceMapper {
   }
 
   @Mappings({
-    @Mapping(target = "id", expression = "java(null)"),
+    @Mapping(target = "id", source = "id.value"),
     @Mapping(target = "venueJpaEntity", source = "venue"),
     @Mapping(target = "hostJpaEntity", source = "host"),
     @Mapping(target = "seatClassJpaEntityList", source = "seatClassList"),

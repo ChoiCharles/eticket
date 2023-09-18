@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.port.in.GetUpcomingPerformancesUsecase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.oao.eticket.exception.NoResultException;
+import org.oao.eticket.exception.PerformanceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,13 +24,13 @@ public class GetUpcomingPerformancesController {
       final var resultList = getUpdomingPerformanceUserCase.getUpcomingPerformances();
 
       return ResponseEntity.ok(new UpcomingsResponseBody(resultList));
-    } catch (NoResultException e) {
+    } catch (PerformanceNotFoundException e) {
       // TODO(yoo) :
       throw ApiException.builder()
-          .withStatus(HttpStatus.NO_CONTENT)
-          .withCause(e)
-          .withSummary("오픈 예정인 공연이 없습니다.")
-          .build();
+              .withCause(e)
+              .withStatus(HttpStatus.NO_CONTENT)
+              .withSummary(e.getMessage())
+              .build();
     } catch (Exception e) {
       throw ApiException.builder().withCause(e).withSummary(e.getMessage()).build();
     }

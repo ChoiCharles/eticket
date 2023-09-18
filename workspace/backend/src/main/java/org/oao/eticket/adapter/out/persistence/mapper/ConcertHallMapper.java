@@ -13,7 +13,7 @@ public interface ConcertHallMapper {
   @Mapping(target = "venue", source = "venueJpaEntity")
   ConcertHall mapToDomainEntity(ConcertHallJpaEntity jpaEntity);
 
-  @Mapping(target = "id", expression = "java(null)")
+  @Mapping(target = "id", source = "id.value")
   @Mapping(target = "venueJpaEntity", source = "venue")
   ConcertHallJpaEntity mapToJpaEntity(ConcertHall model);
 }

@@ -9,6 +9,7 @@ import org.oao.eticket.adapter.out.persistence.mapper.PerformanceMapper;
 import org.oao.eticket.application.domain.model.Performance;
 import org.oao.eticket.application.port.out.LoadHotPerformancesPort;
 import org.oao.eticket.application.port.out.LoadPerformanceDetailPort;
+import org.oao.eticket.application.port.out.LoadUpcomingPerformancesPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.PerformanceNotFoundException;
 
@@ -16,7 +17,8 @@ import java.util.List;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class PerformanceRepository implements LoadPerformanceDetailPort, LoadHotPerformancesPort {
+public class PerformanceRepository
+    implements LoadPerformanceDetailPort, LoadHotPerformancesPort, LoadUpcomingPerformancesPort {
 
   private final PerformanceMapper performanceMapper;
 
@@ -47,20 +49,50 @@ public class PerformanceRepository implements LoadPerformanceDetailPort, LoadHot
   @Override
   public List<Performance> loadHotPerformances() {
     try {
-      final var hotPerformances =
+      final var queryResults =
           entityManager
               .createQuery(
                   """
                           SELECT p
                           FROM PerformanceJpaEntity p
-                          ORDER BY p.id desc
+                          ORDER BY p.id desc;
                           """,
                   PerformanceJpaEntity.class)
               .setMaxResults(10)
               .getResultList();
+      if (queryResults.isEmpty()) {
+        throw new PerformanceNotFoundException("인기 있는 공연이 존재 하지 않습니다.");
+      }
+      System.out.println(queryResults.toString());
+      return performanceMapper.mapToDomainEntity(queryResults);
+    } catch (Exception e) {
+      throw e;
+    }
+  }
 
-      System.out.println(hotPerformances.toString());
-      return performanceMapper.mapToDomainEntity(hotPerformances);
+  @Override
+  public List<Performance> loadUpcomings() {
+    try {
+      final var queryResults =
+          entityManager
+              .createQuery(
+                  """
+                      SELECT ps.performanceJpaEntity
+                      FROM PerformanceScheduleJpaEntity ps
+                      WHERE ps.ticketingDateTime > CURRENT_DATE
+                      ORDER BY ps.ticketingDateTime ASC
+                      """,
+                  PerformanceJpaEntity.class)
+              .setMaxResults(10)
+              .getResultList();
+      if (queryResults.isEmpty()) {
+        throw new PerformanceNotFoundException("인기 있는 공연이 존재 하지 않습니다.");
+      }
+      System.out.println(queryResults.toString());
+      return performanceMapper.mapToDomainEntity(queryResults);
+    } catch (IllegalArgumentException e) {
+      // QUERY 오타
+      throw e;
     } catch (Exception e) {
       throw e;
     }
