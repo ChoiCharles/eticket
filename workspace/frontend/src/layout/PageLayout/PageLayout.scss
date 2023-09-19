@@ -4,15 +4,15 @@
   flex-direction: column;
   justify-content: center;
   // align-items: center;
-  width: 360px;
-  min-height: 100%;
-  max-height: 100%;
+  width: 100%;
+  max-width: 500px;
+  min-width: 360px;
+  min-height: 100vh;
+  max-height: 1200px;
   overflow-y: auto;
-  overflow-x: hidden; /* 좌우 스크롤 비활성화 */
+  overflow-x: hidden;
   margin: 0 auto;
-  // padding: 0px 15px;
-  // border: 2px solid #ccc; /* 회색 테두리 추가 */
-  // border-radius: 8px; /* 테두리 모서리를 둥글게 만듭니다. */
-  box-shadow: 0px 0px 10px rgba(0, 0, 10, 0.2); /* 그림자 효과 추가 */
+  padding: 0px 15px;
+  box-shadow:rgb(219, 219, 219) 0px 0px 10px;
 }
 

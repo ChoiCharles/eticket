@@ -1,12 +1,12 @@
-import PageLayout from 'layout/PageLayout/PageLayout';
+// import PageLayout/ from 'layout/PageLayout/PageLayout';
+import MetamaskLogin from 'components/user/MetamaskLogin/MetamaskLogin';
 import React from 'react';
 
 function MetamaskForm() {
   return (
-    <PageLayout>
-      <div>ㅎㅇㅎㅇ</div>
-      <div>굿</div>
-    </PageLayout>
+    <div>
+      <MetamaskLogin />
+    </div>
   );
 }
 
