@@ -10,9 +10,10 @@
 }
 
 .login-box {
-  align-items: flex-start;
+  // align-items: center;
   display: flex;
   justify-content: center;
+
   height: 100vh; /* 화면 높이에 맞게 조절 */
 }
 
@@ -29,7 +30,3 @@
   cursor: pointer;
 }
 
-.logo-box {
-  // width: 100px;
-  height: 20px;
-}

@@ -14,7 +14,7 @@ function ConcertItem({ concertInfo }: { concertInfo: ConcertListItem }) {
   const movePage = useMovePage();
 
   const handleConcertClick = () => {
-    movePage(`/concert/${concertInfo.id}`);
+    movePage(`/concert/${concertInfo.id}`, concertInfo);
   };
 
   return (
