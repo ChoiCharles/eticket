@@ -3,19 +3,15 @@ import MetaMask from 'assets/MetaMask.png';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import { IconButton } from '@mui/material';
-import { useRecoilState } from 'recoil';
-import sideBarState from 'atoms/Drawer';
 
 import './Buttons.scss';
 
-const Buttons = () => {
-  const [, setIsOpen] = useRecoilState(sideBarState);
+interface Props {
+  handleOpenDrawer: () => void;
+}
 
-  const handleToggleSideBar = () => {
-    setIsOpen(prev => !prev);
-  };
-
-  const handleSearch = () => {
+const Buttons = ({ handleOpenDrawer }: Props) => {
+  const handleOpenSearch = () => {
     console.log('open Search');
   };
 
@@ -24,10 +20,10 @@ const Buttons = () => {
       <IconButton>
         <img id="metamask" src={MetaMask} alt="metamask" />
       </IconButton>
-      <IconButton onClick={handleSearch}>
+      <IconButton onClick={handleOpenSearch}>
         <SearchIcon />
       </IconButton>
-      <IconButton onClick={handleToggleSideBar}>
+      <IconButton onClick={handleOpenDrawer}>
         <MenuIcon />
       </IconButton>
     </div>
