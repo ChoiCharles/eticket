@@ -2,12 +2,12 @@ import React from 'react';
 import Carousel from 'components/common/Carousel/Carousel';
 import { Button, Typography } from '@mui/material';
 
-import './ConcertRankingList.scss';
+import './NftGalleryList.scss';
 
-const ConcertRankingList = () => {
+const NftGalleryList = () => {
   return (
-    <div className="concert-ranking">
-      <Typography variant="h6">공연 랭킹</Typography>
+    <div className="nft-gallery">
+      <Typography variant="h6">NFT 전시장</Typography>
       <Carousel />
       <Button fullWidth variant="contained">
         전체 보기
@@ -16,4 +16,4 @@ const ConcertRankingList = () => {
   );
 };
 
-export default ConcertRankingList;
+export default NftGalleryList;
