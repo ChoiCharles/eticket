@@ -12,7 +12,6 @@ public interface VenueMapper {
   @Mapping(target = "id", expression = "java(Venue.VenueId.of(jpaEntity.getId()))")
   Venue mapToDomainEntity(VenueJpaEntity jpaEntity);
 
-  @Mapping(target = "id", source="id.value")
-  VenueJpaEntity mapToJpaEntity(Venue domainEntity);
-
+  @Mapping(target = "id", source = "id.value")
+  VenueJpaEntity mapToJpaEntity(Venue model);
 }
