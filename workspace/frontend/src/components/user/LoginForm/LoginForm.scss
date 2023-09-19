@@ -3,8 +3,9 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 450px; /* 고정 크기 데스크톱 뷰 */
-  padding: 100px 0px;
+  width: 80%;
+  max-width: 450px; /* 고정 크기 데스크톱 뷰 */
+  padding: 50px 0px;
   gap: 20px;
 }
 
@@ -24,6 +25,11 @@
 }
 
 .text-login-underline {
-    color: #007bff;
-    cursor: pointer;
+  color: #80c0c0;
+  cursor: pointer;
+}
+
+.logo-box {
+  // width: 100px;
+  height: 20px;
 }
