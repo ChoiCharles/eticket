@@ -1,6 +1,7 @@
 import React from 'react';
-import Buttons from '../Buttons/Buttons';
-import Logo from '../Logo/Logo';
+import Buttons from 'components/common/Buttons/Buttons';
+import Logo from 'components/common/Logo/Logo';
+
 import './NavBar.scss';
 
 const NavBar = () => {
