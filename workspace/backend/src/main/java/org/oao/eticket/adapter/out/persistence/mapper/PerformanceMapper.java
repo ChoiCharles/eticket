@@ -5,7 +5,6 @@ import org.oao.eticket.adapter.out.persistence.entity.PerformanceJpaEntity;
 import org.oao.eticket.application.domain.model.Performance;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,
@@ -17,7 +16,20 @@ import java.util.Optional;
     })
 public interface PerformanceMapper {
 
-  @Named("performanceMapToDomain")
+  // 일반적 (공연의 간략한 정보만 포함할 때는 좌석 등급과 공연 스케줄은 생략)
+  @Mappings({
+    @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))"),
+    @Mapping(target = "venue", source = "venueJpaEntity"),
+    @Mapping(target = "host", source = "hostJpaEntity"),
+    @Mapping(target = "seatClassList", ignore = true),
+    @Mapping(target = "performanceScheduleList", ignore = true)
+  })
+  Performance mapToDomainEntity(PerformanceJpaEntity jpaEntity);
+
+  List<Performance> mapToDomainEntity(List<PerformanceJpaEntity> jpaEntityList);
+
+  // 공연 세부 사항을 보여줄 때는 좌석 등급과 공연 스케줄 리스트 포함
+  @Named("mapToDomainDetail")
   @Mappings({
     @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))"),
     @Mapping(target = "venue", source = "venueJpaEntity"),
@@ -25,26 +37,16 @@ public interface PerformanceMapper {
     @Mapping(target = "seatClassList", source = "seatClassJpaEntityList"),
     @Mapping(target = "performanceScheduleList", source = "performanceScheduleJpaEntityList")
   })
-  Performance mapToDomainEntity(PerformanceJpaEntity jpaEntity);
-
-  @IterableMapping(qualifiedByName = "performanceMapToDomain")
-  List<Performance> mapToDomainEntity(List<PerformanceJpaEntity> jpaEntityList);
-
-  @AfterMapping
-  default void setPerformance(@MappingTarget Performance performance) {
-    Optional.ofNullable(performance.getPerformanceScheduleList())
-        .ifPresent(it -> it.forEach(item -> item.setPerformance(performance)));
-
-    Optional.ofNullable(performance.getSeatClassList())
-        .ifPresent(it -> it.forEach(item -> item.setPerformance(performance)));
-  }
+  Performance mapToDomainEntityInDetail(PerformanceJpaEntity jpaEntity);
 
   @Mappings({
     @Mapping(target = "id", source = "id.value"),
     @Mapping(target = "venueJpaEntity", source = "venue"),
     @Mapping(target = "hostJpaEntity", source = "host"),
-    @Mapping(target = "seatClassJpaEntityList", source = "seatClassList"),
-    @Mapping(target = "performanceScheduleJpaEntityList", source = "performanceScheduleList")
+    @Mapping(target = "seatClassJpaEntityList", ignore = true),
+    @Mapping(target = "performanceScheduleJpaEntityList", ignore = true)
+    //    @Mapping(target = "seatClassJpaEntityList", source = "seatClassList"),
+    //    @Mapping(target = "performanceScheduleJpaEntityList", source = "performanceScheduleList")
   })
   PerformanceJpaEntity mapToJpaEntity(Performance model);
 }

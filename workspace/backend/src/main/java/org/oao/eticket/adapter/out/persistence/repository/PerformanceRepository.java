@@ -38,7 +38,7 @@ public class PerformanceRepository
                   PerformanceJpaEntity.class)
               .setParameter("performanceId", performanceId.getValue())
               .getSingleResult();
-      return performanceMapper.mapToDomainEntity(performanceJpaEntity);
+      return performanceMapper.mapToDomainEntityInDetail(performanceJpaEntity);
     } catch (NoResultException e) {
       throw new PerformanceNotFoundException(String.valueOf(performanceId.getValue()), e);
     } catch (Exception e) {
@@ -55,15 +55,15 @@ public class PerformanceRepository
                   """
                           SELECT p
                           FROM PerformanceJpaEntity p
-                          ORDER BY p.id desc;
+                          ORDER BY p.id DESC
                           """,
                   PerformanceJpaEntity.class)
               .setMaxResults(10)
               .getResultList();
+      // 빈 결과물이면 없다고 띄우기
       if (queryResults.isEmpty()) {
         throw new PerformanceNotFoundException("인기 있는 공연이 존재 하지 않습니다.");
       }
-      System.out.println(queryResults.toString());
       return performanceMapper.mapToDomainEntity(queryResults);
     } catch (Exception e) {
       throw e;
@@ -79,7 +79,7 @@ public class PerformanceRepository
                   """
                       SELECT ps.performanceJpaEntity
                       FROM PerformanceScheduleJpaEntity ps
-                      WHERE ps.ticketingDateTime > CURRENT_DATE
+                      WHERE ps.ticketingDateTime > CURRENT_TIMESTAMP
                       ORDER BY ps.ticketingDateTime ASC
                       """,
                   PerformanceJpaEntity.class)
@@ -88,7 +88,6 @@ public class PerformanceRepository
       if (queryResults.isEmpty()) {
         throw new PerformanceNotFoundException("인기 있는 공연이 존재 하지 않습니다.");
       }
-      System.out.println(queryResults.toString());
       return performanceMapper.mapToDomainEntity(queryResults);
     } catch (IllegalArgumentException e) {
       // QUERY 오타

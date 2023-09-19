@@ -16,6 +16,8 @@ import java.util.List;
 @WebAdapter
 @RequiredArgsConstructor
 public class GetHotPerformancesController {
+  record GetHotPerformancesResponseBody() {}
+
   private final GetHotPerformancesUseCase getHotPerformancesUseCase;
 
   @GetMapping("performances/hot")
@@ -32,6 +34,13 @@ public class GetHotPerformancesController {
           .withStatus(HttpStatus.NO_CONTENT)
           .withSummary(e.getMessage())
           .build();
+    } catch (IllegalArgumentException e) {
+      throw ApiException.builder()
+              .withCause(e)
+              .withStatus(HttpStatus.BAD_REQUEST)
+              .withSummary(e.getMessage())
+              .withDescription("Query ERROR")
+              .build();
     } catch (Exception e) {
       throw ApiException.builder()
           .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
