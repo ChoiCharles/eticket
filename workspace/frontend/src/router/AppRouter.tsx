@@ -20,6 +20,7 @@ function AppRouter() {
         <Route path="/metamask" element={<MetamaskForm />} />
         <Route path="/concert" element={<ConcertList />} />
         <Route path="/concert/:idx" element={<ConcertDetail />} />
+        {/* <Route path="/reservation/:idx" element={<ConcertDetail />} /> */}
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/fail" element={<Fail />} />
         <Route path="/success" element={<Success />} />
