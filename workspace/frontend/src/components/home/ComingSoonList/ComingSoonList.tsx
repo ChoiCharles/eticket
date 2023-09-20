@@ -2,12 +2,12 @@ import React from 'react';
 import Carousel from 'components/common/Carousel/Carousel';
 import { Button, Typography } from '@mui/material';
 
-import './ConcertRankingList.scss';
+import './ComingSoonList.scss';
 
-const ConcertRankingList = () => {
+const ComingSoonList = () => {
   return (
-    <div className="concert-ranking">
-      <Typography variant="h6">공연 랭킹</Typography>
+    <div className="coming-soon">
+      <Typography variant="h6">💥예매 임박💥</Typography>
       <Carousel />
       <Button fullWidth variant="contained">
         전체 보기
@@ -16,4 +16,4 @@ const ConcertRankingList = () => {
   );
 };
 
-export default ConcertRankingList;
+export default ComingSoonList;

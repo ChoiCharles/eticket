@@ -3,7 +3,10 @@ import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-// import ImgDetail from 'assets/emphisDetail.svg';
+// import DetailImg from 'assets/emphisDetail.svg';
+import ImgDetail from 'components/concertDetail/ImgDetail/ImgDetail';
+import './DetailContent.scss';
+import PriceInfo from '../PriceInfo/PriceInfo';
 
 const tabContentStyles = {
   textAlign: 'center', // 가운데 정렬
@@ -11,12 +14,19 @@ const tabContentStyles = {
   fontSize: '1.2rem', // 폰트 크기
 };
 
-export default function ResponsiveTabs() {
+/** params 공연정보 전체가져와서
+ *  공연정보, 공연기간, 공연장, 관람시간
+ *  + 상세정보 이미지
+ */
+export default function DetailContent() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const defaultImg =
+    'https://ticketimage.interpark.com/Play/ITM/Data/Modify/2023/7/2023071116224408.jpg';
 
   return (
     <Box
@@ -42,10 +52,24 @@ export default function ResponsiveTabs() {
           textColor="primary"
           variant="fullWidth"
           aria-label="action tabs example"
+          sx={{
+            // backgroundColor: 'lightgray', // 탭 바의 배경색
+            borderRadius: '15px', // 탭 바의 둥근 모서리
+          }}
         >
-          <Tab label="공연정보" />
+          <Tab
+            label="공연정보"
+            sx={{
+              borderRadius: '15px 0 0 0', // 첫 번째 탭의 왼쪽 모서리만 둥글게
+            }}
+          />
           <Tab label="공연장정보" />
-          <Tab label="QnA" />
+          <Tab
+            label="QnA"
+            sx={{
+              borderRadius: '0 15px 0 0', // 마지막 탭의 오른쪽 모서리만 둥글게
+            }}
+          />
         </Tabs>
       </AppBar>
       <Box
@@ -53,15 +77,15 @@ export default function ResponsiveTabs() {
         hidden={value !== 0}
         id="tabpanel-0"
         aria-labelledby="tab-0"
-        sx={{ width: '80%' }} // 중괄호로 감싸기
+        sx={{ width: '100%' }} // 중괄호로 감싸기
       >
         {/* 공연정보 컨텐츠 */}
         <div>
-          <h2>공연정보</h2>
-          <h2>공연기간: ~</h2>
-          <h2>공연장: 위치 ~</h2>
-          <h2>관람시간: 시간 ~ ~</h2>
-          {/* <ImgDetail descImgUrl={ImgDetail} /> */}
+          <div className="notice-text">NOTICE</div>
+          <div>
+            <ImgDetail descImgUrl={defaultImg} />
+            <PriceInfo />
+          </div>
           {/* 여기에 공연정보 컨텐츠 내용을 추가 */}
         </div>
       </Box>
