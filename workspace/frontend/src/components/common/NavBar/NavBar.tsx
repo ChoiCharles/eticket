@@ -1,26 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Buttons from 'components/common/Buttons/Buttons';
 import Logo from 'components/common/Logo/Logo';
-import { Drawer } from '@mui/material';
-
-import './NavBar.scss';
+import { Toolbar } from '@mui/material';
 
 const NavBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleOpenDrawer: () => void = () => {
-    setIsOpen(true);
-  };
-
-  const handleCloseDrawer: () => void = () => {
-    setIsOpen(false);
-  };
   return (
-    <div className="nav-bar">
+    <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <Logo />
-      <Buttons handleOpenDrawer={handleOpenDrawer} />
-      <Drawer anchor="right" open={isOpen} onClick={handleCloseDrawer} />
-    </div>
+      <Buttons />
+    </Toolbar>
   );
 };
 
