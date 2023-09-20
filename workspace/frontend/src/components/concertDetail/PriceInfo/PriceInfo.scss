@@ -1,0 +1,37 @@
+.price-text {
+  font-weight: bold;
+  font-size: 1.4rem;
+  padding: 20px;
+}
+
+.price-list-box {
+    padding-left: 20px;
+    padding-right: 20px;
+    
+}
+
+.price-flex-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid gray;
+    height: 30px;
+    border-radius: 2px;
+    // gap: 100px;
+}
+
+.price-value {
+    font-weight: bold;
+}
+
+.priceinfo-box {
+    // ;
+}
+
+.seat-info {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+}

@@ -6,6 +6,7 @@ function ConcertDetailLayout({ children }: { children: ReactNode[] }) {
     <div className="concert-container">
       <div className="concert-detail-poster-box">{children[0]}</div>
       <div className="concert-detail-content-box">{children[1]}</div>
+      <div className="concert-detail-button">{children[2]}</div>
     </div>
   );
 }

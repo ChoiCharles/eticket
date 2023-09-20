@@ -1,4 +1,4 @@
-import ConcertItem from 'components/concert-list/ConcertItem/ConcertItem';
+import ConcertItem from 'components/concertList/ConcertItem/ConcertItem';
 import React from 'react';
 import dummyConcert from 'dummys.ts';
 import NavBar from 'components/common/NavBar/NavBar';
