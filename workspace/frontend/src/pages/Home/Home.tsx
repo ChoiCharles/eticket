@@ -4,17 +4,28 @@ import TopFiveConcertList from 'components/home/TopFiveConcertList/TopFiveConcer
 import ConcertRankingList from 'components/home/ConcertRankingList/ConcertRankingList';
 import NftGalleryList from 'components/home/NftGalleryList/NftGalleryList';
 import ComingSoonList from 'components/home/ComingSoonList/ComingSoonList';
+import Drawer from 'components/common/Drawer/Drawer';
+import { useRecoilValue } from 'recoil';
+import drawerState from 'atoms/Drawer';
 
 import './Home.scss';
 
 const Home = () => {
+  const open = useRecoilValue(drawerState);
+
   return (
     <div className="container">
-      <NavBar />
-      <TopFiveConcertList />
-      <ConcertRankingList />
-      <NftGalleryList />
-      <ComingSoonList />
+      {open ? (
+        <Drawer />
+      ) : (
+        <>
+          <NavBar />
+          <TopFiveConcertList />
+          <ConcertRankingList />
+          <NftGalleryList />
+          <ComingSoonList />
+        </>
+      )}
     </div>
   );
 };
