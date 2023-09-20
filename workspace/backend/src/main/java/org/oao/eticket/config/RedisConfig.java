@@ -37,4 +37,20 @@ public class RedisConfig {
       final RedisConnectionFactory eticketAuthRedisConnectionFactory) {
     return createStringRedisTemplate(eticketAuthRedisConnectionFactory);
   }
+
+  @Bean("eticketReservationRedisConnectionFactory")
+  RedisConnectionFactory eticketReservationRedisConnectionFactory(
+          @Value("${eticket.redis.auth.host}") final String host,
+          @Value("${eticket.redis.auth.port}") final int port,
+          @Value("${eticket.redis.auth.database}") final String database) {
+    final var connectionFactory = new LettuceConnectionFactory(host, port);
+    connectionFactory.setDatabase(Integer.parseInt(database));
+    return connectionFactory;
+  }
+
+  @Bean("eticketReservationRedisTemplate")
+  RedisTemplate<String, String> eticketReservationRedisTemplate(
+          final RedisConnectionFactory eticketReservationRedisConnectionFactory) {
+    return createStringRedisTemplate(eticketReservationRedisConnectionFactory);
+  }
 }

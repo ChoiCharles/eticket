@@ -14,7 +14,7 @@ public class Performance {
   String cast;
   String description;
   String posterImagePath;
-  Venue venue;
+  ConcertHall concertHall;
   List<SeatClass> seatClassList;
   User host;
   List<PerformanceSchedule> performanceScheduleList;
