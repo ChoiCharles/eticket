@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Divider } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import drawerState from 'atoms/Drawer';
+import { drawerState } from 'atoms/NavState';
 import TopNav from './DrawerItems/TopNav';
 import MyMenu from './DrawerItems/MyMenu';
 import MainMenu from './DrawerItems/MainMenu';

@@ -4,12 +4,17 @@ import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import { IconButton } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import drawerState from 'atoms/Drawer';
+import { drawerState, searchState } from 'atoms/NavState';
 
 import './Buttons.scss';
 
 const Buttons = () => {
   const [, setOpen] = useRecoilState(drawerState);
+  const [, setSearch] = useRecoilState(searchState);
+
+  const handleToggleSearch = () => {
+    setSearch(prev => !prev);
+  };
 
   const handleToggleDrawer = () => {
     setOpen(prev => !prev);
@@ -20,7 +25,7 @@ const Buttons = () => {
       <IconButton>
         <img id="metamask" src={MetaMask} alt="metamask" />
       </IconButton>
-      <IconButton>
+      <IconButton onClick={handleToggleSearch}>
         <SearchIcon fontSize="large" />
       </IconButton>
       <IconButton onClick={handleToggleDrawer}>
