@@ -17,6 +17,8 @@ func ContractBirthBlock(ctx context.Context, conn *ethclient.Client, contractAdd
 	}
 
 	lb, ub := int64(0), int64(mostRecentBlock)
+	found := false
+
 	for lb < ub {
 		mid := (lb + ub) / 2
 
@@ -30,11 +32,16 @@ func ContractBirthBlock(ctx context.Context, conn *ethclient.Client, contractAdd
 		} else {
 			if len(code) < 2 {
 				lb = mid + 1
+				found = true
 			} else {
 				ub = mid
 			}
 		}
 	}
 
-	return ub, nil
+	if found {
+		return ub, nil
+	} else {
+		return -1, nil
+	}
 }
