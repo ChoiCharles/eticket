@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   PaymentWidgetInstance,
   loadPaymentWidget,
 } from '@tosspayments/payment-widget-sdk';
+import { Box, Button, Paper, Typography } from '@mui/material';
 
 const selector = '#payment-widget';
 const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
@@ -13,7 +14,7 @@ const Checkout = () => {
   const paymentMethodsWidgetRef = useRef<ReturnType<
     PaymentWidgetInstance['renderPaymentMethods']
   > | null>(null);
-  const [price, setPrice] = useState(50_000);
+  const price = 50_000;
 
   useEffect(() => {
     (async () => {
@@ -36,63 +37,51 @@ const Checkout = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    const paymentMethodsWidget = paymentMethodsWidgetRef.current;
+  const handlePay = async () => {
+    const paymentWidget = paymentWidgetRef.current;
 
-    if (paymentMethodsWidget == null) {
-      return;
+    try {
+      // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
+      // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
+      await paymentWidget?.requestPayment({
+        orderId: 'asdfasd',
+        orderName: '토스 티셔츠 외 2건',
+        customerName: '김토스',
+        customerEmail: 'customer123@gmail.com',
+        successUrl: `${window.location.origin}/success`,
+        failUrl: `${window.location.origin}/fail`,
+      });
+    } catch (error) {
+      // 에러 처리하기
+      console.error(error);
     }
-
-    // ------ 금액 업데이트 ------
-    // https://docs.tosspayments.com/reference/widget-sdk#updateamount결제-금액
-    paymentMethodsWidget.updateAmount(
-      price,
-      paymentMethodsWidget.UPDATE_REASON.COUPON,
-    );
-  }, [price]);
+  };
 
   return (
-    <div>
-      <h1>주문서</h1>
-      <span>{`${price.toLocaleString()}원`}</span>
+    <Box sx={{ px: 3 }}>
+      <Paper
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        elevation={0}
+      >
+        <Typography variant="h3" sx={{ mt: 10, mb: 3 }}>
+          주문서
+        </Typography>
+        <Typography variant="h5">{`${price.toLocaleString()}원`}</Typography>
+      </Paper>
       <div>
-        <label>
-          <input
-            type="checkbox"
-            onChange={event => {
-              setPrice(event.target.checked ? price - 5_000 : price + 5_000);
-            }}
-          />
-          5,000원 할인 쿠폰 적용
-        </label>
+        <div id="payment-widget" />
+        <div id="agreement" />
       </div>
-      <div id="payment-widget" />
-      <div id="agreement" />
-      <button
+      <Button
         type="button"
-        onClick={async () => {
-          const paymentWidget = paymentWidgetRef.current;
-
-          try {
-            // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
-            // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
-            await paymentWidget?.requestPayment({
-              orderId: 'asdfasd',
-              orderName: '토스 티셔츠 외 2건',
-              customerName: '김토스',
-              customerEmail: 'customer123@gmail.com',
-              successUrl: `${window.location.origin}/success`,
-              failUrl: `${window.location.origin}/fail`,
-            });
-          } catch (error) {
-            // 에러 처리하기
-            console.error(error);
-          }
-        }}
+        variant="contained"
+        size="large"
+        fullWidth
+        onClick={handlePay}
       >
         결제하기
-      </button>
-    </div>
+      </Button>
+    </Box>
   );
 };
 
