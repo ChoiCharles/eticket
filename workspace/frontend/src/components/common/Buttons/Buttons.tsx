@@ -6,9 +6,14 @@ import { IconButton } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import drawerState from 'atoms/Drawer';
 
+import useAccount from '../../../hooks/useAccount';
+
 import './Buttons.scss';
 
 const Buttons = () => {
+  // const { account, loginMetaMask } = useAccount();
+  const { loginMetaMask } = useAccount();
+
   const [, setOpen] = useRecoilState(drawerState);
 
   const handleToggleDrawer = () => {
@@ -17,7 +22,7 @@ const Buttons = () => {
 
   return (
     <div>
-      <IconButton>
+      <IconButton onClick={() => loginMetaMask()}>
         <img id="metamask" src={MetaMask} alt="metamask" />
       </IconButton>
       <IconButton>

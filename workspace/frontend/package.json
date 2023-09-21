@@ -25,7 +25,8 @@
     "recoil": "^0.7.7",
     "vite": "^4.4.5",
     "vite-plugin-checker": "^0.6.2",
-    "vite-tsconfig-paths": "^4.2.0"
+    "vite-tsconfig-paths": "^4.2.0",
+    "web3": "1.10.2"
   },
   "devDependencies": {
     "@types/node": "^20.5.9",
