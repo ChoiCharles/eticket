@@ -19,7 +19,7 @@ services:
     volumes:
       - "eticket_main_data:/var/lib/mysql"
       - "./data/mysql/initdb.d:/docker-entrypoint-initdb.d"
-    expose:
-      - 33066
+    ports:
+      - "33066:3306"
     networks:
       - eticket_net
