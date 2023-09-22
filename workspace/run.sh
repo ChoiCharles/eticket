@@ -18,6 +18,10 @@ if [[ $* == *--clean* ]]; then
         if [[ $(docker volume ls | grep -c eticket_main_data) != 0 ]]; then
             docker volume rm eticket_main_data
         fi
+
+        if [[ $(docker network ls | grep -c eticket_net) != 0 ]]; then
+            docker network rm eticket_net
+        fi
     fi
 
     exit 0
@@ -43,6 +47,13 @@ if [[ $(docker volume ls | grep -c eticket_main_data) == 0 ]]; then
     if ! docker volume create eticket_main_data >/dev/null; then
         echo failed to create docker volume.
         echo please manually create docker volume "eticket_main_data" and retry.
+        exit 1
+    fi
+fi
+
+if [[ $(docker network ls | grep -c eticket_net) == 0 ]]; then
+    if ! docker network create --driver bridge eticket_net >/dev/null; then
+        echo failed to create docker network
         exit 1
     fi
 fi

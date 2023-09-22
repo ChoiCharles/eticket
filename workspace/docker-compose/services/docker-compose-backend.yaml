@@ -1,0 +1,26 @@
+version: "2"
+
+networks:
+  eticket_net:
+    external: true
+
+volumes:
+  eticket_main_data:
+    external: true
+
+services:
+  eticket_backend:
+    build: ../../backend/Dockerfile/
+    container_name: eticket_backend
+    restart: on-failure
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://eticket_mysql:3306/eticket
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: hello_eticket
+      ETICKET.REDIS.AUTH.HOST: eticket_redis
+      ETICKET.REDIS.AUTH.PORT: 6379
+      ETICKET.REDIS.AUTH.DATABASE: 1
+    ports:
+      - 8080:8080
+    networks:
+      - eticket_net
