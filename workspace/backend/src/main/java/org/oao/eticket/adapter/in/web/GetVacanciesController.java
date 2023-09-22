@@ -4,9 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.port.in.GetVacanciesCommand;
 import org.oao.eticket.application.port.in.GetVacanciesUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @WebAdapter
 @RequiredArgsConstructor
@@ -16,8 +19,10 @@ public class GetVacanciesController { // 특정 공연의 특정 구역의 빈 �
   private final GetVacanciesUseCase getVacanciesUseCase;
 
   // TODO(yoo): api specification
+  @GetMapping("schedules/{performanceScheduleId}/sections/{section}")
+  @ResponseStatus(HttpStatus.ACCEPTED)
   ResponseEntity<GetPerformanceScheduleVacanciesResponseBody> GetPerformanceScheduleVacncies(
-      @PathVariable Integer performanceScheduleId, @RequestParam String section) {
+      @PathVariable Integer performanceScheduleId, @PathVariable String section) {
     try {
       final var results =
           getVacanciesUseCase.getVacncies(
