@@ -1,25 +1,26 @@
 import React from 'react';
-import { Box, Divider, Drawer } from '@mui/material';
+import { Drawer } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { drawerState } from 'atoms/NavState';
-import TopNav from './HamburgerItems/TopNav';
-import MyMenu from './HamburgerItems/MyMenu';
-import MainMenu from './HamburgerItems/MainMenu';
-import AuthMenu from './HamburgerItems/AuthMenu';
+import { searchState, drawerState } from 'atoms/NavState';
+import Hamburger from './Hamburger';
+import Search from './Search';
 
 const MenuDrawer = () => {
   const [open, setOpen] = useRecoilState(drawerState);
-
-  const menus = [TopNav, MyMenu, MainMenu, AuthMenu];
+  const [search, setSearch] = useRecoilState(searchState);
 
   const handleToggleDrawer = () => {
     setOpen(prev => !prev);
   };
 
+  const handleToggleSearch = () => {
+    setSearch(prev => !prev);
+  };
+
   return (
     <Drawer
       anchor="right"
-      open={open}
+      open={open || search}
       PaperProps={{
         sx: {
           width: '100%',
@@ -27,15 +28,8 @@ const MenuDrawer = () => {
         },
       }}
     >
-      {menus.map((Menu, index) => (
-        <Box key={String(index)}>
-          <Menu handleToggleDrawer={handleToggleDrawer} />
-          {index === 0 && <Divider />}
-          {index > 0 && index < menus.length - 1 && (
-            <Divider sx={{ borderBottomWidth: 15 }} />
-          )}
-        </Box>
-      ))}
+      {open && <Hamburger handleToggleDrawer={handleToggleDrawer} />}
+      {search && <Search handleToggleSearch={handleToggleSearch} />}
     </Drawer>
   );
 };
