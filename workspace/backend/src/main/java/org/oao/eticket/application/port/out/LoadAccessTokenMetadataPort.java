@@ -5,5 +5,5 @@ import org.oao.eticket.application.domain.model.AuthTokenId;
 import org.oao.eticket.application.domain.model.User;
 
 public interface LoadAccessTokenMetadataPort {
-  AccessTokenMetadata load(User.UserId userId, AuthTokenId accessTokenId);
+  AccessTokenMetadata load(LoadAccessTokenMetadataCommand cmd);
 }

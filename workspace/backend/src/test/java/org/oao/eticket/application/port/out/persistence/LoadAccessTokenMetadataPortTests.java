@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.oao.eticket.application.domain.model.*;
 import org.oao.eticket.application.port.in.CreateAuthTokenUseCase;
+import org.oao.eticket.application.port.out.LoadAccessTokenMetadataCommand;
 import org.oao.eticket.application.port.out.LoadAccessTokenMetadataPort;
 import org.oao.eticket.common.Pair;
 import org.oao.eticket.config.AuthRedisContainer;
@@ -44,9 +45,10 @@ class LoadAccessTokenMetadataPortTests {
           final var tokenPair = createDummyTokenPair();
           final var accessTokenMetadata = tokenPair.x.x;
 
-          final var loadedAccessTokenMetadata =
-              loadAccessTokenMetadataPort.load(
+          final var cmd =
+              new LoadAccessTokenMetadataCommand(
                   DUMMY_USER.getId(), accessTokenMetadata.getTokenId());
+          final var loadedAccessTokenMetadata = loadAccessTokenMetadataPort.load(cmd);
 
           Assertions.assertEquals(loadedAccessTokenMetadata, accessTokenMetadata);
         });
@@ -58,7 +60,10 @@ class LoadAccessTokenMetadataPortTests {
     Assertions.assertThrows(
         NoResultException.class,
         () -> {
-          loadAccessTokenMetadataPort.load(User.UserId.of(-1), AuthTokenId.of(UUID.randomUUID()));
+          final var cmd =
+              new LoadAccessTokenMetadataCommand(
+                  User.UserId.of(-1), AuthTokenId.of(UUID.randomUUID()));
+          loadAccessTokenMetadataPort.load(cmd);
         });
   }
 }
