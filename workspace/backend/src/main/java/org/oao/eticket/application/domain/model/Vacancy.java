@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class SeatInfo {
+public class Vacancy {
     Integer seatId;
     Seat seat;
     SeatClass grade;

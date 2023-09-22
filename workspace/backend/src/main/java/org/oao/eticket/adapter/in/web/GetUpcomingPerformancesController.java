@@ -3,7 +3,6 @@ package org.oao.eticket.adapter.in.web;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.port.in.GetUpcomingPerformancesUsecase;
 import org.oao.eticket.common.annotation.WebAdapter;
-import org.oao.eticket.exception.NoResultException;
 import org.oao.eticket.exception.PerformanceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

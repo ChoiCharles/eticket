@@ -2,7 +2,7 @@ package org.oao.eticket.application.port.in;
 
 import lombok.Builder;
 import lombok.Value;
-import org.oao.eticket.application.domain.model.SeatInfo;
+import org.oao.eticket.application.domain.model.Vacancy;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ import java.util.List;
 @Builder
 public class SaveSeatsToRedisCommand {
     Integer performanceScheduleId;
-    List<SeatInfo> seatInfoList;
+    List<Vacancy> vacancyList;
 }
