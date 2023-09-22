@@ -202,7 +202,7 @@ func New(c *config.ApplicationConfig, queries *persistence.Queries, syncNftsServ
 
 		workerCtx:         nil,
 		syncBatchSize:     50,
-		latestSyncedBlock: c.MinimumBlock,
+		latestSyncedBlock: c.LowerBlock,
 	}
 	if err := eticketTracker.checkLatestSyncedBlock(context.Background(), queries); err != nil {
 		return nil, fmt.Errorf(ERROR_PREFIX+": %w", err)

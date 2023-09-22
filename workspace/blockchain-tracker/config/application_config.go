@@ -11,7 +11,7 @@ import (
 type ApplicationConfig struct {
 	BlockchainRpcUrl string
 	ContractAddress  string
-	MinimumBlock     int64
+	LowerBlock       int64
 }
 
 func New(log *zap.Logger) (*ApplicationConfig, error) {
@@ -27,10 +27,10 @@ func New(log *zap.Logger) (*ApplicationConfig, error) {
 		return nil, fmt.Errorf("missing environment variable \"%s\"", PREFIX+"CONTRACT_ADDRESS")
 	}
 
-	minimumBlock := int64(-1)
-	if v := os.Getenv(PREFIX + "MINIMUM_BLOCK"); 0 < len(v) {
+	lowerBlock := int64(-1)
+	if v := os.Getenv(PREFIX + "LOWER_BLOCK"); 0 < len(v) {
 		var err error
-		minimumBlock, err = strconv.ParseInt(v, 10, 64)
+		lowerBlock, err = strconv.ParseInt(v, 10, 64)
 		if err != nil {
 			return nil, fmt.Errorf("illegal block number: %v\n", v)
 		}
@@ -39,6 +39,6 @@ func New(log *zap.Logger) (*ApplicationConfig, error) {
 	return &ApplicationConfig{
 		BlockchainRpcUrl: blockchainRpcUrl,
 		ContractAddress:  contractAddress,
-		MinimumBlock:     minimumBlock,
+		LowerBlock:       lowerBlock,
 	}, nil
 }
