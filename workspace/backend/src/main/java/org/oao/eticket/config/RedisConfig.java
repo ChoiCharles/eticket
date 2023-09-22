@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
@@ -38,6 +39,17 @@ public class RedisConfig {
     return createStringRedisTemplate(eticketAuthRedisConnectionFactory);
   }
 
+  private RedisTemplate<String, Object> createObjectRedisTemplate(
+          final RedisConnectionFactory connectionFactory) {
+    RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+    redisTemplate.setKeySerializer(new StringRedisSerializer());
+    redisTemplate.setValueSerializer(new StringRedisSerializer());
+    redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+    redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
+    redisTemplate.setConnectionFactory(connectionFactory);
+    return redisTemplate;
+  }
+
   @Bean("eticketReservationRedisConnectionFactory")
   RedisConnectionFactory eticketReservationRedisConnectionFactory(
           @Value("${eticket.redis.auth.host}") final String host,
@@ -49,8 +61,8 @@ public class RedisConfig {
   }
 
   @Bean("eticketReservationRedisTemplate")
-  RedisTemplate<String, String> eticketReservationRedisTemplate(
+  RedisTemplate<String, Object> eticketReservationRedisTemplate(
           final RedisConnectionFactory eticketReservationRedisConnectionFactory) {
-    return createStringRedisTemplate(eticketReservationRedisConnectionFactory);
+    return createObjectRedisTemplate(eticketReservationRedisConnectionFactory);
   }
 }
