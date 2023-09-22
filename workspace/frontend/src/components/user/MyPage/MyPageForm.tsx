@@ -8,6 +8,7 @@ import testimage from 'assets/test.jfif'
 import dummyConcerts from 'dummys.ts'
 
 import { useMetaData } from 'hooks/useMetaData';
+import useMovePage from 'hooks/useMovePage';
 
 
 interface ConcertListItem {
@@ -31,6 +32,12 @@ function MyPage() {
       alert('지갑 주소 복사에 실패했습니다')
     }
   }
+
+  const movePage = useMovePage();
+
+  const handleMovePage = (myticket:ConcertListItem) => {
+    movePage(`/myticket/${myticket.id}`, myticket);
+  };
 
   useEffect(() => {
     loginMetaMask()
@@ -58,7 +65,7 @@ function MyPage() {
           dummyConcerts.map((info:ConcertListItem) => {
             return (
               <div className="concert-container">
-                <div className="my-concert">
+                <div className="my-concert" onClick={() => handleMovePage(info)}>
                   <div className="concert-poster">
                     <img src={info.image} alt="" />
                   </div>

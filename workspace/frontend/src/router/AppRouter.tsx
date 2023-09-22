@@ -10,6 +10,7 @@ import Fail from 'pages/Payments/Fail';
 import Success from 'pages/Payments/Success';
 import MetamaskForm from 'pages/User/MetamaskForm';
 import MyPage from 'pages/User/MyPage';
+import MyTicketDetail from 'pages/User/MyTicketDetail';
 
 function AppRouter() {
   return (
@@ -26,6 +27,7 @@ function AppRouter() {
         <Route path="/fail" element={<Fail />} />
         <Route path="/success" element={<Success />} />
         <Route path="/my" element={<MyPage />} />
+        <Route path="/myticket/:idx" element={<MyTicketDetail />} />
       </Routes>
     </BrowserRouter>
   );
