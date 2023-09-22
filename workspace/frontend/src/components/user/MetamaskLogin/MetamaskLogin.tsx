@@ -21,29 +21,6 @@ function MetamaskLogin() {
     navigate('/');
   };
 
-  // const connectWalletBtn = async () => {
-  //   try {
-  //     if (window.ethereum) {
-  //       // MetaMask 연결 요청
-  //       const accounts = await window.ethereum.request({
-  //         method: 'eth_requestAccounts',
-  //       });
-
-  //       if (accounts.length > 0) {
-  //         const userAddress = accounts[0];
-  //         setMetaAddress(userAddress);
-  //         console.log('연결된 계정 주소:', userAddress);
-
-  //         // 여기에서 원하는 페이지로 이동
-  //         navigate('/metamask-account', { state: { address: userAddress } });
-  //       }
-  //     } else {
-  //       console.error('MetaMask를 찾을 수 없습니다.');
-  //     }
-  //   } catch (error) {
-  //     console.error('MetaMask 연동 중 오류 발생:', error);
-  //   }
-  // };
   return (
     <div className="meta-box">
       <div className="meta-outer-box">

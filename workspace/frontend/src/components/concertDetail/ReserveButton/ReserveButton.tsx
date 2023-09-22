@@ -1,12 +1,13 @@
 import React from 'react';
 import './ReserveButton.scss';
 import { Button } from '@mui/material';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 function ReserveButton() {
   const navigate = useNavigate();
+  const { idx } = useParams();
   const moveReservePage = () => {
-    navigate('/reservation');
+    navigate(`/ConcertCalender/${idx}`);
   };
   return (
     <div className="reservation-btn">

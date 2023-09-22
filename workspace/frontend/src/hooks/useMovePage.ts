@@ -6,7 +6,10 @@ const useMovePage = () => {
   const movePage = (url: string, state: object | null) => {
     navigate(url, { state });
   };
-  return movePage;
+  const goBack = () => {
+    navigate(-1);
+  };
+  return { movePage, goBack };
 };
 
 export default useMovePage;

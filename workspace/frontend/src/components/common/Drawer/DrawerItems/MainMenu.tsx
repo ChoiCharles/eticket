@@ -15,12 +15,12 @@ interface Props {
 
 const MainMenu = ({ handleToggleDrawer }: Props) => {
   const menus = [
-    { name: '공연 랭킹', url: '/ranking' },
+    { name: '공연 랭킹', url: '/concert' },
     { name: 'NFT 전시장', url: '/gallery' },
     { name: '💥예매 임박💥', url: '/soon' },
   ];
 
-  const movePage = useMovePage();
+  const { movePage } = useMovePage();
 
   const handleMovePage = (url: string) => {
     handleToggleDrawer();
