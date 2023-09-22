@@ -24,4 +24,4 @@ services:
       file: ./services/docker-compose-blockchain-tracker.yaml
       service: eticket_blockchain_tracker
     depends_on:
-      - eticket_redis
+      - eticket_mysql
