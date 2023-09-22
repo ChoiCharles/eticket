@@ -11,6 +11,7 @@ import Success from 'pages/Payments/Success';
 import MetamaskForm from 'pages/User/MetamaskForm';
 import MyPage from 'pages/User/MyPage';
 import MyTicketDetail from 'pages/User/MyTicketDetail';
+import SearchResult from 'pages/SearchResult/SearchResult';
 
 function AppRouter() {
   return (
@@ -20,6 +21,7 @@ function AppRouter() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/metamask" element={<MetamaskForm />} />
+        <Route path="/search?keyword=:keyword" element={<SearchResult />} />
         <Route path="/concert" element={<ConcertList />} />
         <Route path="/concert/:idx" element={<ConcertDetail />} />
         {/* <Route path="/reservation/:idx" element={<ConcertDetail />} /> */}

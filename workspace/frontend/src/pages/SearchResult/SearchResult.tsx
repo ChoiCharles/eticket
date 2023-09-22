@@ -1,17 +1,16 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
+// import SearchInput from 'components/common/Menus/SearchItems/SearchInput';
 
-interface Props {
-  keyword: string;
-}
-
-const SearchResult = ({ keyword }: Props) => {
+const SearchResult = () => {
   return (
     <Box
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
+      {/* <SearchInput /> */}
       <Typography variant="h6">
-        <b>{`'${keyword}'`}</b>검색결과
+        Hello
+        {/* <b>{`'${keyword}'`}</b>검색결과 */}
       </Typography>
     </Box>
   );

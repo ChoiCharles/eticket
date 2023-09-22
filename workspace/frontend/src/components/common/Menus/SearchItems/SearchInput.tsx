@@ -37,7 +37,7 @@ const SearchInput = ({ handleAddKeyword, handleToggleSearch }: Props) => {
     await handleAddKeyword(keyword);
     setKeyword('');
 
-    movePage(`/search?${keyword}`, null);
+    movePage(`/search?keyword=${keyword}`, null);
   };
 
   return (
