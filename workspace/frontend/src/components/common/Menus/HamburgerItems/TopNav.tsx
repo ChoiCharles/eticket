@@ -19,7 +19,7 @@ const TopNav = ({ handleToggleDrawer }: Props) => {
     <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <Button
         size="large"
-        sx={{ fontSize: '20px', textDecoration: 'underline', color: 'black' }}
+        sx={{ fontSize: '18px', textDecoration: 'underline', color: 'black' }}
         onClick={handleMovePage}
       >
         로그인을 해주세요.

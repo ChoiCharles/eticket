@@ -1,4 +1,4 @@
-// import { useState } from "react"
+import { useState } from "react"
 import Web3 from 'web3'
 import useAccount from './useAccount'
 import axios from 'axios'
@@ -7,13 +7,11 @@ import EticketJSON from '../contracts/Eticket.json'
 
 export const useMetaData = () => {
   const { account } = useAccount()
-  // const [metadata, setMetaData] = useState<any>(undefined)
+  const [metadata, setMetaData] = useState<any>(undefined)
 
   const web3 = new Web3(window.ethereum)
   const eticketJSON: any[] = EticketJSON
   const contractAddress: string = '0xC80aC17c73AcC311ececb2A75eC3170D6C73fEa6'
-
-  console.log('1', eticketJSON)
 
   const connectIPFS = async () => {
     try {
@@ -35,7 +33,7 @@ export const useMetaData = () => {
     try {
       const response = await axios.get(_uri);
       console.log(response.data)
-      // setMetaData(response.data);
+      setMetaData(response.data);
     }
     catch(e) {
       console.error(e);
@@ -43,7 +41,6 @@ export const useMetaData = () => {
   }
 
   return {
-    // metadata, connectIPFS
-    connectIPFS
+    metadata, connectIPFS
   }
 }

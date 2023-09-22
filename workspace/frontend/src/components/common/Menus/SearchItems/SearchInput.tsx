@@ -6,39 +6,38 @@ import {
   InputAdornment,
   IconButton,
 } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
+import useMovePage from 'hooks/useMovePage';
 
 interface Props {
-  keywords: { id: number; keyword: string }[];
   handleAddKeyword: (keyword: string) => void;
-  setKeywords: (prev: any) => void;
+  handleToggleSearch: () => void;
 }
 
-const SearchInput = ({ keywords, handleAddKeyword, setKeywords }: Props) => {
+const SearchInput = ({ handleAddKeyword, handleToggleSearch }: Props) => {
   const [keyword, setKeyword] = useState('');
+  const movePage = useMovePage();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleClearKeyword = () => {
+    setKeyword('');
+  };
+
+  const handleSubmit = async (event: FormEvent) => {
     event?.preventDefault();
     if (!keyword.trim()) {
       return;
     }
 
-    const keywordList = keywords.map(item => item.keyword);
-    if (keywordList.includes(keyword)) {
-      const filteredKeywords = keywords.filter(
-        item => item.keyword !== keyword,
-      );
-      handleAddKeyword(keyword);
-      setKeywords([{ id: Date.now(), keyword }, ...filteredKeywords]);
-    } else {
-      handleAddKeyword(keyword);
-    }
+    await handleAddKeyword(keyword);
     setKeyword('');
+
+    movePage(`/search?${keyword}`, null);
   };
 
   return (
@@ -62,6 +61,11 @@ const SearchInput = ({ keywords, handleAddKeyword, setKeywords }: Props) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
+                {keyword && (
+                  <IconButton type="button" onClick={handleClearKeyword}>
+                    <CancelIcon fontSize="small" />
+                  </IconButton>
+                )}
                 <IconButton type="button" onClick={handleSubmit}>
                   <SearchIcon />
                 </IconButton>
@@ -75,7 +79,7 @@ const SearchInput = ({ keywords, handleAddKeyword, setKeywords }: Props) => {
             },
           }}
         />
-        <IconButton sx={{ ml: 2 }}>
+        <IconButton sx={{ mt: 0.5, ml: 1 }} onClick={handleToggleSearch}>
           <CloseIcon />
         </IconButton>
       </Box>
