@@ -1,6 +1,7 @@
 import './MyTicketDetail.scss';
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import QRcode from 'qrcode.react'
 
 import dummyConcerts from 'dummys.ts'
 
@@ -22,11 +23,14 @@ function MyTicket() {
   //   movePage('/login', null);
   // };
 
+  const [getQRcode, setGetQRcode] = useState(false)
+
   const { idx } = useParams();
   console.log(idx)
 
-
-
+  const createQR = () => {
+    setGetQRcode(true)
+  }
 
   return (
     <div className="container">
@@ -44,8 +48,21 @@ function MyTicket() {
                   <h3>움직이는 이미지</h3>
                 </div>
                 <div className="my-ticket-image">
-                  <img src={info.image} alt=""/>
-                  <button><h3>QR 코드 생성</h3></button>
+                  {
+                    getQRcode ? 
+                      <div className="QRcode">
+                        <QRcode 
+                          id="myqr"
+                          value={JSON.stringify(info)} 
+                          size={320}
+                          includeMargin={true}
+                        />
+                      </div> :
+                      <div>
+                        <img src={info.image} alt=""/>
+                        <button onClick={() => createQR()}><h3>QR 코드 생성</h3></button>
+                      </div>
+                  }
                 </div>
               </div>
             )
