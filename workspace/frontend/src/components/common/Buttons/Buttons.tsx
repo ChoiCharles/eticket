@@ -6,12 +6,11 @@ import { IconButton } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import drawerState from 'atoms/Drawer';
 
-import useAccount from '../../../hooks/useAccount';
+import useAccount from 'hooks/useAccount';
 
 import './Buttons.scss';
 
 const Buttons = () => {
-  // const { account, loginMetaMask } = useAccount();
   const { loginMetaMask } = useAccount();
 
   const [, setOpen] = useRecoilState(drawerState);

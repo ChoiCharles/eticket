@@ -9,6 +9,7 @@ import Checkout from 'pages/Payments/Checkout';
 import Fail from 'pages/Payments/Fail';
 import Success from 'pages/Payments/Success';
 import MetamaskForm from 'pages/User/MetamaskForm';
+import MyPage from 'pages/User/MyPage';
 
 function AppRouter() {
   return (
@@ -24,6 +25,7 @@ function AppRouter() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/fail" element={<Fail />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/my" element={<MyPage />} />
       </Routes>
     </BrowserRouter>
   );

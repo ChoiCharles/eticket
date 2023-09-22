@@ -46,7 +46,6 @@ const useAccount = () => {
 
         if (accounts && Array.isArray(accounts)) {
           setAccount(accounts[0])
-          console.log(accounts[0])
         }
       }
       catch (err:any) {
