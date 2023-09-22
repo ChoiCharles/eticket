@@ -13,8 +13,8 @@ import './Buttons.scss';
 const Buttons = () => {
   const { loginMetaMask } = useAccount();
 
-  const [, setOpen] = useRecoilState(drawerState);
   const [, setSearch] = useRecoilState(searchState);
+  const [, setOpen] = useRecoilState(drawerState);
 
   const handleToggleSearch = () => {
     setSearch(prev => !prev);
@@ -30,10 +30,10 @@ const Buttons = () => {
         <img id="metamask" src={MetaMask} alt="metamask" />
       </IconButton>
       <IconButton onClick={handleToggleSearch}>
-        <SearchIcon fontSize="large" />
+        <SearchIcon />
       </IconButton>
       <IconButton onClick={handleToggleDrawer}>
-        <MenuIcon fontSize="large" />
+        <MenuIcon />
       </IconButton>
     </div>
   );

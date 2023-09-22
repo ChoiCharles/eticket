@@ -47,11 +47,12 @@ const RecentKeyword = ({
       <Paper
         sx={{
           display: 'flex',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
           listStyle: 'none',
           p: 0,
           mx: 2,
           my: 0,
-          overflowX: 'auto',
         }}
         component="ul"
         elevation={0}
