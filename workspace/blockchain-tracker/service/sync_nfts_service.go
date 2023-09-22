@@ -3,13 +3,17 @@ package service
 import (
 	"context"
 	"database/sql"
+	"strings"
 
 	"eticket.org/eticket-tracker/blockchain"
 	persistence "eticket.org/eticket-tracker/persistence/generated"
+	"github.com/ethereum/go-ethereum/common"
+	"go.uber.org/zap"
 )
 
 type SyncNftsService struct {
 	db      *sql.DB
+	log     *zap.Logger
 	queries *persistence.Queries
 }
 
@@ -37,6 +41,19 @@ func (s *SyncNftsService) SyncNfts(ctx context.Context, cmd SyncNftsCommand) err
 			}
 		}
 
+		if isNewToken {
+			if err = queries.CreateNftTicket(ctx, persistence.CreateNftTicketParams{
+				TokenID: event.TokenId[:],
+				Owner:   event.To[:],
+			}); err != nil {
+				if !strings.Contains(err.Error(), "Duplicate") {
+					return err
+				}
+
+				s.log.Warn("token " + common.Bytes2Hex(event.TokenId[:]) + " is duplicated.")
+			}
+		}
+
 		if !isNewToken {
 			if err := queries.UpdateNftTicket(ctx, persistence.UpdateNftTicketParams{
 				TokenID: event.TokenId[:],
@@ -45,12 +62,6 @@ func (s *SyncNftsService) SyncNfts(ctx context.Context, cmd SyncNftsCommand) err
 				return err
 			}
 		} else {
-			if err = queries.CreateNftTicket(ctx, persistence.CreateNftTicketParams{
-				TokenID: event.TokenId[:],
-				Owner:   event.To[:],
-			}); err != nil {
-				return err
-			}
 		}
 	}
 
@@ -64,9 +75,10 @@ func (s *SyncNftsService) SyncNfts(ctx context.Context, cmd SyncNftsCommand) err
 	return tx.Commit()
 }
 
-func NewSyncNftsService(db *sql.DB, queries *persistence.Queries) *SyncNftsService {
+func NewSyncNftsService(db *sql.DB, queries *persistence.Queries, log *zap.Logger) *SyncNftsService {
 	return &SyncNftsService{
 		db:      db,
+		log:     log,
 		queries: queries,
 	}
 }
