@@ -20,7 +20,7 @@ const AuthMenu = ({ handleToggleDrawer }: Props) => {
   };
 
   return (
-    <List>
+    <List disablePadding>
       {menus.map(menu => (
         <ListItem key={menu.name}>
           <ListItemButton onClick={() => handleMovePage(menu.url)}>
