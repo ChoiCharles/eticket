@@ -1,0 +1,20 @@
+version: "2"
+
+networks:
+  eticket_net:
+    external: true
+
+services:
+  eticket_blockchain_tracker:
+    build: ../../blockchain-tracker/Dockerfile/
+    container_name: eticket_blockchain_tracker
+    restart: on-failure
+    environment:
+      ETICKET_BLOCKCHAIN_RPC_URL: https://j9c203.p.ssafy.io/services/blockchain/rpc
+      ETICKET_BLOCKCHAIN_CONTRACT_ADDRESS: "0xC80aC17c73AcC311ececb2A75eC3170D6C73fEa6"
+      ETICKET_BLOCKCHAIN_LOWER_BLOCK: "-1"
+      ETICKET_DATASOURCE_URL: "eticket_mysql:3306"
+      ETICKET_DATASOURCE_USERNAME: root
+      ETICKET_DATASOURCE_PASSWORD: hello_eticket
+    networks:
+      - eticket_net

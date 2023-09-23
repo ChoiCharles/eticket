@@ -4,36 +4,18 @@ import TopFiveConcertList from 'components/home/TopFiveConcertList/TopFiveConcer
 import ConcertRankingList from 'components/home/ConcertRankingList/ConcertRankingList';
 import NftGalleryList from 'components/home/NftGalleryList/NftGalleryList';
 import ComingSoonList from 'components/home/ComingSoonList/ComingSoonList';
-import Drawer from 'components/common/Drawer/Drawer';
-import Search from 'components/common/Search/Search';
-import { useRecoilValue } from 'recoil';
-import { drawerState, searchState } from 'atoms/NavState';
-
-import './Home.scss';
+import { Box } from '@mui/material';
 
 const Home = () => {
-  const open = useRecoilValue(drawerState);
-  const search = useRecoilValue(searchState);
-
-  let component = null;
-
-  if (open) {
-    component = <Drawer />;
-  } else if (search) {
-    component = <Search />;
-  } else {
-    component = (
-      <>
-        <NavBar />
-        <TopFiveConcertList />
-        <ConcertRankingList />
-        <NftGalleryList />
-        <ComingSoonList />
-      </>
-    );
-  }
-
-  return <div className="container">{component}</div>;
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <NavBar />
+      <TopFiveConcertList />
+      <ConcertRankingList />
+      <NftGalleryList />
+      <ComingSoonList />
+    </Box>
+  );
 };
 
 export default Home;

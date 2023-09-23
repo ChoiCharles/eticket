@@ -10,6 +10,8 @@ import Checkout from 'pages/Payments/Checkout';
 import Fail from 'pages/Payments/Fail';
 import Success from 'pages/Payments/Success';
 import MetamaskForm from 'pages/User/MetamaskForm';
+import MyPage from 'pages/User/MyPage';
+import MyTicketDetail from 'pages/User/MyTicketDetail';
 import ConcertCalender from 'pages/Concert/ConcertCalender';
 
 function AppRouter() {
@@ -26,6 +28,8 @@ function AppRouter() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/fail" element={<Fail />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/my" element={<MyPage />} />
+        <Route path="/myticket/:idx" element={<MyTicketDetail />} />
         <Route path="/*" element={<Navigate replace to="/error" />} />
         <Route path="/error" element={<Error />} />
       </Routes>

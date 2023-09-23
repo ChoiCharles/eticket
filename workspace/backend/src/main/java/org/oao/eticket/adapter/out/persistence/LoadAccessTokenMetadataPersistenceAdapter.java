@@ -6,8 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.oao.eticket.adapter.out.persistence.entity.AccessTokenMetadataRedisEntity;
 import org.oao.eticket.adapter.out.persistence.mapper.AccessTokenMetadataMapper;
 import org.oao.eticket.application.domain.model.AccessTokenMetadata;
-import org.oao.eticket.application.domain.model.AuthTokenId;
-import org.oao.eticket.application.domain.model.User;
+import org.oao.eticket.application.port.out.LoadAccessTokenMetadataCommand;
 import org.oao.eticket.application.port.out.LoadAccessTokenMetadataPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.NoResultException;
@@ -23,13 +22,14 @@ class LoadAccessTokenMetadataPersistenceAdapter implements LoadAccessTokenMetada
   private final ObjectMapper objectMapper;
 
   @Override
-  public AccessTokenMetadata load(final User.UserId userId, final AuthTokenId accessTokenId) {
+  public AccessTokenMetadata load(final LoadAccessTokenMetadataCommand cmd) {
     final var valueOperations = eticketAuthRedisTemplate.opsForValue();
 
-    final var data = valueOperations.get("a-token:" + userId + ":" + accessTokenId);
+    final var data = valueOperations.get("a-token:" + cmd.ownerId() + ":" + cmd.accessTokenId());
     if (data == null) {
       throw new NoResultException(
-          String.format("An access token %s for user %s not found.", accessTokenId, userId));
+          String.format(
+              "An access token %s for user %s not found.", cmd.accessTokenId(), cmd.ownerId()));
     }
 
     AccessTokenMetadataRedisEntity metadataRedisEntity;
@@ -39,6 +39,6 @@ class LoadAccessTokenMetadataPersistenceAdapter implements LoadAccessTokenMetada
       throw new UnexpectedException("Error occurred during binding token JSON to entity.", e);
     }
 
-    return accessTokenMetadataMapper.mapToDomainEntity(accessTokenId, metadataRedisEntity);
+    return accessTokenMetadataMapper.mapToDomainEntity(cmd.accessTokenId(), metadataRedisEntity);
   }
 }
