@@ -16,6 +16,7 @@ const tabContentStyles = {
 
 /** params 공연정보 전체가져와서
  *  공연정보, 공연기간, 공연장, 관람시간
+ *  좌석 레벨 and 좌석 가격
  *  + 상세정보 이미지
  */
 export default function DetailContent() {
@@ -98,7 +99,8 @@ export default function DetailContent() {
       >
         {/* 공연장정보 컨텐츠 */}
         <div>
-          <h2>공연장정보</h2>
+          <h2>서울 잠실종합운동장 올림픽 주경기장</h2>
+          <div>맵 API</div>
           {/* 여기에 공연장정보 컨텐츠 내용을 추가 */}
         </div>
       </Box>

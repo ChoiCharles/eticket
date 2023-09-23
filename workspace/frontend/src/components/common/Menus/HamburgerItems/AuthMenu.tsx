@@ -12,7 +12,7 @@ const AuthMenu = ({ handleToggleDrawer }: Props) => {
     { name: '회원가입', url: '/signup' },
   ];
 
-  const movePage = useMovePage();
+  const { movePage } = useMovePage();
 
   const handleMovePage = (url: string) => {
     handleToggleDrawer();

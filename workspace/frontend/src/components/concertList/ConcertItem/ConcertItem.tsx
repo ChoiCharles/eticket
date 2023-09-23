@@ -11,7 +11,7 @@ interface ConcertListItem {
 }
 
 function ConcertItem({ concertInfo }: { concertInfo: ConcertListItem }) {
-  const movePage = useMovePage();
+  const { movePage } = useMovePage();
 
   const handleConcertClick = () => {
     movePage(`/concert/${concertInfo.id}`, concertInfo);
