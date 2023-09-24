@@ -1,16 +1,15 @@
 import './MyPage.scss';
 import React, { useEffect } from 'react';
 
-import copyText from 'assets/CopyText.png'
+import copyText from 'assets/CopyText.png';
 
-import dummyConcerts from 'dummys.ts'
+import dummyConcerts from 'dummys.ts';
 
-import NFTCard from 'components/common/NFTCard/NFTCard'
+import NFTCard from 'components/common/NFTCard/NFTCard';
 
 import useAccount from 'hooks/useAccount';
 import { useMetaData } from 'hooks/useMetaData';
 import useMovePage from 'hooks/useMovePage';
-
 
 interface ConcertListItem {
   id: number;
@@ -21,63 +20,61 @@ interface ConcertListItem {
 }
 
 function MyPage() {
-  const { account, loginMetaMask } = useAccount()
+  const { account, loginMetaMask } = useAccount();
   // const { metadata, connectIPFS } = useMetaData()
-  const { connectIPFS } = useMetaData()
+  const { connectIPFS } = useMetaData();
 
   const copyAddress = (text: string) => {
     try {
-      navigator.clipboard.writeText(text)
-      alert('지갑 주소가 복사되었습니다')
+      navigator.clipboard.writeText(text);
+      alert('지갑 주소가 복사되었습니다');
     } catch {
-      alert('지갑 주소 복사에 실패했습니다')
+      alert('지갑 주소 복사에 실패했습니다');
     }
-  }
+  };
 
-  const movePage = useMovePage();
+  const { movePage } = useMovePage();
 
-  const handleMovePage = (myticket:ConcertListItem) => {
+  const handleMovePage = (myticket: ConcertListItem) => {
     movePage(`/myticket/${myticket.id}`, myticket);
   };
 
   useEffect(() => {
-    loginMetaMask()
-    connectIPFS()
-  }, [])
+    loginMetaMask();
+    connectIPFS();
+  }, []);
 
   const MyTicket = () => {
     return (
       <div className="ticket-container">
-        {
-          dummyConcerts.map((info:ConcertListItem) => {
-            return (
-              <div className="concert-container">
-                <div className="my-concert" onClick={() => handleMovePage(info)}>
-                  <div className="concert-poster">
-                    <img src={info.image} alt="" />
+        {dummyConcerts.map((info: ConcertListItem) => {
+          return (
+            <div className="concert-container">
+              <div className="my-concert" onClick={() => handleMovePage(info)}>
+                <div className="concert-poster">
+                  <img src={info.image} alt="" />
+                </div>
+                <div className="concert-info">
+                  <div className="conert-info-box">
+                    <div className="concert-title">
+                      <h3>{info.title}</h3>
+                    </div>
+                    <div className="concert-date">
+                      <h4>{info.date}</h4>
+                    </div>
                   </div>
-                  <div className="concert-info">
-                    <div className="conert-info-box">
-                      <div className="concert-title">
-                        <h3>{info.title}</h3>
-                      </div>
-                      <div className="concert-date">
-                        <h4>{info.date}</h4>
-                      </div>
-                    </div>
-                    <div className="my-ticket-arrow">
-                      <h3>{'>'}</h3>
-                    </div>
+                  <div className="my-ticket-arrow">
+                    <h3>{'>'}</h3>
                   </div>
                 </div>
-                <hr />
               </div>
-            )
-          })
-        }
+              <hr />
+            </div>
+          );
+        })}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="container">
@@ -90,7 +87,7 @@ function MyPage() {
       <div className="wallet">
         <h3 className="my-wallet">내 지갑 : </h3>
         <h3 className="address">{account}</h3>
-        <img src={copyText} alt="" onClick={() => (copyAddress(account))}/>
+        <img src={copyText} alt="" onClick={() => copyAddress(account)} />
       </div>
       <div className="inventory">
         <div className="my-NFT">
@@ -99,8 +96,8 @@ function MyPage() {
             <h3 className="my-NFT-more">더보기 {'>'}</h3>
           </div>
           <div className="NFT-list">
-            <NFTCard/>
-            <NFTCard/>
+            <NFTCard />
+            <NFTCard />
           </div>
         </div>
         <div className="my-ticket">
@@ -109,7 +106,7 @@ function MyPage() {
             <h3 className="my-ticket-more">구매 내역 {'>'}</h3>
           </div>
           <div className="my-ticket-list">
-            <MyTicket/>
+            <MyTicket />
           </div>
         </div>
       </div>
