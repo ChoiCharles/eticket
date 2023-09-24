@@ -1,19 +1,26 @@
 #!/bin/bash
 
+WORKSPACE="../workspace"
+DOCKER_COMPOSE="../docker-compose"
+
+if ! [[ $(pwd) =~ .+scripts$ ]]; then
+    cd scripts || exit 1
+fi
+
 if [[ $* == *--stop* ]]; then
-    docker-compose -f docker-compose/docker-compose.yaml down
+    docker-compose -f ../docker-compose/docker-compose.yaml down
     exit 0
 fi
 
 if [[ $* == *--clean* ]]; then
-    rm -rf ./blockchain-tracker/Dockerfile/data
-    rm -rf ./backend/Dockerfile/data
+    rm -rf $WORKSPACE/blockchain-tracker/Dockerfile/data
+    rm -rf $WORKSPACE/backend/Dockerfile/data
 
     if [[ $* == *--clean-all* ]]; then
-        rm -rf ./backend/build
-        rm -rf ./backend/.gradle
-        rm -rf ./backend/.gradle.cache
-        rm -rf ./blockchain-tracker/.gocache
+        rm -rf $WORKSPACE/backend/build
+        rm -rf $WORKSPACE/backend/.gradle
+        rm -rf $WORKSPACE/backend/.gradle.cache
+        rm -rf $WORKSPACE/blockchain-tracker/.gocache
 
         if [[ $(docker volume ls | grep -c eticket_main_data) != 0 ]]; then
             docker volume rm eticket_main_data
@@ -28,7 +35,7 @@ if [[ $* == *--clean* ]]; then
 fi
 
 if [[ $* != *--no-build* ]]; then
-    cd ./blockchain-tracker || exit 1
+    cd $WORKSPACE/blockchain-tracker || exit 1
     if ! sh ./build.sh; then
         echo failed to build blockchain-tracker.
         exit 1
@@ -40,7 +47,7 @@ if [[ $* != *--no-build* ]]; then
         exit 1
     fi
 
-    cd ..
+    cd ../../scripts || exit 1
 fi
 
 if [[ $(docker volume ls | grep -c eticket_main_data) == 0 ]]; then
@@ -58,10 +65,10 @@ if [[ $(docker network ls | grep -c eticket_net) == 0 ]]; then
     fi
 fi
 
-docker-compose -f docker-compose/docker-compose.yaml down
-docker-compose -f docker-compose/docker-compose.yaml up -d --force-recreate --no-deps --build eticket_backend eticket_blockchain_tracker
-docker-compose -f docker-compose/docker-compose.yaml up -d
+docker-compose -f $DOCKER_COMPOSE/docker-compose.yaml down
+docker-compose -f $DOCKER_COMPOSE/docker-compose.yaml up -d --force-recreate --no-deps --build eticket_backend eticket_blockchain_tracker
+docker-compose -f $DOCKER_COMPOSE/docker-compose.yaml up -d
 
 if [[ $(docker images --filter "dangling=true" -q | wc -l) != 0 ]]; then
-    docker image rm $(docker images --filter "dangling=true" -q)
+    docker image rm "$(docker images --filter "dangling=true" -q)"
 fi

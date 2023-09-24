@@ -6,7 +6,7 @@ networks:
 
 services:
   eticket_blockchain_tracker:
-    build: ../../blockchain-tracker/Dockerfile/
+    build: ../../workspace/blockchain-tracker/Dockerfile/
     container_name: eticket_blockchain_tracker
     restart: on-failure
     environment:
