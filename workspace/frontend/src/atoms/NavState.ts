@@ -5,7 +5,7 @@ export const searchState = atom<boolean>({
   default: false,
 });
 
-export const drawerState = atom<boolean>({
-  key: 'drawerState',
+export const hamburgerState = atom<boolean>({
+  key: 'hamburgerState',
   default: false,
 });

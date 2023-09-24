@@ -1,23 +1,51 @@
-import React from 'react';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-function SearchResults() {
-  const location = useLocation();
-  const searchKeyword = new URLSearchParams(location.search).get('keyword');
-  console.log(location);
-  console.log(searchKeyword);
+const useSearch = () => {
+  const [keywords, setKeywords] = useState<{ id: number; keyword: string }[]>(
+    JSON.parse(localStorage.getItem('keywords') || '[]'),
+  );
 
-  // searchKeyword를 사용하여 검색 결과를 표시하거나 다른 작업을 수행합니다.
-}
-SearchResults();
+  useEffect(() => {
+    localStorage.setItem('keywords', JSON.stringify(keywords));
+  }, [keywords]);
 
-let [searchParams, setSearchParams] = useSearchParams();
+  const handleAddKeyword = (keyword: string) => {
+    const addedKeyword = {
+      id: Date.now(),
+      keyword,
+    };
 
-function handleSubmit(event) {
-  event.preventDefault();
-  // The serialize function here would be responsible for
-  // creating an object of { key: value } pairs from the
-  // fields in the form that make up the query.
-  let params = serializeFormQuery(event.target);
-  setSearchParams(params);
-}
+    const keywordList = keywords.map(item => item.keyword);
+    if (keywordList.includes(keyword)) {
+      const filteredKeywords = keywords.filter(
+        item => item.keyword !== keyword,
+      );
+      setKeywords([addedKeyword, ...filteredKeywords]);
+    } else if (keywords.length > 29) {
+      const slicedKeywords = keywords.slice(0, keywords.length - 1);
+      setKeywords([addedKeyword, ...slicedKeywords]);
+    } else {
+      setKeywords([addedKeyword, ...keywords]);
+    }
+  };
+
+  const handleRemoveKeyword = (id: number) => {
+    const removedKeyword = keywords.filter(keyword => {
+      return keyword.id !== id;
+    });
+    setKeywords(removedKeyword);
+  };
+
+  const handleClearKeywords: () => void = () => {
+    setKeywords([]);
+  };
+
+  return {
+    keywords,
+    handleAddKeyword,
+    handleRemoveKeyword,
+    handleClearKeywords,
+  };
+};
+
+export default useSearch;

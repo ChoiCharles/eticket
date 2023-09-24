@@ -23,7 +23,7 @@ function AppRouter() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/metamask" element={<MetamaskForm />} />
-        <Route path="/search?keyword=:keyword" element={<SearchResult />} />
+        <Route path="/search" element={<SearchResult />} />
         <Route path="/concert" element={<ConcertList />} />
         <Route path="/concert/:idx" element={<ConcertDetail />} />
         <Route path="/concertCalender/:idx" element={<ConcertCalender />} />
