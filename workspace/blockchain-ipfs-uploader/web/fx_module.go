@@ -31,7 +31,7 @@ func NewFxModule() fx.Option {
 			fx.Annotate(
 				func(e *gin.Engine) *http.Server {
 					return &http.Server{
-						Addr:    ":7777",
+						Addr:    ":35001",
 						Handler: e,
 					}
 				},
