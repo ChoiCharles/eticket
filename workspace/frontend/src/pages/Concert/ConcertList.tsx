@@ -1,14 +1,15 @@
 import ConcertItem from 'components/concertList/ConcertItem/ConcertItem';
 import React from 'react';
 import dummyConcert from 'dummys.ts';
-import NavBar from 'components/common/NavBar/NavBar';
+// import NavBar from 'components/common/NavBar/NavBar';
+import BackNavBar from 'components/common/BackNavBar/BackNavBar';
 
 function ConcertList() {
   const dateData = new Date();
 
   return (
     <div>
-      <NavBar />
+      <BackNavBar title="콘서트 랭킹" />
       <div>
         {/* 날짜 나타내는 코드 */}
         {dateData.toLocaleDateString('ko-KR', {
