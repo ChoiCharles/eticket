@@ -12,6 +12,7 @@ services:
   eticket_backend:
     build: ../../workspace/backend/Dockerfile/
     container_name: eticket_backend
+    image: eticket/backend
     restart: on-failure
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://eticket_mysql:3306/eticket
