@@ -10,6 +10,7 @@ function ConcertList() {
     <div>
       <NavBar />
       <div>
+        {/* 날짜 나타내는 코드 */}
         {dateData.toLocaleDateString('ko-KR', {
           weekday: 'long',
           year: 'numeric',

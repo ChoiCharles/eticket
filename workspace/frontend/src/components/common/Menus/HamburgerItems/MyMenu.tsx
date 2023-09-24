@@ -22,7 +22,7 @@ const MyMenu = ({ handleToggleDrawer }: Props) => {
     { name: '마이 페이지', url: '/my' },
   ];
 
-  const movePage = useMovePage();
+  const { movePage } = useMovePage();
 
   const handleMovePage = (url: string) => {
     handleToggleDrawer();

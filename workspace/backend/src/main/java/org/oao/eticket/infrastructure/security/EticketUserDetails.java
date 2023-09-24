@@ -1,13 +1,15 @@
 package org.oao.eticket.infrastructure.security;
 
 import org.oao.eticket.application.domain.model.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
-class EticketUserDetails implements UserDetails {
+public class EticketUserDetails implements UserDetails {
 
   private final User wrappedUser;
   private final List<EticketGrantedAuthority> authorities;
@@ -30,9 +32,15 @@ class EticketUserDetails implements UserDetails {
     return wrappedUser;
   }
 
+  public User.UserId getId() {
+    return wrappedUser.getId();
+  }
+
   @Override
   public String getUsername() {
-    return wrappedUser.getUsername();
+    return wrappedUser.getUsername() != null
+        ? wrappedUser.getUsername()
+        : "id:" + wrappedUser.getId();
   }
 
   @Override
@@ -63,5 +71,11 @@ class EticketUserDetails implements UserDetails {
   @Override
   public boolean isEnabled() {
     return isAccountEnabled;
+  }
+
+  public static Optional<EticketUserDetails> from(final Authentication authentication) {
+    return authentication.getPrincipal() instanceof EticketUserDetails userDetails
+        ? Optional.of(userDetails)
+        : Optional.empty();
   }
 }

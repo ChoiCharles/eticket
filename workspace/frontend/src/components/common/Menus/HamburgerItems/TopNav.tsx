@@ -8,7 +8,7 @@ interface Props {
 }
 
 const TopNav = ({ handleToggleDrawer }: Props) => {
-  const movePage = useMovePage();
+  const { movePage } = useMovePage();
 
   const handleMovePage = () => {
     handleToggleDrawer();
