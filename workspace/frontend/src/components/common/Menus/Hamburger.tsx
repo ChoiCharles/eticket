@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Divider } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import { hamburgerState } from 'atoms/NavState';
+import hamburgerState from 'atoms/NavState';
 import TopNav from './HamburgerItems/TopNav';
 import MyMenu from './HamburgerItems/MyMenu';
 import MainMenu from './HamburgerItems/MainMenu';

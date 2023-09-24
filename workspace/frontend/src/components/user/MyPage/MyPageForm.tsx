@@ -1,12 +1,13 @@
 import './MyPage.scss';
 import React, { useEffect } from 'react';
-import useAccount from 'hooks/useAccount';
 
 import copyText from 'assets/CopyText.png';
-import testimage from 'assets/test.jfif';
 
 import dummyConcerts from 'dummys.ts';
 
+import NFTCard from 'components/common/NFTCard/NFTCard';
+
+import useAccount from 'hooks/useAccount';
 import { useMetaData } from 'hooks/useMetaData';
 import useMovePage from 'hooks/useMovePage';
 
@@ -42,20 +43,6 @@ function MyPage() {
     loginMetaMask();
     connectIPFS();
   }, []);
-
-  const NFTCard = () => {
-    return (
-      <div className="NFTContainer">
-        <div className="NFTCard">
-          {/* <img src={metadata?.image} alt="your NFT" /> */}
-          <img src={testimage} alt="your NFT" />
-          <div className="NFTInfo">
-            <h4>내 NFT</h4>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   const MyTicket = () => {
     return (
