@@ -1,0 +1,26 @@
+.NFTContainer {
+  display: flex;
+  justify-content: center;
+
+  .NFTCard {
+    height: 100%;
+    width: 90%;
+    margin-right: 0px;
+  
+    img {
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      border-radius: 20px;
+    }
+    
+    .NFTInfo {
+      display: flex;
+      justify-content: space-between;
+  
+      h4{
+        margin: 5px 0px 10px 15px;
+      }
+    }
+  }
+}
