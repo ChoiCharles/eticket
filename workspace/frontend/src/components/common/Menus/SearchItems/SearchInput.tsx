@@ -12,13 +12,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import useMovePage from 'hooks/useMovePage';
 
 interface Props {
+  // eslint-disable-next-line no-unused-vars
   handleAddKeyword: (keyword: string) => void;
   handleToggleSearch: () => void;
 }
 
 const SearchInput = ({ handleAddKeyword, handleToggleSearch }: Props) => {
   const [keyword, setKeyword] = useState('');
-  const movePage = useMovePage();
+  const { movePage } = useMovePage();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
