@@ -1,4 +1,4 @@
 .gocache
 
-Dockerfile
+Dockerfile/**
 !Dockerfile/Dockerfile
