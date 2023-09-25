@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -82,11 +81,10 @@ class JoinMembershipController {
                   user.getBlockChainWallet().toString(),
                   user.getRole().toString()));
     } catch (final UserDuplicateException e) {
-      // TODO(meo-s): add description
       throw ApiException.builder()
           .withCause(e)
           .withStatus(HttpStatus.CONFLICT)
-          .withSummary("user duplicate")
+          .withMessage("user duplicate")
           .build();
     }
   }

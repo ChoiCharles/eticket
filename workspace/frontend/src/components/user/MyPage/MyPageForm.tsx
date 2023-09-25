@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable react/button-has-type */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import './MyPage.scss';
 import React, { useEffect } from 'react';
 
@@ -44,6 +48,7 @@ function MyPage() {
     connectIPFS();
   }, []);
 
+  // eslint-disable-next-line react/no-unstable-nested-components
   const MyTicket = () => {
     return (
       <div className="ticket-container">

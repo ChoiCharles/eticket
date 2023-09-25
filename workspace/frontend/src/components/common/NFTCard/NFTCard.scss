@@ -1,6 +1,8 @@
 .NFTContainer {
   display: flex;
   justify-content: center;
+  width: 50%;
+  margin-bottom: 50px;
 
   .NFTCard {
     height: 100%;
@@ -15,8 +17,8 @@
     }
     
     .NFTInfo {
-      display: flex;
-      justify-content: space-between;
+      // display: flex;
+      // justify-content: space-between;
   
       h4{
         margin: 5px 0px 10px 15px;
