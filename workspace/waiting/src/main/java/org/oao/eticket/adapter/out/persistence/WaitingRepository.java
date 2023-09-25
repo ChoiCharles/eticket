@@ -1,6 +1,5 @@
 package org.oao.eticket.adapter.out.persistence;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -35,8 +34,8 @@ public class WaitingRepository {
   /**
    * @desc: Sorted Set 요소 삭제
    */
-  public void zPop(String key, Long size) {
-    opsForZSet().popMin(key, size);
+  public Set<ZSetOperations.TypedTuple<Integer>> zPop(String key, Long size) {
+    return opsForZSet().popMin(key, size);
   }
 
   /**
@@ -63,8 +62,8 @@ public class WaitingRepository {
   /**
    * @desc: Sorted Set 자료형 start ~ end 까지 조회.
    */
-  public Set<Integer> zRange(String key, Long start, Long end) {
-    return opsForZSet().range(key, start, end);
+  public Set<Integer> zRange(String key) {
+    return opsForZSet().range(key, 0, -1);
   }
 
   /**

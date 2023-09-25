@@ -15,7 +15,10 @@ public class GetOrderService implements GetOrderUserCase {
 
   @Override
   public Long getOrder(Integer userId, Integer performanceScheduleId) {
-    String key = "Waiting::" + performanceScheduleId;
-    return getOrderPort.getOrder(key, userId);
+    return getOrderPort.getOrder(getKey(performanceScheduleId), userId);
+  }
+
+  public String getKey(Integer pid) {
+    return "Waiting::" + pid;
   }
 }

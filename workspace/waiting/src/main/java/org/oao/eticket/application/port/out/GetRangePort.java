@@ -2,6 +2,6 @@ package org.oao.eticket.application.port.out;
 
 import java.util.Set;
 
-public interface GetKeysPort {
-    Set<String> getKeys();
+public interface GetRangePort {
+    Set<Integer> getRange(String key);
 }
