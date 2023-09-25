@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import SearchInput from './SearchItems/SearchInput';
 import RecentKeyword from './SearchItems/RecentKeyword';
+import SearchResult from './SearchItems/SearchResult';
 
 const Search = () => {
   const [keyword, setKeyword] = useState<string>('');
@@ -20,9 +21,7 @@ const Search = () => {
     <Box>
       <SearchInput />
       {keyword.length > 0 ? (
-        <Typography variant="h6">
-          <b>{`'${keyword}'`}</b> 검색결과
-        </Typography>
+        <SearchResult keyword={keyword} />
       ) : (
         <RecentKeyword />
       )}
