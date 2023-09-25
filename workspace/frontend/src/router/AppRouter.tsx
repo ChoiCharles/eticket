@@ -13,6 +13,7 @@ import MetamaskForm from 'pages/User/MetamaskForm';
 import MyPage from 'pages/User/MyPage';
 import MyTicketDetail from 'pages/User/MyTicketDetail';
 import ConcertCalender from 'pages/Concert/ConcertCalender';
+import NFTGallery from 'pages/Etc/NFTGallery';
 
 function AppRouter() {
   return (
@@ -32,6 +33,7 @@ function AppRouter() {
         <Route path="/myticket/:idx" element={<MyTicketDetail />} />
         <Route path="/*" element={<Navigate replace to="/error" />} />
         <Route path="/error" element={<Error />} />
+        <Route path="/gallery" element={<NFTGallery />} />
       </Routes>
     </BrowserRouter>
   );
