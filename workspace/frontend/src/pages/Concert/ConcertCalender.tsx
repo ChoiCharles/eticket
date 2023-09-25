@@ -12,7 +12,7 @@ import Calender from 'components/concertCalender/Calender/Calender';
 function ConcertCalender() {
   return (
     <div>
-      <BackNavBar />
+      <BackNavBar title="" />
       <ConcertInfo />
       <Calender />
     </div>
