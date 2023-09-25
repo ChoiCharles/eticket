@@ -1,6 +1,7 @@
 package org.oao.eticket.common;
 
 import org.oao.eticket.exception.UnexpectedException;
+import org.web3j.utils.Numeric;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -17,8 +18,8 @@ public class TokenUtils {
     }
 
     final var jwtSignature = jwt.substring(jwt.lastIndexOf('.') + 1);
-    sha256.digest(jwtSignature.getBytes(StandardCharsets.UTF_8));
+    sha256.update(jwtSignature.getBytes(StandardCharsets.UTF_8));
 
-    return sha256.toString();
+    return Numeric.toHexString(sha256.digest());
   }
 }
