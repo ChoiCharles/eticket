@@ -8,8 +8,8 @@ import { useParams } from 'react-router-dom';
 
 /** params: 이미지, 콘서트 제목, 캐스팅 */
 function DetailPoster() {
-  const { performanceID } = useParams();
-  console.log(performanceID);
+  const { performanceId } = useParams();
+  console.log(performanceId);
 
   return (
     <div className="detail-poster-container">

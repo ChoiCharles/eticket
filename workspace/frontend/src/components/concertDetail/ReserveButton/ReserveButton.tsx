@@ -6,9 +6,11 @@ import useMovePage from 'hooks/useMovePage';
 
 function ReserveButton() {
   const { movePage } = useMovePage();
-  const { idx } = useParams();
+  const { performanceId } = useParams();
+  console.log(performanceId);
+
   const moveReservePage = () => {
-    movePage(`/ConcertCalender/${idx}`, null);
+    movePage(`/ConcertCalender/${performanceId}`, null);
   };
   return (
     <div className="reservation-btn">
