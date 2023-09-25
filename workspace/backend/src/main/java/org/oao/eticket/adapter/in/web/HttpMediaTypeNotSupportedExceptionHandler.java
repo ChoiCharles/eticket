@@ -12,10 +12,8 @@ class HttpMediaTypeNotSupportedExceptionHandler {
 
   @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
   @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-  ApiErrorResponse catchHttpMediaTypeNotSupportedException(
-      final HttpMediaTypeNotSupportedException e) {
+  ApiErrorResponse handleException(final HttpMediaTypeNotSupportedException e) {
     return ApiErrorResponse.builder()
-        .withSummary("http media type not supported")
         .withMessage(String.format(MESSAGE, e.getContentType()))
         .build();
   }

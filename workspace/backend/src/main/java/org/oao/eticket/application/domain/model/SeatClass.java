@@ -3,6 +3,8 @@ package org.oao.eticket.application.domain.model;
 import lombok.*;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SeatClass {
   SeatClassId id;
   String className;

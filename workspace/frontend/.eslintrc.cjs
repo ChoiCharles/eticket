@@ -12,6 +12,16 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: [
+          '**/*.test.js',
+          '**/*.spec.js',
+          'your-other-dev-files.js',
+        ],
+      },
+    ],
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'react-refresh/only-export-components': [

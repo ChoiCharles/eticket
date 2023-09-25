@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:33066/eticket
     username: root
-    password: ssafy
+    password: hello_eticket
   jpa:
     show-sql: true
     hibernate:
@@ -11,6 +11,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  main:
+    allow-circular-references: true
+
 eticket:
   redis:
     auth:
