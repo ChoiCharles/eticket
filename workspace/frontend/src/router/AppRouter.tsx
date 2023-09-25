@@ -13,6 +13,8 @@ import MetamaskForm from 'pages/User/MetamaskForm';
 import MyPage from 'pages/User/MyPage';
 import MyTicketDetail from 'pages/User/MyTicketDetail';
 import ConcertCalender from 'pages/Concert/ConcertCalender';
+import Search from 'pages/Search/Search';
+import Seat from 'pages/Seat/Seat';
 import NFTGallery from 'pages/Etc/NFTGallery';
 
 function AppRouter() {
@@ -23,9 +25,14 @@ function AppRouter() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/metamask" element={<MetamaskForm />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/concert" element={<ConcertList />} />
-        <Route path="/concert/:idx" element={<ConcertDetail />} />
-        <Route path="/concertCalender/:idx" element={<ConcertCalender />} />
+        <Route path="/concert/:performanceId" element={<ConcertDetail />} />
+        <Route
+          path="/concertCalender/:performanceId"
+          element={<ConcertCalender />}
+        />
+        <Route path="/seat/:performanceId" element={<Seat />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/fail" element={<Fail />} />
         <Route path="/success" element={<Success />} />

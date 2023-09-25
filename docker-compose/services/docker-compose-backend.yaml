@@ -10,8 +10,9 @@ volumes:
 
 services:
   eticket_backend:
-    build: ../../backend/Dockerfile/
+    build: ../../workspace/backend/Dockerfile/
     container_name: eticket_backend
+    image: eticket/backend
     restart: on-failure
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://eticket_mysql:3306/eticket
@@ -21,6 +22,6 @@ services:
       ETICKET.REDIS.AUTH.PORT: 6379
       ETICKET.REDIS.AUTH.DATABASE: 1
     ports:
-      - 8080:8080
+      - 38080:8080
     networks:
       - eticket_net

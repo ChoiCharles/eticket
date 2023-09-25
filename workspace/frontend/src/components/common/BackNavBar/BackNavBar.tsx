@@ -4,7 +4,7 @@ import { Toolbar } from '@mui/material';
 import BackIcon from 'assets/BackIcon.svg';
 import useMovePage from 'hooks/useMovePage';
 
-function BackNavBar() {
+function BackNavBar({ title }: { title: string | null }) {
   const { goBack } = useMovePage();
   //   const moveBack = () => {
   //     goBack();
@@ -21,6 +21,8 @@ function BackNavBar() {
       <div onClick={() => goBack()} aria-hidden>
         <img src={BackIcon} alt="<" />
       </div>
+      <div>{title}</div>
+      <div />
     </Toolbar>
   );
 }
