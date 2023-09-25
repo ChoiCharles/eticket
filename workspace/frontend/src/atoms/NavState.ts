@@ -1,11 +1,8 @@
 import { atom } from 'recoil';
 
-export const searchState = atom<boolean>({
-  key: 'searchState',
+const hamburgerState = atom<boolean>({
+  key: 'hamburgerState',
   default: false,
 });
 
-export const drawerState = atom<boolean>({
-  key: 'drawerState',
-  default: false,
-});
+export default hamburgerState;

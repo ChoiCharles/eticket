@@ -5,7 +5,7 @@ import iconImg from 'assets/ETICKET.svg';
 const Logo = () => {
   return (
     <div>
-      <IconButton>
+      <IconButton href="/">
         <img src={iconImg} alt="logo" />
       </IconButton>
     </div>

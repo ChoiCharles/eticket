@@ -10,23 +10,15 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import useMovePage from 'hooks/useMovePage';
+import useSearch from 'hooks/useSearch';
 
-interface Props {
-  // eslint-disable-next-line no-unused-vars
-  handleAddKeyword: (keyword: string) => void;
-  handleToggleSearch: () => void;
-}
-
-const SearchInput = ({ handleAddKeyword, handleToggleSearch }: Props) => {
+const SearchInput = () => {
   const [keyword, setKeyword] = useState('');
   const { movePage } = useMovePage();
+  const { handleAddKeyword } = useSearch();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
-  };
-
-  const handleClearKeyword = () => {
-    setKeyword('');
   };
 
   const handleSubmit = async (event: FormEvent) => {
@@ -37,8 +29,7 @@ const SearchInput = ({ handleAddKeyword, handleToggleSearch }: Props) => {
 
     await handleAddKeyword(keyword);
     setKeyword('');
-
-    movePage(`/search?${keyword}`, null);
+    movePage(`/search?keyword=${keyword}`, null);
   };
 
   return (
@@ -63,7 +54,7 @@ const SearchInput = ({ handleAddKeyword, handleToggleSearch }: Props) => {
             endAdornment: (
               <InputAdornment position="end">
                 {keyword && (
-                  <IconButton type="button" onClick={handleClearKeyword}>
+                  <IconButton type="button" onClick={() => setKeyword('')}>
                     <CancelIcon fontSize="small" />
                   </IconButton>
                 )}
@@ -80,7 +71,7 @@ const SearchInput = ({ handleAddKeyword, handleToggleSearch }: Props) => {
             },
           }}
         />
-        <IconButton sx={{ mt: 0.5, ml: 1 }} onClick={handleToggleSearch}>
+        <IconButton sx={{ mt: 0.5, ml: 1 }} onClick={() => movePage('/', null)}>
           <CloseIcon />
         </IconButton>
       </Box>
