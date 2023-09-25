@@ -6,13 +6,15 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class ApiException extends RuntimeException {
   private final HttpStatus status;
-  private final String summary;
 
-  private ApiException(
-      final HttpStatus status, final String summary, final String description, final Exception e) {
-    super(description, e);
+  private ApiException(final HttpStatus status, final String message, final Exception cause) {
+    super(message, cause);
     this.status = status;
-    this.summary = summary;
+  }
+
+  private ApiException(final HttpStatus status, final String message) {
+    super(message);
+    this.status = status;
   }
 
   public static ApiExceptionBuilder builder() {
@@ -20,10 +22,10 @@ public class ApiException extends RuntimeException {
   }
 
   public static class ApiExceptionBuilder {
-    private HttpStatus status;
-    private String summary;
-    private String description;
+
     private Exception cause;
+    private HttpStatus status;
+    private String message;
 
     private ApiExceptionBuilder() {}
 
@@ -32,13 +34,8 @@ public class ApiException extends RuntimeException {
       return this;
     }
 
-    public ApiExceptionBuilder withSummary(final String summary) {
-      this.summary = summary;
-      return this;
-    }
-
-    public ApiExceptionBuilder withDescription(final String description) {
-      this.description = description;
+    public ApiExceptionBuilder withMessage(final String message) {
+      this.message = message;
       return this;
     }
 
@@ -48,7 +45,9 @@ public class ApiException extends RuntimeException {
     }
 
     public ApiException build() {
-      return new ApiException(status, summary, description, cause);
+      return cause != null
+          ? new ApiException(status, message, cause)
+          : new ApiException(status, message);
     }
   }
 }

@@ -44,10 +44,10 @@ public class GetPerformanceDetailController {
       throw ApiException.builder()
           .withStatus(HttpStatus.NO_CONTENT)
           .withCause(e)
-          .withSummary(String.format("%s 공연이 존재 하지 않습니다.", e.getMessage()))
+          .withMessage(String.format("%s 공연이 존재 하지 않습니다.", e.getMessage()))
           .build();
     } catch (Exception e) {
-      throw ApiException.builder().withCause(e).withSummary(e.getMessage()).build();
+      throw ApiException.builder().withCause(e).withMessage(e.getMessage()).build();
     }
   }
 }

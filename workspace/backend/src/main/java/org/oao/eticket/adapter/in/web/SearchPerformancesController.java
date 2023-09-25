@@ -20,7 +20,7 @@ public class SearchPerformancesController {
       final var searchResults = searchPerformancesUseCase.search(keyword);
       return ResponseEntity.ok(new SearchPerformancesResponseBody(searchResults));
     } catch (Exception e) {
-      throw ApiException.builder().withCause(e).withSummary(e.getMessage()).build();
+      throw ApiException.builder().withCause(e).withMessage(e.getMessage()).build();
     }
   }
 }
