@@ -1,4 +1,4 @@
-import ConcertItem from 'components/concert-list/ConcertItem/ConcertItem';
+import ConcertItem from 'components/concertList/ConcertItem/ConcertItem';
 import React from 'react';
 import dummyConcert from 'dummys.ts';
 import NavBar from 'components/common/NavBar/NavBar';
@@ -10,6 +10,7 @@ function ConcertList() {
     <div>
       <NavBar />
       <div>
+        {/* 날짜 나타내는 코드 */}
         {dateData.toLocaleDateString('ko-KR', {
           weekday: 'long',
           year: 'numeric',

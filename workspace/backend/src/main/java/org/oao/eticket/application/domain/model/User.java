@@ -4,6 +4,7 @@ import lombok.*;
 
 @Value
 public class User {
+
   UserId id;
   String username;
   String password;
@@ -19,6 +20,10 @@ public class User {
 
     public static UserId of(final int value) {
       return new UserId(value);
+    }
+
+    public static UserId of(final String value) {
+      return new UserId(Integer.parseInt(value));
     }
 
     @Override

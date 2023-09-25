@@ -1,0 +1,46 @@
+.ConcertInfo-outer-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(https://ticketimage.interpark.com/TicketImage/2016/20160530_detailMo/common/detail/musical.jpg);
+  
+}
+
+.ConcertPoster-img-box {
+  padding: 20px;
+}
+
+.ConcertInformation-box {
+  padding: 20px;
+//   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.concert-title-text2 {
+  display: -webkit-box;
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-height: 6.4rem;
+  font-size: 1.6rem;
+  color: white;
+  line-height: 1.33;
+}
+
+.concert-time2 {
+  position: relative;
+  // padding-left: 2.2rem;
+  font-size: 0.8rem;
+  line-height: 1.5rem;
+  color: white;
+}
+
+.concert-period-box2 {
+  display: flex;
+  align-items: flex-end;
+//   gap: 5px;
+  color: white;
+}

@@ -2,20 +2,19 @@ package org.oao.eticket.application.domain.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import jakarta.persistence.Access;
-import org.oao.eticket.application.domain.model.*;
-import org.oao.eticket.application.port.in.CreateAuthTokenUseCase;
-import org.oao.eticket.application.port.out.SaveAuthTokenMetadataCommand;
-import org.oao.eticket.application.port.out.SaveAuthTokenMetadataPort;
-import org.oao.eticket.common.Pair;
-import org.oao.eticket.common.annotation.UseCase;
-import org.springframework.beans.factory.annotation.Value;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
+import org.oao.eticket.application.domain.model.*;
+import org.oao.eticket.application.port.in.CreateAuthTokenUseCase;
+import org.oao.eticket.application.port.out.SaveAuthTokenMetadataCommand;
+import org.oao.eticket.application.port.out.SaveAuthTokenMetadataPort;
+import org.oao.eticket.common.Pair;
+import org.oao.eticket.common.TokenUtils;
+import org.oao.eticket.common.annotation.UseCase;
+import org.springframework.beans.factory.annotation.Value;
 
 @UseCase
 public class CreateAuthTokenService implements CreateAuthTokenUseCase {
@@ -70,10 +69,15 @@ public class CreateAuthTokenService implements CreateAuthTokenUseCase {
             .withClaim("aid", accessTokenId.toString())
             .sign(cryptoAlgorithm);
 
-    final var accessTokenMetadata = new AccessTokenMetadata(accessTokenId, signatureOf(accessJWT));
+    final var accessTokenMetadata =
+        new AccessTokenMetadata(accessTokenId, TokenUtils.signatureOf(accessJWT));
+
     final var refreshTokenMetadata =
         new RefreshTokenMetadata(
-            refreshTokenId, accessTokenId, signatureOf(accessJWT), signatureOf(refreshJWT));
+            refreshTokenId,
+            accessTokenId,
+            accessTokenMetadata.getSignature(),
+            TokenUtils.signatureOf(refreshJWT));
 
     saveAuthTokenMetadataPort.save(
         new SaveAuthTokenMetadataCommand(
@@ -85,9 +89,5 @@ public class CreateAuthTokenService implements CreateAuthTokenUseCase {
 
     return Pair.of(
         Pair.of(accessTokenMetadata, accessJWT), Pair.of(refreshTokenMetadata, refreshJWT));
-  }
-
-  private String signatureOf(final String jwt) {
-    return jwt.substring(jwt.lastIndexOf('.') + 1);
   }
 }

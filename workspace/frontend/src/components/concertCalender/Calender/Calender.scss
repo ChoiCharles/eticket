@@ -1,0 +1,17 @@
+.calendar-inner-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+.calendar-outer-box {
+  width: 100%;
+}
+.dot {
+  height: 8px;
+  width: 8px;
+  background-color: #6f48eb;
+  border-radius: 50%;
+  display: flex;
+  margin-left: 16px;
+  justify-content: center;
+}

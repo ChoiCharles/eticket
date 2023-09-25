@@ -3,9 +3,11 @@ package org.oao.eticket.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.port.in.CreateAuthTokenUseCase;
+import org.oao.eticket.application.port.in.VerifyAccessTokenUseCase;
 import org.oao.eticket.application.port.out.LoadUserPort;
 import org.oao.eticket.infrastructure.security.EticketAuthenticationConverter;
 import org.oao.eticket.infrastructure.security.EticketAuthenticationResultHandler;
+import org.oao.eticket.infrastructure.security.EticketAuthorizationHeaderFilter;
 import org.oao.eticket.infrastructure.security.EticketUserDetailsService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -22,7 +24,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.AuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.filter.GenericFilterBean;
 
 import java.util.List;
 
@@ -85,12 +89,22 @@ class SpringSecurityConfig {
   }
 
   @Bean
+  GenericFilterBean eticketAuthorizationHeaderFilter(
+      final VerifyAccessTokenUseCase verifyAccessTokenUseCase) {
+    return new EticketAuthorizationHeaderFilter(verifyAccessTokenUseCase);
+  }
+
+  @Bean
   SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
     final var eticketAuthenticationFilter =
         context.getBean("eticketAuthenticationFilter", AuthenticationFilter.class);
 
+    final var eticketAuthorizationHeaderFilter =
+        context.getBean(EticketAuthorizationHeaderFilter.class);
+
     return http.cors(cors -> cors.disable())
         .csrf(csrf -> csrf.disable())
+        .addFilterBefore(eticketAuthorizationHeaderFilter, LogoutFilter.class)
         .addFilterBefore(eticketAuthenticationFilter, ExceptionTranslationFilter.class)
         .authorizeHttpRequests(httpRequests -> httpRequests.anyRequest().permitAll())
         .build();

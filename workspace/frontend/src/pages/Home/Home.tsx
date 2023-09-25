@@ -4,18 +4,17 @@ import TopFiveConcertList from 'components/home/TopFiveConcertList/TopFiveConcer
 import ConcertRankingList from 'components/home/ConcertRankingList/ConcertRankingList';
 import NftGalleryList from 'components/home/NftGalleryList/NftGalleryList';
 import ComingSoonList from 'components/home/ComingSoonList/ComingSoonList';
-
-import './Home.scss';
+import { Box } from '@mui/material';
 
 const Home = () => {
   return (
-    <div className="container">
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <NavBar />
       <TopFiveConcertList />
       <ConcertRankingList />
       <NftGalleryList />
       <ComingSoonList />
-    </div>
+    </Box>
   );
 };
 
