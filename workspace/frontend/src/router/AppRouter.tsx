@@ -7,6 +7,7 @@ import MetamaskForm from 'pages/User/MetamaskForm';
 import Search from 'pages/Search/Search';
 import ConcertList from 'pages/Concert/ConcertList';
 import ConcertDetail from 'pages/Concert/ConcertDetail';
+import Waiting from 'pages/Waiting/Waiting';
 import ConcertCalender from 'pages/Concert/ConcertCalender';
 import Seat from 'pages/Seat/Seat';
 import Checkout from 'pages/Checkout/Checkout';
@@ -27,11 +28,12 @@ function AppRouter() {
         <Route path="/search" element={<Search />} />
         <Route path="/concert" element={<ConcertList />} />
         <Route path="/concert/:performanceId" element={<ConcertDetail />} />
+        <Route path="/waiting/:waitingId" element={<Waiting />} />
         <Route
-          path="/concertCalender/:performanceId"
+          path="/concertCalender/:scheduleId"
           element={<ConcertCalender />}
         />
-        <Route path="/seat/:performanceId" element={<Seat />} />
+        <Route path="/seat/:seatId" element={<Seat />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/fail" element={<Navigate replace to="/checkout" />} />
         <Route path="/success" element={<Success />} />
