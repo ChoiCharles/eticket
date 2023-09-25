@@ -1,13 +1,16 @@
 import React from 'react';
 import './ReserveButton.scss';
 import { Button } from '@mui/material';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
+import useMovePage from 'hooks/useMovePage';
 
 function ReserveButton() {
-  const navigate = useNavigate();
-  const { idx } = useParams();
+  const { movePage } = useMovePage();
+  const { performanceId } = useParams();
+  console.log(performanceId);
+
   const moveReservePage = () => {
-    navigate(`/ConcertCalender/${idx}`);
+    movePage(`/ConcertCalender/${performanceId}`, null);
   };
   return (
     <div className="reservation-btn">
@@ -20,6 +23,11 @@ function ReserveButton() {
           color: 'white',
           width: '100%',
           height: '35px',
+          position: 'fixed', // 화면 하단에 고정
+          bottom: '0px', // 하단 여백 조절
+          left: '50%', // 가운데 정렬
+          transform: 'translateX(-50%)', // 가운데 정렬,
+          zIndex: '1000', // 다른 요소 위에 표시
         }}
       >
         예매하기
