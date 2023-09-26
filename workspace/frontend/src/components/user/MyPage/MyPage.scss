@@ -59,7 +59,7 @@
   height: auto;
   background-color: white;
   margin: 20px 10px 0 10px;
-  padding: 10px 10px 50px 10px;
+  padding: 10px 10px 0px 10px;
   border-radius: 10px;
 
   .upper-text {
@@ -89,6 +89,11 @@
   margin: 20px 10px 10px 10px;
   padding: 10px;
   border-radius: 10px;
+
+  img {
+    width: 90px;
+    height: 120px;
+  }
 
   .upper-text {
     display: flex;

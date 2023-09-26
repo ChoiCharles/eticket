@@ -3,6 +3,9 @@ import './Calender.scss';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import moment from 'moment';
+import { Button } from '@mui/material';
+import useMovePage from 'hooks/useMovePage';
+import { useParams } from 'react-router-dom';
 
 /**
  * 콘서트가 진행되는 날짜 정보
@@ -10,7 +13,14 @@ import moment from 'moment';
  *
  */
 function Calender() {
+  const { movePage } = useMovePage();
+  const { performanceId } = useParams();
+  console.log(performanceId);
+
   const [today, setToday] = useState(new Date());
+  const clickSelect = () => {
+    movePage(`/seat/${performanceId}`, null);
+  };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onCalendarChange = (date: any) => {
     if (Array.isArray(date)) {
@@ -53,7 +63,28 @@ function Calender() {
         />
       </div>
       <div className="selected-date">
-        선택한 날짜: {moment(today).format('YYYY년 MM월 DD일')}
+        {moment(today).format('YYYY년 MM월 DD일')}
+        <Button
+          variant="contained"
+          type="button"
+          onClick={clickSelect}
+          style={{
+            background: '#80C0C0',
+            color: 'white',
+            borderRadius: '20px',
+            width: '100px',
+          }}
+        >
+          선택
+        </Button>
+      </div>
+      <div className="base2-line" style={{ marginTop: '20px' }} />
+      <div className="date-reservation-info">
+        <div className="day-ticket-info">
+          <div>1일권</div>
+          <div>120,000원</div>
+        </div>
+        <div className="base2-line" style={{ color: 'white' }} />
       </div>
     </div>
   );

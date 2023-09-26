@@ -13,7 +13,6 @@ public class ApiExceptionHandler {
         .contentType(MediaType.APPLICATION_JSON)
         .body(
             ApiErrorResponse.builder()
-                .withSummary(e.getSummary())
                 .withMessage(e.getMessage())
                 .build());
   }

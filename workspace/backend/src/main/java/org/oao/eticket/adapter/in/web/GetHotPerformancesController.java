@@ -31,20 +31,19 @@ public class GetHotPerformancesController {
       throw ApiException.builder()
           .withCause(e)
           .withStatus(HttpStatus.NO_CONTENT)
-          .withSummary(e.getMessage())
+          .withMessage(e.getMessage())
           .build();
     } catch (IllegalArgumentException e) {
       throw ApiException.builder()
               .withCause(e)
               .withStatus(HttpStatus.BAD_REQUEST)
-              .withSummary(e.getMessage())
-              .withDescription("Query ERROR")
+              .withMessage(e.getMessage())
               .build();
     } catch (Exception e) {
       throw ApiException.builder()
           .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
           .withCause(e)
-          .withSummary(e.getMessage())
+          .withMessage(e.getMessage())
           .build();
     }
   }

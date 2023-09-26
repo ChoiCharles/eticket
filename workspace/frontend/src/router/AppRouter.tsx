@@ -1,19 +1,21 @@
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import Home from 'pages/Home/Home';
+import Signup from 'pages/User/Signup';
+import Login from 'pages/User/Login';
+import MetamaskForm from 'pages/User/MetamaskForm';
+import Search from 'pages/Search/Search';
 import ConcertList from 'pages/Concert/ConcertList';
 import ConcertDetail from 'pages/Concert/ConcertDetail';
-import Home from 'pages/Home/Home';
-import Error from 'pages/Etc/Error';
-import Login from 'pages/User/Login';
-import Signup from 'pages/User/Signup';
-import Checkout from 'pages/Payments/Checkout';
-import Fail from 'pages/Payments/Fail';
-import Success from 'pages/Payments/Success';
-import MetamaskForm from 'pages/User/MetamaskForm';
+import Waiting from 'pages/Waiting/Waiting';
+import ConcertCalender from 'pages/Concert/ConcertCalender';
+import Seat from 'pages/Seat/Seat';
+import Checkout from 'pages/Checkout/Checkout';
+import Success from 'components/checkout/Success';
 import MyPage from 'pages/User/MyPage';
 import MyTicketDetail from 'pages/User/MyTicketDetail';
-import ConcertCalender from 'pages/Concert/ConcertCalender';
-import Search from 'pages/Search/Search';
+import NFTGallery from 'pages/Etc/NFTGallery';
+import Error from 'pages/Etc/Error';
 
 function AppRouter() {
   return (
@@ -25,13 +27,19 @@ function AppRouter() {
         <Route path="/metamask" element={<MetamaskForm />} />
         <Route path="/search" element={<Search />} />
         <Route path="/concert" element={<ConcertList />} />
-        <Route path="/concert/:idx" element={<ConcertDetail />} />
-        <Route path="/concertCalender/:idx" element={<ConcertCalender />} />
+        <Route path="/concert/:performanceId" element={<ConcertDetail />} />
+        <Route path="/waiting/:waitingId" element={<Waiting />} />
+        <Route
+          path="/concertCalender/:scheduleId"
+          element={<ConcertCalender />}
+        />
+        <Route path="/seat/:seatId" element={<Seat />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/fail" element={<Fail />} />
+        <Route path="/fail" element={<Navigate replace to="/checkout" />} />
         <Route path="/success" element={<Success />} />
         <Route path="/my" element={<MyPage />} />
         <Route path="/myticket/:idx" element={<MyTicketDetail />} />
+        <Route path="/gallery" element={<NFTGallery />} />
         <Route path="/*" element={<Navigate replace to="/error" />} />
         <Route path="/error" element={<Error />} />
       </Routes>

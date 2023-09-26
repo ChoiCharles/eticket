@@ -4,9 +4,21 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
-import Eticket from 'assets/ETICKET.svg';
+// import Eticket from 'assets/ETICKET.svg';
+import instance from 'apis/utils/instance';
+import useMovePage from 'hooks/useMovePage';
+import Logo from 'components/common/Logo/Logo';
+
+interface signupType {
+  username: string;
+  password: string;
+  email: string;
+  nickname?: string;
+  role?: string;
+}
 
 function SignupForm() {
+  const { movePage } = useMovePage();
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
   const [emailData, setEmailData] = useState('');
@@ -40,8 +52,8 @@ function SignupForm() {
   };
 
   const handlePW = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])[A-Za-z0-9!@#$%^&*()_+]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{8,}$/;
+
     if (
       event.target.value.length < 8 ||
       !passwordRegex.test(event.target.value)
@@ -61,7 +73,8 @@ function SignupForm() {
     }
   };
 
-  const signupData = () => {
+  // eslint-disable-next-line consistent-return
+  const signupData = async () => {
     if (
       userName &&
       emailData &&
@@ -71,20 +84,34 @@ function SignupForm() {
       !passwordError &&
       !checkPassword
     ) {
-      // Data를 백엔드로 axios 요청을 보낸다.
-      // .then => 로그인 페이지로 이동
-      // .catch => 에러
-      console.log('click');
-      console.log(userName);
-      console.log(passwordData);
-      console.log(emailData);
-      console.log(nickName);
+      try {
+        // POST 요청 보내기
+        const userData: signupType = {
+          email: emailData,
+          nickname: nickName,
+          password: passwordData,
+          username: userName,
+        };
+        console.log(userData);
+        const response = await instance.post('/api/membership/join', userData);
+        if (response.status === 201) {
+          movePage('/login', null);
+        }
+        console.log('회원가입 성공 로그인 페이지로 이동하자', response);
+
+        // 여기서 필요한 추가 로직을 수행할 수 있습니다.
+        // return response;
+      } catch (error) {
+        console.error('회원가입 실패:', error);
+
+        // 에러 처리 로직을 추가할 수 있습니다.
+        throw error;
+      }
     } else {
       // 모달 창으로 에러 띄우기
       console.error('에러');
     }
   };
-
   const validationUsernaem = () => {
     console.log(userName);
     // userName을 백엔드로 보내준다.
@@ -111,9 +138,7 @@ function SignupForm() {
     // 이메일, 이름, 생일, role(공연주최자, 사람), 지갑주소, 닉네임,
     <div className="signup-box">
       <div className="signup-outer-box">
-        <div className="logo-box">
-          <img src={Eticket} alt="" />
-        </div>
+        <Logo />
         <div className="page-name-title">회원가입</div>
         <div>아이디</div>
         <TextField

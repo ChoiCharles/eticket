@@ -1,5 +1,9 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable react/button-has-type */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import './MyPage.scss';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import copyText from 'assets/CopyText.png';
 
@@ -24,6 +28,8 @@ function MyPage() {
   // const { metadata, connectIPFS } = useMetaData()
   const { connectIPFS } = useMetaData();
 
+  const [myAccount, setMyAccount] = useState('');
+
   const copyAddress = (text: string) => {
     try {
       navigator.clipboard.writeText(text);
@@ -44,6 +50,11 @@ function MyPage() {
     connectIPFS();
   }, []);
 
+  useEffect(() => {
+    setMyAccount(account)
+  }, [account])
+
+  // eslint-disable-next-line react/no-unstable-nested-components
   const MyTicket = () => {
     return (
       <div className="ticket-container">
@@ -84,11 +95,18 @@ function MyPage() {
           <h4 className="edit-info-text">회원정보수정</h4>
         </button>
       </div>
-      <div className="wallet">
-        <h3 className="my-wallet">내 지갑 : </h3>
-        <h3 className="address">{account}</h3>
-        <img src={copyText} alt="" onClick={() => copyAddress(account)} />
-      </div>
+        {
+          myAccount=='' ? 
+          <div className="wallet">
+            <h3 style={{marginLeft: '10px'}}>메타마스크 연동이 필요합니다</h3>
+          </div> :
+          <div className="wallet">
+            <h3 className="my-wallet">내 지갑 : </h3>
+            <h3 className="address">{myAccount}</h3>
+            <img src={copyText} alt="" onClick={() => copyAddress(account)} />
+          </div>
+          
+        }
       <div className="inventory">
         <div className="my-NFT">
           <div className="upper-text">

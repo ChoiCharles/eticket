@@ -13,6 +13,17 @@ export default defineConfig({
       typescript: true,
     }),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:38080',
+        changeOrigin: true,
+        rewrite: path_ => path_.replace(/^\/api/, ''),
+        secure: false,
+        ws: true,
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

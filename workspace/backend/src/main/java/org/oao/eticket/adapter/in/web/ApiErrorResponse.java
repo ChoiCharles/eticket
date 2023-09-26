@@ -9,23 +9,16 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ApiErrorResponse {
 
-  private String summary;
-  private String description;
+  private String message;
 
   public static ApiErrorResponseBuilder builder() {
     return new ApiErrorResponseBuilder();
   }
 
   public static class ApiErrorResponseBuilder {
-    private String summary = null;
     private String message = null;
 
     ApiErrorResponseBuilder() {}
-
-    public ApiErrorResponseBuilder withSummary(final String summary) {
-      this.summary = summary;
-      return this;
-    }
 
     public ApiErrorResponseBuilder withMessage(final String message) {
       this.message = message;
@@ -33,7 +26,7 @@ public class ApiErrorResponse {
     }
 
     public ApiErrorResponse build() {
-      return new ApiErrorResponse(summary, message);
+      return new ApiErrorResponse(message);
     }
   }
 }

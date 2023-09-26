@@ -28,13 +28,13 @@ public class GetUpcomingPerformancesController {
       throw ApiException.builder()
           .withCause(e)
           .withStatus(HttpStatus.NO_CONTENT)
-          .withSummary(e.getMessage())
+          .withMessage(e.getMessage())
           .build();
     } catch (Exception e) {
       throw ApiException.builder()
           .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
           .withCause(e)
-          .withSummary(e.getMessage())
+          .withMessage(e.getMessage())
           .build();
     }
   }

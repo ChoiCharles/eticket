@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 // import DetailImg from 'assets/emphisDetail.svg';
 import ImgDetail from 'components/concertDetail/ImgDetail/ImgDetail';
 import './DetailContent.scss';
+import { useParams } from 'react-router-dom';
 import PriceInfo from '../PriceInfo/PriceInfo';
 
 const tabContentStyles = {
@@ -20,6 +21,8 @@ const tabContentStyles = {
  *  + 상세정보 이미지
  */
 export default function DetailContent() {
+  const { performanceId } = useParams();
+  console.log(performanceId);
   const [value, setValue] = React.useState(0);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
