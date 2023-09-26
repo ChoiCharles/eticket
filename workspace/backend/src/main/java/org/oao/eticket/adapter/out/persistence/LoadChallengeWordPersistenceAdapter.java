@@ -15,20 +15,20 @@ class LoadChallengeWordPersistenceAdapter implements LoadChallengeWordPort {
   private final RedisTemplate<String, String> eticketAuthRedisTemplate;
 
   @Override
-  public String load(final User.UserId challenger)
+  public String load(final String challengeWordId)
       throws NoResultException, ExternalServiceException {
 
     final String challengeWord;
 
     try {
       final var valueOperations = eticketAuthRedisTemplate.opsForValue();
-      challengeWord = valueOperations.getAndDelete("c-word:" + challenger);
+      challengeWord = valueOperations.getAndDelete("c-word:" + challengeWordId);
     } catch (Exception e) {
       throw new ExternalServiceException(e);
     }
 
     if (challengeWord == null) {
-      throw new NoResultException("user has no challenge");
+      throw new NoResultException("There is no challenge word of which id is " + challengeWordId + "\n");
     }
 
     return challengeWord;

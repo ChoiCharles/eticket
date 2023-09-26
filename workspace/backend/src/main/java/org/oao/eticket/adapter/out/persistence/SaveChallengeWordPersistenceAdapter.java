@@ -26,9 +26,10 @@ class SaveChallengeWordPersistenceAdapter implements SaveChallengeWordPort {
   public void save(final SaveChallengeWordCommand cmd) throws ExternalServiceException {
     try {
       final var valueOperations = eticketAuthRedisTemplate.opsForValue();
-      valueOperations.set("c-word:" + cmd.challenger(), cmd.challengeWord(), challengeWordLifetime);
+      final var key = "c-word:" + cmd.getChallengeWordId();
+      valueOperations.set(key, cmd.getChallengeWord(), challengeWordLifetime);
     } catch (Exception e) {
-      throw new ExternalServiceException("SaveChallengeWordPersistenceAdapter: save() failed:", e);
+      throw new ExternalServiceException("Failed to save challenge word to external storage.", e);
     }
   }
 }

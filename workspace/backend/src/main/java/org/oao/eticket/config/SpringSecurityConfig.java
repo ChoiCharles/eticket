@@ -1,9 +1,11 @@
 package org.oao.eticket.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.port.in.CreateAuthTokenUseCase;
 import org.oao.eticket.application.port.in.VerifyAccessTokenUseCase;
+import org.oao.eticket.application.port.out.LoadChallengeWordPort;
 import org.oao.eticket.application.port.out.LoadUserPort;
 import org.oao.eticket.infrastructure.security.*;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,13 +22,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
-import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.GenericFilterBean;
-
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -35,7 +34,7 @@ class SpringSecurityConfig {
   private final ApplicationContext context;
 
   @Bean
-  UserDetailsService userDetailsService(final LoadUserPort loadUserPort) {
+  EticketUserDetailsService userDetailsService(final LoadUserPort loadUserPort) {
     return new EticketUserDetailsService(loadUserPort);
   }
 
@@ -46,15 +45,25 @@ class SpringSecurityConfig {
 
   @Bean
   @Qualifier("eticketConcreteAuthenticationConverter")
-  ConcreteAuthenticationConverter usernamePasswordAuthenticationConverter(
+  ConcreteAuthenticationConverter usernamePasswordAuthenticationTokenConverter(
       final ObjectMapper objectMapper) {
+
     return new UsernamePasswordAuthenticationTokenConverter(objectMapper);
+  }
+
+  @Bean
+  @Qualifier("eticketConcreteAuthenticationConverter")
+  ConcreteAuthenticationConverter personalSignAuthenticationTokenConverter(
+      final ObjectMapper objectMapper) {
+
+    return new PersonalSignAuthenticationTokenConverter(objectMapper);
   }
 
   @Bean
   EticketAuthenticationConverter eticketAuthenticationConverter(
       @Qualifier("eticketConcreteAuthenticationConverter")
           final List<ConcreteAuthenticationConverter> converters) {
+
     return new EticketAuthenticationConverter(converters);
   }
 
@@ -68,6 +77,14 @@ class SpringSecurityConfig {
     authenticationProvider.setPasswordEncoder(passwordEncoder);
     authenticationProvider.setHideUserNotFoundExceptions(true);
     return authenticationProvider;
+  }
+
+  @Bean
+  @Qualifier("eticketAuthenticationProvider")
+  AuthenticationProvider eticketPersonalSignAuthenticationProvider(
+      final LoadUserPort loadUserPort, final LoadChallengeWordPort loadChallengeWordPort) {
+
+    return new PersonalSignAuthenticationProvider(loadUserPort, loadChallengeWordPort);
   }
 
   @Bean("eticketAuthenticationManager")
@@ -102,11 +119,13 @@ class SpringSecurityConfig {
   @Bean
   GenericFilterBean eticketAuthorizationHeaderFilter(
       final VerifyAccessTokenUseCase verifyAccessTokenUseCase) {
+
     return new EticketAuthorizationHeaderFilter(verifyAccessTokenUseCase);
   }
 
   @Bean
   SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
+
     final var eticketAuthenticationFilter =
         context.getBean("eticketAuthenticationFilter", AuthenticationFilter.class);
 

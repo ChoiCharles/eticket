@@ -1,10 +1,9 @@
 package org.oao.eticket.application.domain.service;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.oao.eticket.application.domain.model.User;
+import org.oao.eticket.application.domain.model.ChallengeWord;
+import org.oao.eticket.application.port.in.ChallengeWordMapper;
 import org.oao.eticket.application.port.in.CreateChallengeWordUseCase;
-import org.oao.eticket.application.port.out.SaveChallengeWordCommand;
 import org.oao.eticket.application.port.out.SaveChallengeWordPort;
 import org.oao.eticket.common.annotation.UseCase;
 
@@ -12,12 +11,14 @@ import org.oao.eticket.common.annotation.UseCase;
 @RequiredArgsConstructor
 public class CreateChallengeWordService implements CreateChallengeWordUseCase {
 
+  private final ChallengeWordMapper challengeWordMapper;
   private final SaveChallengeWordPort saveChallengeWordPort;
 
   @Override
-  public String create(final User.UserId challenger) {
-    final var challengeWord = RandomStringUtils.randomAlphanumeric(12);
-    saveChallengeWordPort.save(new SaveChallengeWordCommand(challenger, challengeWord));
+  public ChallengeWord create() {
+    final var challengeWord = ChallengeWord.random(16);
+    saveChallengeWordPort.save(challengeWordMapper.mapToSaveCommand(challengeWord));
+
     return challengeWord;
   }
 }

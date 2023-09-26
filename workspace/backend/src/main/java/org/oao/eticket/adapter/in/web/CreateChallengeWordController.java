@@ -16,35 +16,17 @@ import java.net.URI;
 @RequiredArgsConstructor
 class CreateChallengeWordController {
 
-  private record Response(String payload) {}
+  private record Response(String challengeWordId, String challengeWord) {}
 
   private final CreateChallengeWordUseCase createChallengeWordUseCase;
 
-  private EticketUserDetails obtainUserDetails(final Authentication authentication) {
-    if (authentication == null) {
-      throw ApiException.builder()
-          .withStatus(HttpStatus.UNAUTHORIZED)
-          .withMessage("only authorized user can create challenge word")
-          .build();
-    }
-
-    if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
-      throw ApiException.builder()
-          .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-          .withMessage("something was wrong")
-          .build();
-    }
-
-    return userDetails;
-  }
-
   @PostMapping("/auth/challenge")
-  ResponseEntity<?> createChallengeWord(final Authentication authentication) {
+  ResponseEntity<?> createChallengeWord() {
     try {
-      final var userDetails = obtainUserDetails(authentication);
-      final var challengeWord = createChallengeWordUseCase.create(userDetails.getId());
-      return ResponseEntity.created(URI.create("/auth/challenge/" + userDetails.getId()))
-          .body(new Response(challengeWord));
+      final var challengeWord = createChallengeWordUseCase.create();
+
+      return ResponseEntity.created(URI.create("/auth/challenge/" + challengeWord.getId()))
+          .body(new Response(challengeWord.getId().toString(), challengeWord.getWord()));
     } catch (ExternalServiceException e) {
       throw ApiException.builder()
           .withCause(e)

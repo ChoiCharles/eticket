@@ -12,14 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.oao.eticket.application.domain.service.ReserveTicketService;
 import org.oao.eticket.common.WebAdpaterTestsBase;
-import org.oao.eticket.config.MainDatabaseContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-@ExtendWith(MainDatabaseContainer.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class ReserveTicketControllerTests extends WebAdpaterTestsBase {
 

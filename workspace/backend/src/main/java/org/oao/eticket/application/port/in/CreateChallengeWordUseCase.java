@@ -1,7 +1,7 @@
 package org.oao.eticket.application.port.in;
 
-import org.oao.eticket.application.domain.model.User;
+import org.oao.eticket.application.domain.model.ChallengeWord;
 
 public interface CreateChallengeWordUseCase {
-  String create(User.UserId challenger);
+  ChallengeWord create();
 }
