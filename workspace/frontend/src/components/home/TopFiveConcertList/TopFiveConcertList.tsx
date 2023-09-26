@@ -1,5 +1,5 @@
 import React from 'react';
-import Carousel from 'components/common/Carousel/Carousel';
+import Carousel from 'components/home/Carousel/Carousel';
 import { Box } from '@mui/material';
 
 const TopFiveConcertList = () => {

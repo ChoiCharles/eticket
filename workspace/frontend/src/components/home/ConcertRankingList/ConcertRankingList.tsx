@@ -1,15 +1,13 @@
 import React from 'react';
-import Carousel from 'components/common/Carousel/Carousel';
 import { Box, Button, Typography } from '@mui/material';
-
-import './ConcertRankingList.scss';
+import RowStack from '../RowStack/RowStack';
 
 const ConcertRankingList = () => {
   return (
-    <Box>
+    <Box sx={{ textAlign: 'center' }}>
       <Typography variant="h6">공연 랭킹</Typography>
-      <Carousel />
-      <Button fullWidth variant="contained">
+      <RowStack />
+      <Button sx={{ color: 'white' }} fullWidth variant="contained">
         전체 보기
       </Button>
     </Box>
