@@ -25,13 +25,21 @@ function MyTicket() {
   //   movePage('/login', null);
   // };
 
-  const [getQRcode, setGetQRcode] = useState(false);
-
   const { idx } = useParams();
   console.log(idx);
 
-  const createQR = () => {
-    setGetQRcode(true);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [rotate, setRotate] = useState(0)
+
+  const imageFlip = () => {
+
+    if (isFlipped) {
+      setRotate(0)
+      setIsFlipped(false)
+    } else {
+      setRotate(180)
+      setIsFlipped(true)
+    }
   };
 
   return (
@@ -49,23 +57,31 @@ function MyTicket() {
                 <h3>움직이는 이미지</h3>
               </div>
               <div className="my-ticket-image">
-                {getQRcode ? (
-                  <div className="QRcode">
-                    <QRcode
-                      id="myqr"
-                      value={JSON.stringify(info)}
-                      size={320}
-                      includeMargin
-                    />
-                  </div>
-                ) : (
-                  <div>
+                <div className="card-inner" style={{transform: `rotateY(${rotate}deg)`}}>
+                  <div className="card-front">
                     <img src={info.image} alt="" />
-                    <button onClick={() => createQR()}>
-                      <h3>QR 코드 생성</h3>
-                    </button>
                   </div>
-                )}
+                  <div className="card-back">
+                    <div className="QRcode">
+                      <QRcode
+                        id="myqr"
+                        value={JSON.stringify(info)}
+                        size={320}
+                        includeMargin
+                      />
+                    </div>
+                  </div>
+                </div>
+                {
+                  isFlipped ? 
+                  <button onClick={imageFlip}>
+                    <h3>포스터</h3>
+                  </button>
+                  :
+                  <button onClick={imageFlip}>
+                    <h3>QR 코드 생성</h3>
+                  </button>
+                }
               </div>
             </div>
           );

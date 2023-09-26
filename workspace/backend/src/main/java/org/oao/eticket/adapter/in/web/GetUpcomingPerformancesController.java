@@ -3,7 +3,6 @@ package org.oao.eticket.adapter.in.web;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.port.in.GetUpcomingPerformancesUsecase;
 import org.oao.eticket.common.annotation.WebAdapter;
-import org.oao.eticket.exception.NoResultException;
 import org.oao.eticket.exception.PerformanceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +28,13 @@ public class GetUpcomingPerformancesController {
       throw ApiException.builder()
           .withCause(e)
           .withStatus(HttpStatus.NO_CONTENT)
-          .withSummary(e.getMessage())
+          .withMessage(e.getMessage())
           .build();
     } catch (Exception e) {
       throw ApiException.builder()
           .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
           .withCause(e)
-          .withSummary(e.getMessage())
+          .withMessage(e.getMessage())
           .build();
     }
   }

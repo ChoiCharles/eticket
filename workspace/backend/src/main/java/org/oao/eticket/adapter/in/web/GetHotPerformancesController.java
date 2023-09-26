@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Performance;
 import org.oao.eticket.application.port.in.GetHotPerformancesUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
-import org.oao.eticket.exception.NoResultException;
 import org.oao.eticket.exception.PerformanceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,20 +31,19 @@ public class GetHotPerformancesController {
       throw ApiException.builder()
           .withCause(e)
           .withStatus(HttpStatus.NO_CONTENT)
-          .withSummary(e.getMessage())
+          .withMessage(e.getMessage())
           .build();
     } catch (IllegalArgumentException e) {
       throw ApiException.builder()
               .withCause(e)
               .withStatus(HttpStatus.BAD_REQUEST)
-              .withSummary(e.getMessage())
-              .withDescription("Query ERROR")
+              .withMessage(e.getMessage())
               .build();
     } catch (Exception e) {
       throw ApiException.builder()
           .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
           .withCause(e)
-          .withSummary(e.getMessage())
+          .withMessage(e.getMessage())
           .build();
     }
   }
