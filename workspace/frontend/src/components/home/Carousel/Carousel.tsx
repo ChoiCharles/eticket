@@ -1,6 +1,6 @@
 import React from 'react';
 import MuiCarousel from 'react-material-ui-carousel';
-import PerformanceItem from '../PerformanceItem/PerformanceItem';
+import CarouselItem from './CarouselItem';
 import items from '../../../dummys';
 
 const Carousel = () => {
@@ -14,7 +14,7 @@ const Carousel = () => {
       fullHeightHover
     >
       {items.map(item => {
-        return <PerformanceItem item={item} key={item.id} />;
+        return <CarouselItem item={item} key={item.id} />;
       })}
     </MuiCarousel>
   );

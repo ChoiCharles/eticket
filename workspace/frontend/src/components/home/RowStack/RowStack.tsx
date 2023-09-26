@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, Typography, Stack } from '@mui/material';
 import useMovePage from 'hooks/useMovePage';
-import PerformanceItem from '../PerformanceItem/PerformanceItem';
+import StackItem from './StackItem';
 
 interface Props {
   title: string;
@@ -19,8 +19,8 @@ const RowStack = ({ title, items, url }: Props) => {
   const { movePage } = useMovePage();
 
   return (
-    <Box sx={{ px: 1.5 }}>
-      <Typography sx={{ mb: 2 }} variant="h5">
+    <Box>
+      <Typography mt={4} mb={2} fontWeight="bold" variant="h5">
         {title}
       </Typography>
       <Box
@@ -34,12 +34,12 @@ const RowStack = ({ title, items, url }: Props) => {
       >
         <Stack direction="row" spacing={2}>
           {items.map(item => {
-            return <PerformanceItem item={item} key={item.id} />;
+            return <StackItem item={item} key={item.id} />;
           })}
         </Stack>
       </Box>
       <Button
-        sx={{ mt: 2, color: '#A3A5AD' }}
+        sx={{ mt: 2, mb: 4, color: '#A3A5AD' }}
         fullWidth
         variant="contained"
         color="secondary"
