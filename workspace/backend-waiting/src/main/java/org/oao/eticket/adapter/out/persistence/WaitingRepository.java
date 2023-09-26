@@ -1,5 +1,7 @@
 package org.oao.eticket.adapter.out.persistence;
 
+import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -9,13 +11,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 
 @Repository
+@RequiredArgsConstructor
 public class WaitingRepository {
 
+//  @Resource(name = "waitingStorage")
   private final RedisTemplate<String, Integer> waitingStorage;
-  @Autowired
-  public WaitingRepository(@Qualifier("waitingStorage") RedisTemplate<String, Integer> waitingStorage) {
-    this.waitingStorage = waitingStorage;
-  }
 
   /**
    * @desc: Sorted Set 초기화
@@ -27,7 +27,7 @@ public class WaitingRepository {
   /**
    * @desc: Sorted Set 요소 삽입
    */
-  public void zAdd(String key, Integer userId) {
+  public void zAdd(String key, int userId) {
     opsForZSet().add(key, userId, System.currentTimeMillis());
   }
 

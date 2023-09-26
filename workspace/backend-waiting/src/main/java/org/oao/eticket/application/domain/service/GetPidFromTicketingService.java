@@ -17,6 +17,7 @@ public class GetPidFromTicketingService implements GetPidFromTicketingUseCase {
   @Override
   public Set<Integer> getPidFromTicketing() {
     Set<String> keys = getPidFromTicketing.getPidFromTicketing();
+    System.out.println(keys.toString());
     return keys.stream().map(this::convert).collect(Collectors.toSet());
   }
 

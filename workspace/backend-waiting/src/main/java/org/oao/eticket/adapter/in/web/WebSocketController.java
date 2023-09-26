@@ -32,14 +32,24 @@ public class WebSocketController {
   @Scheduled(fixedDelay = 3000)
   private void schedule() {
     // Ticketing Redis에서 모든 공연 조회
+    System.out.println("작동중입니다");
     Set<Integer> pids = getPidFromTicketingUseCase.getPidFromTicketing();
     for (Integer pid : pids) {
       long size = getSizeUseCase.getSize(pid);
       long available = Math.max(LIMIT_SIZE - size, 0); // 가용 인원 수
+
+      System.out.println(size);
+      System.out.println(available);
+
       if (available > 0) { // 인원 수만큼 Waiting에서 빼기
         Set<ZSetOperations.TypedTuple<Integer>> popList = popQueueUseCase.popQueue(pid, available);
+
+
         for (ZSetOperations.TypedTuple<Integer> pop : popList) {
           Integer userId = pop.getValue();
+
+          System.out.println("pop" + userId);
+
           addTicketingUseCase.addTicketing(userId, pid); // Waiting에서 Ticketing으로 옮기기
           WaitingOrder waitingOrder = new WaitingOrder();
           waitingOrder.setMyTurn(true);

@@ -1,8 +1,8 @@
 package org.oao.eticket.adapter.out.persistence;
 
+import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Repository;
@@ -12,18 +12,14 @@ import java.util.Set;
 
 @Slf4j
 @Repository
+@RequiredArgsConstructor
 public class TicketingRepository {
 
+//  @Resource(name = "ticketingStorage")
   private final RedisTemplate<String, Integer> ticketingStorage;
 
-  @Autowired
-  public TicketingRepository(
-      @Qualifier("ticketingStorage") RedisTemplate<String, Integer> ticketingStorage) {
-    this.ticketingStorage = ticketingStorage;
-  }
 
-
-  private final static Duration TICKETING_TTL = Duration.ofMinutes(5);
+  private static final Duration TICKETING_TTL = Duration.ofMinutes(5);
 
   /**
    * @desc: Sorted Set 초기화
