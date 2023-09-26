@@ -3,8 +3,16 @@ import './LoginForm.scss';
 import { Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Eticket from 'assets/ETICKET.svg';
+import useMovePage from 'hooks/useMovePage';
+import instance from 'apis/utils/instance';
+
+interface loginDataTyoe {
+  id: string;
+  password: string;
+}
 
 function LoginForm() {
+  const { movePage } = useMovePage();
   // 이동 로직
   const navigate = useNavigate();
   // 아이디 데이터 상태 선언
@@ -21,10 +29,23 @@ function LoginForm() {
     setPasswordData(event.target.value);
   };
 
-  const ClickBtn = () => {
+  const ClickBtn = async () => {
+    try {
+      const loginData: loginDataTyoe = {
+        id: usernameData,
+        password: passwordDadta,
+      };
+      const response = await instance.post(`/api/member/login`, loginData); // POST 요청으로 변경
+      if (response.status === 201) {
+        movePage('/', null);
+      }
+    } catch (error) {
+      console.log(error);
+    }
     console.log(usernameData);
     console.log(passwordDadta);
   };
+
   return (
     <div className="login-box">
       <div className="login-outer-box">

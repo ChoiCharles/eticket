@@ -1,7 +1,7 @@
 import React from 'react';
 import './ReserveButton.scss';
 import { Button } from '@mui/material';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import useMovePage from 'hooks/useMovePage';
 
 function ReserveButton() {
@@ -28,6 +28,7 @@ function ReserveButton() {
           left: '50%', // 가운데 정렬
           transform: 'translateX(-50%)', // 가운데 정렬,
           zIndex: '1000', // 다른 요소 위에 표시
+          maxWidth: '500px',
         }}
       >
         예매하기
