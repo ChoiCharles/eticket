@@ -1,25 +1,23 @@
 package org.oao.eticket.infrastructure.security;
 
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.constraints.NotBlank;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.oao.eticket.common.validation.Validation;
 import org.oao.eticket.exception.UnexpectedException;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
-import java.io.IOException;
-
 @RequiredArgsConstructor
-public class UsernamePasswordAuthenticationTokenConverter implements ConcreteAuthenticationConverter {
+public class UsernamePasswordAuthenticationTokenConverter
+    implements ConcreteAuthenticationConverter {
 
   private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource =
       new WebAuthenticationDetailsSource();
@@ -46,20 +44,13 @@ public class UsernamePasswordAuthenticationTokenConverter implements ConcreteAut
 
   @Override
   public Authentication convert(final HttpServletRequest request) {
-    try {
-      final var payload = obtainPayload(request);
+    final var payload = obtainPayload(request);
+    final var authenticationToken =
+        UsernamePasswordAuthenticationToken.unauthenticated(
+            payload.getUsername(), payload.getPassword());
 
-      final var username = payload.getUsername();
-      final var password = payload.getPassword();
-
-      final var authenticationToken =
-          UsernamePasswordAuthenticationToken.unauthenticated(username, password);
-      authenticationToken.setDetails(authenticationDetailsSource.buildDetails(request));
-
-      return authenticationToken;
-    } catch (Exception e) {
-      throw new InternalAuthenticationServiceException(e.getMessage(), e);
-    }
+    authenticationToken.setDetails(authenticationDetailsSource.buildDetails(request));
+    return authenticationToken;
   }
 
   @Override
