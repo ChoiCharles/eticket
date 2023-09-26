@@ -1,24 +1,31 @@
 package org.oao.eticket.infrastructure.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 
-import java.util.HashMap;
-import java.util.Map;
-
-class EticketAuthenticationConverter implements AuthenticationConverter {
+public class EticketAuthenticationConverter implements AuthenticationConverter {
 
   private static final String AUTHENTICATION_STRATEGY_HEADER_NAME = "X-Authentication-Strategy";
-  private final Map<EticketAuthenticationStrategy, AuthenticationConverter> converters;
+  private final Map<EticketAuthenticationStrategy, List<AuthenticationConverter>> converters;
 
-  private EticketAuthenticationConverter(final ObjectMapper objectMapper) {
+  public EticketAuthenticationConverter(final List<ConcreteAuthenticationConverter> converters) {
     this.converters = new HashMap<>();
-    this.converters.put(
-        EticketAuthenticationStrategy.BASIC,
-        new UsernamePasswordAuthenticationTokenConverter(objectMapper));
-    this.converters.put(EticketAuthenticationStrategy.SIGNATURE, null);
+
+    for (final var converter : converters) {
+      final var authenticationStrategy = converter.getSupportedAuthenticationStrategy();
+
+      if (!this.converters.containsKey(authenticationStrategy)) {
+        this.converters.put(authenticationStrategy, new ArrayList<>());
+      }
+
+      this.converters.get(authenticationStrategy).add(converter);
+    }
   }
 
   @Override
@@ -34,5 +41,15 @@ class EticketAuthenticationConverter implements AuthenticationConverter {
       throw new BadAuthenticationRequestException(
           "Unsupported authentication strategy: " + authenticationStrategyName);
     }
+
+    Authentication authentication = null;
+    for (final var converter : this.converters.get(authenticationStrategy)) {
+      authentication = converter.convert(request);
+      if (authentication != null) {
+        break;
+      }
+    }
+
+    return authentication;
   }
 }

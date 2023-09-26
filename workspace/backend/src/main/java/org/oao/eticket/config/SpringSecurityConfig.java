@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.port.in.CreateAuthTokenUseCase;
 import org.oao.eticket.application.port.in.VerifyAccessTokenUseCase;
 import org.oao.eticket.application.port.out.LoadUserPort;
-import org.oao.eticket.infrastructure.security.EticketAuthenticationConverter;
-import org.oao.eticket.infrastructure.security.EticketAuthenticationResultHandler;
-import org.oao.eticket.infrastructure.security.EticketAuthorizationHeaderFilter;
-import org.oao.eticket.infrastructure.security.EticketUserDetailsService;
+import org.oao.eticket.infrastructure.security.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -44,6 +42,20 @@ class SpringSecurityConfig {
   @Bean
   PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  @Qualifier("eticketConcreteAuthenticationConverter")
+  ConcreteAuthenticationConverter usernamePasswordAuthenticationConverter(
+      final ObjectMapper objectMapper) {
+    return new UsernamePasswordAuthenticationTokenConverter(objectMapper);
+  }
+
+  @Bean
+  EticketAuthenticationConverter eticketAuthenticationConverter(
+      @Qualifier("eticketConcreteAuthenticationConverter")
+          final List<ConcreteAuthenticationConverter> converters) {
+    return new EticketAuthenticationConverter(converters);
   }
 
   @Bean
@@ -75,8 +87,7 @@ class SpringSecurityConfig {
 
     final var authenticationFilter =
         new AuthenticationFilter(
-            eticketAuthenticationManager,
-            new EticketAuthenticationConverter(context.getBean(ObjectMapper.class)));
+            eticketAuthenticationManager, context.getBean(EticketAuthenticationConverter.class));
 
     final var authenticationResultHandler =
         new EticketAuthenticationResultHandler(createAuthTokenUseCase);
