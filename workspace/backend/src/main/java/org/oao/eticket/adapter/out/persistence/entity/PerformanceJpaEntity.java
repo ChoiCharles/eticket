@@ -34,7 +34,7 @@ public class PerformanceJpaEntity {
   @Column private String posterImagePath;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "concertHall_id")
+  @JoinColumn(name = "concert_hall_id")
   private ConcertHallJpaEntity concertHallJpaEntity;
 
   @ManyToOne(fetch = FetchType.LAZY)

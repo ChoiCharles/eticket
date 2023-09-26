@@ -21,7 +21,7 @@ public interface PerformanceMapper {
     @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))"),
     @Mapping(target = "concertHall", source = "concertHallJpaEntity"),
     @Mapping(target = "host", source = "hostJpaEntity"),
-    @Mapping(target = "seatClassList", ignore = true),
+    @Mapping(target = "seatClassList", source = "seatClassJpaEntityList"),
     @Mapping(target = "performanceScheduleList", ignore = true)
   })
   Performance mapToDomainEntity(PerformanceJpaEntity jpaEntity);
