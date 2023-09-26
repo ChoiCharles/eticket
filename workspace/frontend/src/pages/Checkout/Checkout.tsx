@@ -18,19 +18,12 @@ const Checkout = () => {
 
   useEffect(() => {
     (async () => {
-      // ------  결제위젯 초기화 ------
-      const paymentWidget = await loadPaymentWidget(clientKey, customerKey); // 회원 결제
+      const paymentWidget = await loadPaymentWidget(clientKey, customerKey);
 
-      // ------  결제위젯 렌더링 ------
-      // https://docs.tosspayments.com/reference/widget-sdk#renderpaymentmethods선택자-결제-금액-옵션
       const paymentMethodsWidget = paymentWidget.renderPaymentMethods(
         selector,
         { value: price },
       );
-
-      // ------  이용약관 렌더링 ------
-      // https://docs.tosspayments.com/reference/widget-sdk#renderagreement선택자
-      paymentWidget.renderAgreement('#agreement');
 
       paymentWidgetRef.current = paymentWidget;
       paymentMethodsWidgetRef.current = paymentMethodsWidget;
@@ -41,8 +34,6 @@ const Checkout = () => {
     const paymentWidget = paymentWidgetRef.current;
 
     try {
-      // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
-      // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
       await paymentWidget?.requestPayment({
         orderId: 'asdfasd',
         orderName: '토스 티셔츠 외 2건',
@@ -52,7 +43,6 @@ const Checkout = () => {
         failUrl: `${window.location.origin}/fail`,
       });
     } catch (error) {
-      // 에러 처리하기
       console.error(error);
     }
   };
@@ -63,20 +53,18 @@ const Checkout = () => {
         sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
         elevation={0}
       >
-        <Typography variant="h3" sx={{ mt: 10, mb: 3 }}>
+        <Typography variant="h4" sx={{ mt: 5, mb: 3 }}>
           주문서
         </Typography>
-        <Typography variant="h5">{`${price.toLocaleString()}원`}</Typography>
+        <Typography variant="h6">{`${price.toLocaleString()}원`}</Typography>
       </Paper>
-      <div>
-        <div id="payment-widget" />
-        <div id="agreement" />
-      </div>
+      <div id="payment-widget" />
       <Button
         type="button"
         variant="contained"
         size="large"
         fullWidth
+        sx={{ mb: 5 }}
         onClick={handlePay}
       >
         결제하기

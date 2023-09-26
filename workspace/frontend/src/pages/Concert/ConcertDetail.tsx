@@ -3,7 +3,7 @@ import DetailPoster from 'components/concertDetail/DetailPoster/DetailPoster';
 import ReserveButton from 'components/concertDetail/ReserveButton/ReserveButton';
 import ConcertDetailLayout from 'layout/ConcertDetailLayout/ConcertDetailLayout/ConcertDetailLayout';
 import React from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 
 function ConcertDetail() {
   const { performanceId } = useParams();

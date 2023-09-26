@@ -10,7 +10,7 @@ function ConcertList() {
   return (
     <div>
       <BackNavBar title="콘서트 랭킹" />
-      <div>
+      <div style={{ padding: '20px' }}>
         {/* 날짜 나타내는 코드 */}
         {dateData.toLocaleDateString('ko-KR', {
           weekday: 'long',
