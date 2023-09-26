@@ -1,12 +1,9 @@
 import React from 'react';
 import Carousel from 'components/common/Carousel/Carousel';
-import { Button, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import useMovePage from 'hooks/useMovePage';
 
-import './NftGalleryList.scss';
-
 const NftGalleryList = () => {
-
   const { movePage } = useMovePage();
 
   const handleMovePage = () => {
@@ -14,13 +11,13 @@ const NftGalleryList = () => {
   };
 
   return (
-    <div className="nft-gallery">
+    <Box>
       <Typography variant="h6">NFT 전시장</Typography>
       <Carousel />
       <Button fullWidth variant="contained" onClick={() => handleMovePage()}>
         전체 보기
       </Button>
-    </div>
+    </Box>
   );
 };
 
