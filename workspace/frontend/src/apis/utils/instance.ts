@@ -3,7 +3,7 @@ import LocalStorage from 'apis/storage/LocalStorage';
 import SessionStorage from 'apis/storage/SessionStorage';
 
 const instance: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:8080/',
+  // baseURL: 'http://localhost:38080/api/',
   headers: {
     'Content-Type': 'application/json',
   },
