@@ -19,7 +19,9 @@ function DetailPoster() {
         alt=""
         className="poster-image"
       />
+      <div className="good">good</div>
       <div className="poster-concert-box">
+        {/* <div>good</div> */}
         <div className="poster-left-box">
           <img
             src="https://tickets.interpark.com/contents/_next/image?url=https%3A%2F%2Fticketimage.interpark.com%2FPlay%2Fimage%2Flarge%2F23%2F23013495_p.gif&w=750&q=75"
