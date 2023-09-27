@@ -20,6 +20,6 @@ public class SectionAndSeatClassRelationJpaEntity {
   private SectionJpaEntity sectionJpaEntity;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumns({@JoinColumn(name = "seat_class_id"), @JoinColumn(name = "performance_id")})
+  @JoinColumn(name = "seat_class_id")
   private SeatClassJpaEntity seatClassJpaEntity;
 }

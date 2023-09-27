@@ -6,7 +6,6 @@ import lombok.*;
 import org.oao.eticket.application.domain.model.SeatClass;
 
 @Entity
-@IdClass(SeatClassJpaEntityId.class)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "seat_class")
@@ -16,7 +15,6 @@ public class SeatClassJpaEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Id
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "performance_id")
   private PerformanceJpaEntity performanceJpaEntity;
