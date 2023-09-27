@@ -25,6 +25,17 @@ public class RedisConfig {
     return redisTemplate;
   }
 
+  private RedisTemplate<String, Object> createObjectRedisTemplate(
+      final RedisConnectionFactory connectionFactory) {
+    RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+    redisTemplate.setKeySerializer(new StringRedisSerializer());
+    redisTemplate.setValueSerializer(new StringRedisSerializer());
+    redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+    redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
+    redisTemplate.setConnectionFactory(connectionFactory);
+    return redisTemplate;
+  }
+
   @Bean("eticketAuthRedisConnectionFactory")
   RedisConnectionFactory eticketAuthRedisConnectionFactory(
       @Value("${eticket.redis.auth.host}") final String host,
@@ -40,6 +51,16 @@ public class RedisConfig {
       @Value("${eticket.redis.ticketing.host}") final String host,
       @Value("${eticket.redis.ticketing.port}") final int port,
       @Value("${eticket.redis.ticketing.database}") final String database) {
+    final var connectionFactory = new LettuceConnectionFactory(host, port);
+    connectionFactory.setDatabase(Integer.parseInt(database));
+    return connectionFactory;
+  }
+
+  @Bean("eticketReservationRedisConnectionFactory")
+  RedisConnectionFactory eticketReservationRedisConnectionFactory(
+      @Value("${eticket.redis.reservation.host}") final String host,
+      @Value("${eticket.redis.reservation.port}") final int port,
+      @Value("${eticket.redis.reservation.database}") final String database) {
     final var connectionFactory = new LettuceConnectionFactory(host, port);
     connectionFactory.setDatabase(Integer.parseInt(database));
     return connectionFactory;
@@ -61,30 +82,9 @@ public class RedisConfig {
     return ticketingRedisTemplate;
   }
 
-    private RedisTemplate<String, Object> createObjectRedisTemplate(
-            final RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new StringRedisSerializer());
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
-        redisTemplate.setConnectionFactory(connectionFactory);
-        return redisTemplate;
-    }
-
-    @Bean("eticketReservationRedisConnectionFactory")
-    RedisConnectionFactory eticketReservationRedisConnectionFactory(
-            @Value("${eticket.redis.reservation.host}") final String host,
-            @Value("${eticket.redis.reservation.port}") final int port,
-            @Value("${eticket.redis.reservation.database}") final String database) {
-        final var connectionFactory = new LettuceConnectionFactory(host, port);
-        connectionFactory.setDatabase(Integer.parseInt(database));
-        return connectionFactory;
-    }
-
-    @Bean("eticketReservationRedisTemplate")
-    RedisTemplate<String, Object> eticketReservationRedisTemplate(
-            final RedisConnectionFactory eticketReservationRedisConnectionFactory) {
-        return createObjectRedisTemplate(eticketReservationRedisConnectionFactory);
-    }
+  @Bean("eticketReservationRedisTemplate")
+  RedisTemplate<String, Object> eticketReservationRedisTemplate(
+      final RedisConnectionFactory eticketReservationRedisConnectionFactory) {
+    return createObjectRedisTemplate(eticketReservationRedisConnectionFactory);
+  }
 }
