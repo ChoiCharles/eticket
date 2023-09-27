@@ -139,7 +139,7 @@ class SpringSecurityConfig {
         .authorizeHttpRequests(
             httpRequests ->
                 httpRequests
-                    .requestMatchers("/membership/join", "/signin")
+                    .requestMatchers("/membership/join", "/auth/signin", "/swagger-ui/*", "/v3/**")
                     .permitAll()
                     .requestMatchers("/**")
                     .authenticated()
