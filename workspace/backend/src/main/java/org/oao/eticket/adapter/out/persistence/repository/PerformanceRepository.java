@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.oao.eticket.adapter.out.persistence.entity.PerformanceJpaEntity;
 import org.oao.eticket.adapter.out.persistence.mapper.PerformanceMapper;
 import org.oao.eticket.application.domain.model.Performance;
+import org.oao.eticket.application.domain.model.PerformanceSummary;
 import org.oao.eticket.application.port.out.LoadHotPerformancesPort;
 import org.oao.eticket.application.port.out.LoadPerformanceDetailPort;
 import org.oao.eticket.application.port.out.LoadUpcomingPerformancesPort;
@@ -38,7 +39,7 @@ public class PerformanceRepository
                   PerformanceJpaEntity.class)
               .setParameter("performanceId", performanceId.getValue())
               .getSingleResult();
-      return performanceMapper.mapToDomainEntityInDetail(performanceJpaEntity);
+      return performanceMapper.mapToDomainEntity(performanceJpaEntity);
     } catch (NoResultException e) {
       throw new PerformanceNotFoundException(String.valueOf(performanceId.getValue()), e);
     } catch (Exception e) {
@@ -47,7 +48,7 @@ public class PerformanceRepository
   }
 
   @Override
-  public List<Performance> loadHotPerformances() {
+  public List<PerformanceSummary> loadHotPerformances() {
     try {
       final var queryResults =
           entityManager
@@ -64,14 +65,14 @@ public class PerformanceRepository
       if (queryResults.isEmpty()) {
         throw new PerformanceNotFoundException("인기 있는 공연이 존재 하지 않습니다.");
       }
-      return performanceMapper.mapToDomainEntity(queryResults);
+      return performanceMapper.mapToSummaryDomainEntity(queryResults);
     } catch (Exception e) {
       throw e;
     }
   }
 
   @Override
-  public List<Performance> loadUpcomings() {
+  public List<PerformanceSummary> loadUpcomings() {
     try {
       final var queryResults =
           entityManager
@@ -88,7 +89,7 @@ public class PerformanceRepository
       if (queryResults.isEmpty()) {
         throw new PerformanceNotFoundException("오픈 예정인 공연이 존재 하지 않습니다.");
       }
-      return performanceMapper.mapToDomainEntity(queryResults);
+      return performanceMapper.mapToSummaryDomainEntity(queryResults);
     } catch (IllegalArgumentException e) {
       // QUERY 오타
       throw e;

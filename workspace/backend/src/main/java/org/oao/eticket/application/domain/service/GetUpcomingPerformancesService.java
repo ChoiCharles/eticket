@@ -1,7 +1,7 @@
 package org.oao.eticket.application.domain.service;
 
 import lombok.RequiredArgsConstructor;
-import org.oao.eticket.application.domain.model.Performance;
+import org.oao.eticket.application.domain.model.PerformanceSummary;
 import org.oao.eticket.application.port.in.GetUpcomingPerformancesUsecase;
 import org.oao.eticket.application.port.out.LoadUpcomingPerformancesPort;
 import org.oao.eticket.common.annotation.UseCase;
@@ -14,7 +14,7 @@ public class GetUpcomingPerformancesService implements GetUpcomingPerformancesUs
   private final LoadUpcomingPerformancesPort loadUpcomingPerformancesPort;
 
   @Override
-  public List<Performance> getUpcomingPerformances() {
+  public List<PerformanceSummary> getUpcomingPerformances() {
     return loadUpcomingPerformancesPort.loadUpcomings();
   }
 }

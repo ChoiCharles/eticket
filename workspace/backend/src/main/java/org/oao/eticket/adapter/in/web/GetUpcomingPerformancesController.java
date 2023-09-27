@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Performance;
+import org.oao.eticket.application.domain.model.PerformanceSummary;
 import org.oao.eticket.application.port.in.GetUpcomingPerformancesUsecase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.oao.eticket.exception.PerformanceNotFoundException;
@@ -21,7 +22,7 @@ import java.util.List;
 public class GetUpcomingPerformancesController {
   private final GetUpcomingPerformancesUsecase getUpcomingPerformancesUsecase;
 
-  record UpcomingsResponseBody(List<Performance> upcomingsList) {}
+  record UpcomingsResponseBody(List<PerformanceSummary> upcomingsList) {}
 
   @Operation(
       summary = "예매 오픈 예정 공연 List GET",

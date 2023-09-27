@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Performance;
+import org.oao.eticket.application.domain.model.PerformanceSummary;
 import org.oao.eticket.application.port.in.GetHotPerformancesUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.oao.eticket.exception.PerformanceNotFoundException;
@@ -19,7 +20,7 @@ import java.util.List;
 @WebAdapter
 @RequiredArgsConstructor
 public class GetHotPerformancesController {
-  record GetHotPerformancesResponseBody(List<Performance> hotsList) {
+  record GetHotPerformancesResponseBody(List<PerformanceSummary> hotsList) {
     // TODO(yoo): List<PerformanceSummary>
   }
 
@@ -43,7 +44,7 @@ public class GetHotPerformancesController {
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<?> getHotPerformances() {
     try {
-      List<Performance> list = getHotPerformancesUseCase.getHotPerformanceList();
+      List<PerformanceSummary> list = getHotPerformancesUseCase.getHotPerformanceList();
       return ResponseEntity.ok(list);
       // ResponseBody에 넣어서 전달
     } catch (PerformanceNotFoundException e) {
