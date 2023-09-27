@@ -1,4 +1,8 @@
 spring:
+  data:
+    redis:
+      repositories:
+        enabled: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:33066/eticket
@@ -20,6 +24,10 @@ eticket:
       host: localhost
       port: 36379
       database: 1
+    reservation:
+      host: localhost
+      port : 36379
+      database: 2
     ticketing:
       host: localhost
       port: 36379
