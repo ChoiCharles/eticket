@@ -23,7 +23,6 @@ const dummyConcerts = [
       'https://ticketimage.interpark.com/Play/image/etc/23/23013590-01.jpg',
     time: '20: 00 ~ 22: 00',
   },
-
   {
     id: 2,
     image:
@@ -105,12 +104,12 @@ const dummyConcerts = [
   {
     id: 9,
     image:
-      'https://tickets.interpark.com/contents/_next/image?url=https%3A%2F%2Fticketimage.interpark.com%2FPlay%2Fimage%2Flarge%2F23%2F23010643_p.gif&w=1200&q=75',
+      'https://tickets.interpark.com/contents/_next/image?url=https%3A%2F%2Fticketimage.interpark.com%2FPlay%2Fimage%2Flarge%2F23%2F23012698_p.gif&w=1200&q=75',
     title: '임영웅 콘서트 IM HERO TOUR 2023 - 서울',
     location: 'KSPO DOME(올림픽체조경기장)',
     date: '2023-09-18 ~ 2023-09-15',
     concertdetail:
-      'https://ticketimage.interpark.com/Play/image/etc/23/23013495-02.jpg',
+      'https://ticketimage.interpark.com/Play/image/etc/23/23012698-06.jpg',
     time: '20: 00 ~ 22: 00',
   },
   {
@@ -127,13 +126,3 @@ const dummyConcerts = [
 ];
 
 export default dummyConcerts;
-
-// const detailDummy = [
-//   {
-//     id: 0,
-//     image: '',
-//     title: '',
-//     time: '',
-//     location: '',
-//   },
-// ];

@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import ImgDetail from 'components/concertDetail/ImgDetail/ImgDetail';
 import './DetailContent.scss';
 import { useParams } from 'react-router-dom';
+import ProducerInfo from 'components/concertDetail/ProducerInfo/ProducerInfo';
 import PriceInfo from '../PriceInfo/PriceInfo';
 
 const tabContentStyles = {
@@ -98,13 +99,10 @@ export default function DetailContent({ info }: { info: string }) {
         hidden={value !== 1}
         id="tabpanel-1"
         aria-labelledby="tab-1"
-        sx={tabContentStyles}
+        sx={{ textalign: 'center' }}
       >
-        {/* 공연장정보 컨텐츠 */}
         <div>
-          <h2>서울 잠실종합운동장 올림픽 주경기장</h2>
-          <div>맵 API</div>
-          {/* 여기에 공연장정보 컨텐츠 내용을 추가 */}
+          <ProducerInfo />
         </div>
       </Box>
       <Box

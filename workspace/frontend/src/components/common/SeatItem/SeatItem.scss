@@ -1,0 +1,10 @@
+.seat-item-container2 {
+  display: flex;
+  flex-wrap: wrap; /* wrap 설정으로 한 줄이 꽉 차면 다음 줄로 넘어갑니다. */
+  margin: -10px; /* 각각의 박스 사이의 간격 조절 */
+  justify-content: center;
+}
+
+.seat-section-wrapper2 {
+  margin: 10px; /* 간격 조절 */
+}
