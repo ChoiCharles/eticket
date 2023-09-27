@@ -27,3 +27,5 @@ eticket:
       issuer: eticket.org
       access-token-lifetime: 3600
       refresh-token-lifetime: 345600
+    challenge:
+      lifetime: 180
