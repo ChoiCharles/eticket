@@ -14,7 +14,11 @@ import org.oao.eticket.application.domain.model.User;
 import org.oao.eticket.application.port.in.ReserveTicketCommand;
 import org.oao.eticket.application.port.in.ReserveTicketUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
+import org.oao.eticket.exception.TokenVerificationException;
+import org.oao.eticket.infrastructure.security.EticketUserDetails;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @WebAdapter
@@ -41,7 +45,14 @@ public class ReserveTicketController {
       })
   @PostMapping(path = "/reservations")
   ResponseEntity<Reservation> reserveTicket(
-      @Valid @RequestBody ReservationDetail reservationDetail) {
+          @Valid @RequestBody ReservationDetail reservationDetail, Authentication authentication) {
+
+    if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
+      throw new RuntimeException("out");
+    }
+    if (!(User.UserId.of(reservationDetail.getUserId()).equals(userDetails.getId()))) {
+      throw ApiException.builder().withStatus(HttpStatus.FORBIDDEN).withMessage("Invalid Permission").build();
+    }
 
     ReserveTicketCommand command =
         ReserveTicketCommand.builder()
