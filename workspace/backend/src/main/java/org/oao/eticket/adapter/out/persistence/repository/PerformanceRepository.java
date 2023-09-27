@@ -86,7 +86,7 @@ public class PerformanceRepository
               .setMaxResults(10)
               .getResultList();
       if (queryResults.isEmpty()) {
-        throw new PerformanceNotFoundException("인기 있는 공연이 존재 하지 않습니다.");
+        throw new PerformanceNotFoundException("오픈 예정인 공연이 존재 하지 않습니다.");
       }
       return performanceMapper.mapToDomainEntity(queryResults);
     } catch (IllegalArgumentException e) {
