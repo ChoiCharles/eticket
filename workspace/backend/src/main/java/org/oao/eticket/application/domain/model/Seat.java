@@ -7,8 +7,6 @@ import lombok.Data;
 @Builder
 public class Seat {
   private Integer id;
-  private ConcertHall concertHall;
-  private String section;
   private String row;
   private String number;
   private Integer positionX;
