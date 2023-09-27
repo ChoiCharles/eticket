@@ -20,6 +20,10 @@ eticket:
       host: localhost
       port: 36379
       database: 1
+    ticketing:
+      host: localhost
+      port: 36379
+      database: 4
   auth:
     jwt:
       insecure: true
