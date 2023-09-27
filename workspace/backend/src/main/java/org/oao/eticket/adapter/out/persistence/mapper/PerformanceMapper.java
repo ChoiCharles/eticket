@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,
     uses = {
-      VenueMapper.class,
+      ConcertHallMapper.class,
       SeatClassMapper.class,
       UserMapper.class,
       PerformanceScheduleMapper.class
@@ -19,9 +19,9 @@ public interface PerformanceMapper {
   // 일반적 (공연의 간략한 정보만 포함할 때는 좌석 등급과 공연 스케줄은 생략)
   @Mappings({
     @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))"),
-    @Mapping(target = "venue", source = "venueJpaEntity"),
+    @Mapping(target = "concertHall", source = "concertHallJpaEntity"),
     @Mapping(target = "host", source = "hostJpaEntity"),
-    @Mapping(target = "seatClassList", ignore = true),
+    @Mapping(target = "seatClassList", source = "seatClassJpaEntityList"),
     @Mapping(target = "performanceScheduleList", ignore = true)
   })
   Performance mapToDomainEntity(PerformanceJpaEntity jpaEntity);
@@ -32,7 +32,7 @@ public interface PerformanceMapper {
   @Named("mapToDomainDetail")
   @Mappings({
     @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))"),
-    @Mapping(target = "venue", source = "venueJpaEntity"),
+    @Mapping(target = "concertHall", source = "concertHallJpaEntity"),
     @Mapping(target = "host", source = "hostJpaEntity"),
     @Mapping(target = "seatClassList", source = "seatClassJpaEntityList"),
     @Mapping(target = "performanceScheduleList", source = "performanceScheduleJpaEntityList")
@@ -41,7 +41,7 @@ public interface PerformanceMapper {
 
   @Mappings({
     @Mapping(target = "id", source = "id.value"),
-    @Mapping(target = "venueJpaEntity", source = "venue"),
+    @Mapping(target = "concertHallJpaEntity", source = "concertHall"),
     @Mapping(target = "hostJpaEntity", source = "host"),
     @Mapping(target = "seatClassJpaEntityList", ignore = true),
     @Mapping(target = "performanceScheduleJpaEntityList", ignore = true)
