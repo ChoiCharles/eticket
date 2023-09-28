@@ -1,4 +1,8 @@
 spring:
+  data:
+    redis:
+      repositories:
+        enabled: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:33066/eticket
@@ -20,6 +24,14 @@ eticket:
       host: localhost
       port: 36379
       database: 1
+    reservation:
+      host: localhost
+      port : 36379
+      database: 2
+    ticketing:
+      host: localhost
+      port: 36379
+      database: 4
   auth:
     jwt:
       insecure: true
@@ -27,3 +39,5 @@ eticket:
       issuer: eticket.org
       access-token-lifetime: 3600
       refresh-token-lifetime: 345600
+    challenge:
+      lifetime: 180

@@ -1,13 +1,12 @@
 import React from 'react';
-import Carousel from 'components/common/Carousel/Carousel';
-
-import './TopFiveConcertList.scss';
+import Carousel from 'components/home/Carousel/Carousel';
+import { Box } from '@mui/material';
 
 const TopFiveConcertList = () => {
   return (
-    <div className="top-five">
+    <Box>
       <Carousel />
-    </div>
+    </Box>
   );
 };
 

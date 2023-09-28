@@ -24,11 +24,18 @@ public class GetPerformanceDetailController {
   private final GetPerformanceDetailUseCase getPerformanceDetailUseCase;
 
   @Operation(
-      summary = "공연 상세 정보 불러 오기",
+      summary = "공연 상세 정보",
+      description = "특정 공연을 클릭 했을 때 해당 ID를 가진 공연의 상세 정보가 조회 됩니다. 이 곳에서 공연 예매가 가능 합니다.",
       responses = {
         @ApiResponse(
             responseCode = "200",
-            description = "특정 공연 상세 정보 불러 오기 성공",
+            description = "OK 공연 상세 불러오기",
+            content =
+                @Content(
+                    schema = @Schema(implementation = GetPerformanceDetailResponseBody.class))),
+        @ApiResponse(
+            responseCode = "400",
+            description = "NO CONTENT",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
   @GetMapping(value = "/performances/{performanceId}", produces = "application/json; charset=utf-8")

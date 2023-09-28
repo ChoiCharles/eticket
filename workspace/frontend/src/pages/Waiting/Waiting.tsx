@@ -4,12 +4,50 @@ import useMovePage from 'hooks/useMovePage';
 import BackNavBar from 'components/common/BackNavBar/BackNavBar';
 import { Box, LinearProgress, Typography } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { Client } from '@stomp/stompjs';
 
 const Waiting = () => {
   const [order, setOrder] = useState(3);
   const { waitingId } = useParams();
   const { dateId } = useParams();
   const { movePage } = useMovePage();
+
+  const [connected, setConnected] = useState<boolean>(false);
+  const [stompClient, setStompClient] = useState<Client | null>(null);
+  console.log(connected);
+  console.log(stompClient);
+
+  useEffect(() => {
+    const client = new Client({
+      brokerURL: `ws://localhost:8081/ws`,
+      reconnectDelay: 5000,
+      debug: str => console.log(str),
+    });
+
+    client.onConnect = () => {
+      setConnected(true);
+      setStompClient(client);
+
+      // client.subscribe(
+      //   ,
+      //   (response) => {
+      //     const message = JSON.parse(response.body);
+      //     console.log(message);
+      //   }
+      // );
+    };
+
+    client.onDisconnect = () => {
+      setConnected(false);
+      setStompClient(null);
+    };
+
+    client.activate();
+
+    return () => {
+      client.deactivate();
+    };
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {

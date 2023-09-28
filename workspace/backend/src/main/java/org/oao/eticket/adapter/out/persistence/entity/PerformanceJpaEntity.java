@@ -34,8 +34,8 @@ public class PerformanceJpaEntity {
   @Column private String posterImagePath;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "venue_id")
-  private VenueJpaEntity venueJpaEntity;
+  @JoinColumn(name = "concert_hall_id")
+  private ConcertHallJpaEntity concertHallJpaEntity;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
@@ -55,7 +55,7 @@ public class PerformanceJpaEntity {
       String cast,
       String description,
       String posterImagePath,
-      VenueJpaEntity venueJpaEntity,
+      ConcertHallJpaEntity concertHallJpaEntity,
       UserJpaEntity hostJpaEntity,
       List<SeatClassJpaEntity> seatClassJpaEntityList,
       List<PerformanceScheduleJpaEntity> performanceScheduleJpaEntityList) {
@@ -65,7 +65,7 @@ public class PerformanceJpaEntity {
     this.cast = cast;
     this.description = description;
     this.posterImagePath = posterImagePath;
-    this.venueJpaEntity = venueJpaEntity;
+    this.concertHallJpaEntity = concertHallJpaEntity;
     this.hostJpaEntity = hostJpaEntity;
     this.seatClassJpaEntityList = seatClassJpaEntityList;
     this.performanceScheduleJpaEntityList = performanceScheduleJpaEntityList;
