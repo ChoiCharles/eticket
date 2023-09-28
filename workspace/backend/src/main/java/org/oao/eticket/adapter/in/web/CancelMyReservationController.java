@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @WebAdapter
 @RequiredArgsConstructor
@@ -19,12 +20,14 @@ public class CancelMyReservationController {
 
   private final CancelMyReservationUseCase cancelMyReservationUseCase;
 
-  @PostMapping(path = "/reservations/cancel/{id}")
+  @PutMapping(path = "/reservations/{id}")
   ResponseEntity<Reservation> cancelMyReservation(
           @PathVariable Integer id, Authentication authentication) {
 
     Reservation reservation = cancelMyReservationUseCase.cancelMyReservation(id);
-    if(reservation == null) return ResponseEntity.status(404).body(null);
+    if (reservation == null) {
+      throw ApiException.builder().withStatus(HttpStatus.FORBIDDEN).withMessage("Already Cancelled").build();
+    }
 
     if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
       throw new RuntimeException("out");
