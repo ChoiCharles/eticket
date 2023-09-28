@@ -28,12 +28,13 @@ function AppRouter() {
         <Route path="/search" element={<Search />} />
         <Route path="/concert" element={<ConcertList />} />
         <Route path="/concert/:performanceId" element={<ConcertDetail />} />
-        <Route path="/waiting/:waitingId" element={<Waiting />} />
+        <Route path="/waiting/:waitingId/:dateId" element={<Waiting />} />
         <Route
-          path="/concertCalender/:scheduleId"
+          path="/concertCalender/:performanceScheduleId"
           element={<ConcertCalender />}
         />
-        <Route path="/seat/:seatId" element={<Seat />} />
+        <Route path="/seat/:seatId/:dateId" element={<Seat />} />
+        {/* <Route path="/seat/:seatId/:" element={<Seat />} /> */}
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/fail" element={<Navigate replace to="/checkout" />} />
         <Route path="/success" element={<Success />} />
