@@ -11,15 +11,17 @@ function Seat() {
   return (
     <div>
       <SeatStage />
-      <div className="seat-container">
-        {/* <div className="modal-frame">good</div> */}
-        {/* <SeatStage /> */}
-        {seatSections.map((_, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={index} className="seat-section-wrapper">
-            <SeatSection index={index} />
-          </div>
-        ))}
+      <div className="seat-outer-box">
+        <div className="seat-container">
+          {/* <div className="modal-frame">good</div> */}
+          {/* <SeatStage /> */}
+          {seatSections.map((_, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={index} className="seat-section-wrapper">
+              <SeatSection index={index} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

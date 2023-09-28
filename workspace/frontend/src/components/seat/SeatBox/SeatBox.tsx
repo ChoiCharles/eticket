@@ -1,13 +1,30 @@
 import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
 import './SeatBox.scss';
+import SelectSeatState from 'atoms/SelectSeatState';
 
 function SeatBox({ index, state }: { index: number; state: number }) {
   const [isSelected, setIsSelected] = useState(false);
+  const [selectedSeats, setSelectedSeats] = useRecoilState(SelectSeatState);
+  //   const isAlreadyInSeatList = selectedSeats.findIndex((e) => e.id === index)
+  const isAlreadyInSeatList = selectedSeats.findIndex(e => e === index);
+  console.log('isAlreadyInSeatList', isAlreadyInSeatList);
 
   const handleClick = () => {
+    console.log(selectedSeats);
+
     // 인덱스 값이 0일 때만 클릭 가능하도록
     if (state === 0) {
       setIsSelected(!isSelected);
+
+      // 선택한 좌석을 추가 또는 제거
+      if (isSelected) {
+        setSelectedSeats(prevSelectedSeats =>
+          prevSelectedSeats.filter(seat => seat !== index),
+        );
+      } else {
+        setSelectedSeats(prevSelectedSeats => [...prevSelectedSeats, index]);
+      }
     }
   };
 
@@ -21,13 +38,14 @@ function SeatBox({ index, state }: { index: number; state: number }) {
 
   return (
     <div>
-      <div
-        className="seat-box"
-        style={boxStyle}
-        onClick={handleClick}
-        aria-hidden
-      />
-      <div>{isSelected ? index : ''}</div>
+      <div>
+        <div
+          className="seat-box"
+          style={boxStyle}
+          onClick={handleClick}
+          aria-hidden
+        />
+      </div>
     </div>
   );
 }

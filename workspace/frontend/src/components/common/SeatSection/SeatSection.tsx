@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './SeatSection.scss';
 import SeatItem from 'components/common/SeatItem/SeatItem';
+import { useRecoilState } from 'recoil';
+import SelectSeatState from 'atoms/SelectSeatState';
 
 function SeatSection({ index }: { index: number }) {
   const [isModalOpen, setModalOpen] = useState(false);
-
+  const [, setSelectedSeats] = useRecoilState(SelectSeatState);
   const selectSeat = () => {
     console.log(index);
     // 모달 열기
@@ -12,6 +14,7 @@ function SeatSection({ index }: { index: number }) {
   };
 
   const closeModal = () => {
+    setSelectedSeats([]);
     // 모달 닫기
     setModalOpen(false);
   };

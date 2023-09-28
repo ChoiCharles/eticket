@@ -1,35 +1,57 @@
 import React from 'react';
 import './SeatItem.scss';
-// import { useLocation } from 'react-router-dom';
 import SeatDummy from 'seatDummy';
 import SeatBox from 'components/seat/SeatBox/SeatBox';
+import { useRecoilState } from 'recoil';
+import SelectSeatState from 'atoms/SelectSeatState';
+import useMovePage from 'hooks/useMovePage';
 
 function SeatItem({ index }: { index: number }) {
-  // axios로 해당하는 section의 좌석 리스트 받아오기
-  // const URL = useLocation();
-  // const URLInfo = URL.pathname.split('/');
-  // const indexInfo = URLInfo[2];
-  // useEffect(() => {
-  //   console.log(indexInfo);
-  // }, [URL]);
+  const { movePage } = useMovePage();
+
+  const clickBuyBtn = () => {
+    movePage('/', null);
+  };
 
   const data = SeatDummy[index].seat;
-  console.log(data);
+  const [selectedSeats] = useRecoilState(SelectSeatState);
 
   return (
     <div>
-      <div>{index}</div>
-      <div className="seat-item-container2">
-        {/* <SeatBox /> */}
-        {/* <div> 몇 번째 좌석 </div> */}
-        {/* <div>버튼</div> */}
-        {data.map((_, idx) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={idx} className="seat-section-wrapper">
-            <SeatBox index={idx} state={_} />
+      <div className="section-number-box">자리 섹션{index}</div>
+      <div className="seat-outer-box">
+        <div className="seat-item-container2">
+          {data.map((_, idx) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={idx} className="seat-section-wrapper">
+              <SeatBox index={idx} state={_} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>
+        <div className="section-title">좌석 선택</div>
+        {selectedSeats.length > 0 ? (
+          <div>
+            {selectedSeats.map((seat, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <div key={i} className="select-seat-price-box">
+                <div className="selected-seat">
+                  <div>{index}섹션</div>
+                  <div>{seat + 1}번 좌석</div>
+                </div>
+                <div> 가격: 120,000원</div>
+              </div>
+            ))}
           </div>
-        ))}
-        {/* <div onClick={selectSeat} className="seat-section-box" aria-hidden /> */}
+        ) : (
+          <div className="no-selected-seats">선택한 좌석이 없습니다.</div>
+        )}
+        {selectedSeats.length > 0 && (
+          <div className="click-buy-button" onClick={clickBuyBtn} aria-hidden>
+            결제하기
+          </div>
+        )}
       </div>
     </div>
   );
