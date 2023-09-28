@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import ImgDetail from 'components/concertDetail/ImgDetail/ImgDetail';
 import './DetailContent.scss';
 import { useParams } from 'react-router-dom';
+import ProducerInfo from 'components/concertDetail/ProducerInfo/ProducerInfo';
 import PriceInfo from '../PriceInfo/PriceInfo';
 
 const tabContentStyles = {
@@ -20,7 +21,7 @@ const tabContentStyles = {
  *  좌석 레벨 and 좌석 가격
  *  + 상세정보 이미지
  */
-export default function DetailContent() {
+export default function DetailContent({ info }: { info: string }) {
   const { performanceId } = useParams();
   console.log(performanceId);
   const [value, setValue] = React.useState(0);
@@ -29,8 +30,8 @@ export default function DetailContent() {
     setValue(newValue);
   };
 
-  const defaultImg =
-    'https://ticketimage.interpark.com/Play/ITM/Data/Modify/2023/7/2023071116224408.jpg';
+  // const defaultImg =
+  //   'https://ticketimage.interpark.com/Play/ITM/Data/Modify/2023/7/2023071116224408.jpg';
 
   return (
     <Box
@@ -87,7 +88,7 @@ export default function DetailContent() {
         <div>
           <div className="notice-text">NOTICE</div>
           <div>
-            <ImgDetail descImgUrl={defaultImg} />
+            <ImgDetail descImgUrl={info} />
             <PriceInfo />
           </div>
           {/* 여기에 공연정보 컨텐츠 내용을 추가 */}
@@ -98,13 +99,10 @@ export default function DetailContent() {
         hidden={value !== 1}
         id="tabpanel-1"
         aria-labelledby="tab-1"
-        sx={tabContentStyles}
+        sx={{ textalign: 'center' }}
       >
-        {/* 공연장정보 컨텐츠 */}
         <div>
-          <h2>서울 잠실종합운동장 올림픽 주경기장</h2>
-          <div>맵 API</div>
-          {/* 여기에 공연장정보 컨텐츠 내용을 추가 */}
+          <ProducerInfo />
         </div>
       </Box>
       <Box

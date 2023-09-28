@@ -7,8 +7,9 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Client } from '@stomp/stompjs';
 
 const Waiting = () => {
-  const [order, setOrder] = useState(12);
+  const [order, setOrder] = useState(3);
   const { waitingId } = useParams();
+  const { dateId } = useParams();
   const { movePage } = useMovePage();
 
   const [connected, setConnected] = useState<boolean>(false);
@@ -51,11 +52,11 @@ const Waiting = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setOrder(prev => prev - 3);
-    }, 2000);
+    }, 1000);
 
     if (order <= 0) {
       clearInterval(interval);
-      movePage(`/concertCalender/${waitingId}`, null);
+      movePage(`/seat/${waitingId}/${dateId}`, null);
     }
 
     return () => {
