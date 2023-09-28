@@ -136,7 +136,15 @@ class SpringSecurityConfig {
         .csrf(csrf -> csrf.disable())
         .addFilterBefore(eticketAuthorizationHeaderFilter, LogoutFilter.class)
         .addFilterBefore(eticketAuthenticationFilter, ExceptionTranslationFilter.class)
-        .authorizeHttpRequests(httpRequests -> httpRequests.anyRequest().permitAll())
+        .authorizeHttpRequests(
+            httpRequests ->
+                httpRequests
+                    .requestMatchers("/membership/join", "/auth/signin", "/swagger-ui/*", "/v3/**")
+                    .permitAll()
+                    .requestMatchers("/**")
+                    .authenticated()
+                    .anyRequest()
+                    .permitAll())
         .build();
   }
 }
