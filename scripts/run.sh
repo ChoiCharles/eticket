@@ -85,5 +85,6 @@ IFS=$OIFS
 docker-compose -f "$TARGET_DOCKER_COMPOSE" up -d
 
 if [[ $(docker images --filter "dangling=true" -q | wc -l) != 0 ]]; then
+    # shellcheck disable=SC2046
     docker image rm $(docker images --filter "dangling=true" -q)
 fi
