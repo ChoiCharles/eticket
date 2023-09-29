@@ -66,14 +66,17 @@ public class PerformanceRepository
                   PerformanceJpaEntity.class)
               .setMaxResults(10)
               .getResultList();
-      if (queryResults.isEmpty()) { // 빈 결과물이면 없다고 띄우기
-        throw new PerformanceNotFoundException("인기 있는 공연이 존재 하지 않습니다.");
+      // 빈 결과물이면 없다고 띄우기
+      if (queryResults.isEmpty()) {
+        throw new NoResultException();
       }
       for (PerformanceJpaEntity performanceJpaEntity : queryResults) {
         sortSchedules(performanceJpaEntity);
       }
 
       return performanceMapper.mapToSummaryDomainEntity(queryResults);
+    } catch (NoResultException e) {
+      throw new PerformanceNotFoundException("인기있는 공연이 존재하지 않습니다.", e);
     } catch (Exception e) {
       throw new UnexpectedException(e.getMessage(), e.getCause());
     }
@@ -86,21 +89,23 @@ public class PerformanceRepository
           entityManager
               .createQuery(
                   """
-                      SELECT ps.performanceJpaEntity
-                      FROM PerformanceScheduleJpaEntity ps
-                      WHERE ps.ticketingDateTime > CURRENT_TIMESTAMP
-                      ORDER BY ps.ticketingDateTime ASC
+                      SELECT p
+                      FROM PerformanceJpaEntity p
+                      WHERE p.ticketingOpenDateTime > CURRENT_TIMESTAMP
+                      ORDER BY p.ticketingOpenDateTime ASC
                       """,
                   PerformanceJpaEntity.class)
               .setMaxResults(10)
               .getResultList();
       if (queryResults.isEmpty()) {
-        throw new PerformanceNotFoundException("예매 오픈 예정인 공연이 존재 하지 않습니다.");
+        throw new NoResultException();
       }
       for (PerformanceJpaEntity performanceJpaEntity : queryResults) {
         sortSchedules(performanceJpaEntity);
       }
       return performanceMapper.mapToSummaryDomainEntity(queryResults);
+    } catch (NoResultException e) {
+      throw new PerformanceNotFoundException("예매 오픈 예정인 공연이 존재 하지 않습니다.", e);
     } catch (IllegalArgumentException e) {
       // QUERY 오타
       throw e;

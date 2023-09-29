@@ -11,6 +11,6 @@ import java.util.List;
 public interface PerformanceScheduleRepository
     extends JpaRepository<PerformanceScheduleJpaEntity, Integer> {
 
-  @Query("SELECT ps FROM PerformanceScheduleJpaEntity ps WHERE FUNCTION('DATE', ps.ticketingDateTime) = FUNCTION('DATE', CURRENT_DATE)")
+  @Query("SELECT p.performanceScheduleJpaEntityList FROM PerformanceJpaEntity p WHERE FUNCTION('DATE', p.ticketingOpenDateTime) = FUNCTION('DATE', CURRENT_DATE)")
   List<PerformanceScheduleJpaEntity> loadOpeningPerformanceSchedules();
 }

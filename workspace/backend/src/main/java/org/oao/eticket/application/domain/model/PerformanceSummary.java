@@ -3,6 +3,7 @@ package org.oao.eticket.application.domain.model;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -12,6 +13,7 @@ public class PerformanceSummary {
   PerformanceSummaryId id;
   String title;
   String posterImagePath;
+  LocalDateTime ticketingOpenDateTime;
   List<LocalDate> performanceScheduleList;
 
   @Getter
