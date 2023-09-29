@@ -14,15 +14,15 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    instance
-      .get('/api/performances/upcoming')
-      .then(res => console.log(res))
-      .catch(error => console.log(error));
-
-    instance
-      .get('/api/performances/hot')
-      .then(res => console.log(res))
-      .catch(error => console.log(error));
+    Promise.all([
+      instance.get('/api/performances/upcoming'),
+      instance.get('/api/performances/hot'),
+    ])
+      .then(([upcomingRes, hotRes]) => {
+        console.log('Upcoming Performances:', upcomingRes);
+        console.log('Hot Performances:', hotRes);
+      })
+      .catch(error => console.error('Error:', error));
   }, []);
 
   return (

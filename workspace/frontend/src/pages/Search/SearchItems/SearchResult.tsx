@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Paper, Divider, List } from '@mui/material';
+import instance from 'apis/utils/instance';
 
 interface Props {
   keyword: string;
@@ -7,10 +8,23 @@ interface Props {
 
 const SearchResult = ({ keyword }: Props) => {
   const [results, setResults] = useState<number[]>([]);
+
   useEffect(() => {
-    setResults([1]);
-    console.log('call api');
-  }, [results]);
+    const searchKeyword = keyword;
+
+    const keywordResult = async () => {
+      try {
+        const response = await instance.get(
+          `/api/performances/search?keyword=${searchKeyword}`,
+        );
+        setResults(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    keywordResult();
+  }, [keyword]);
   return (
     <Box>
       <Paper
