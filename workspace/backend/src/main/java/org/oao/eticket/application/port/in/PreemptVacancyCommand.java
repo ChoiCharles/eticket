@@ -7,6 +7,6 @@ import lombok.Value;
 @Builder
 public class PreemptVacancyCommand {
   Integer performanceScheduleId;
-  String section;
+  Integer sectionId;
   Integer seatId;
 }
