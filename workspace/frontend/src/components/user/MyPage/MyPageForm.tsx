@@ -110,7 +110,7 @@ function MyPage() {
       <div className="inventory">
         <div className="my-NFT">
           <div className="upper-text">
-            <h3 className="my-NFT-text">NFT 전시장</h3>
+            <h3 className="my-NFT-text">내 NFT</h3>
             <h3 className="my-NFT-more">더보기 {'>'}</h3>
           </div>
           <div className="NFT-list">
