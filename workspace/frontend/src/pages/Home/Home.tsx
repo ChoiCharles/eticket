@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import NavBar from 'components/common/NavBar/NavBar';
 import TopFiveConcertList from 'components/home/TopFiveConcertList/TopFiveConcertList';
 import RowStack from 'components/home/RowStack/RowStack';
 import { Box, Divider } from '@mui/material';
+import instance from 'apis/utils/instance';
 import items from '../../dummys';
 
 const Home = () => {
@@ -11,6 +12,18 @@ const Home = () => {
     { title: 'NFT Gallery', items, url: '/gallery' },
     { title: '💥예매 임박💥', items, url: '/soon' },
   ];
+
+  useEffect(() => {
+    instance
+      .get('/api/performances/upcoming')
+      .then(res => console.log(res))
+      .catch(error => console.log(error));
+
+    instance
+      .get('/api/performances/hot')
+      .then(res => console.log(res))
+      .catch(error => console.log(error));
+  }, []);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', px: 1.5 }}>
