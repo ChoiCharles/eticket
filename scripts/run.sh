@@ -1,73 +1,86 @@
 #!/bin/bash
 
-WORKSPACE="../workspace"
-DOCKER_COMPOSE="../docker-compose"
-
-if ! [[ $(pwd) =~ .+scripts$ ]]; then
-    cd scripts || exit 1
+if [[ $(pwd) =~ /scripts$ ]]; then
+    cd ..
 fi
+
+PROJECT_DIR="$(pwd)"
+WORKSPACE_DIR="$PROJECT_DIR/workspace"
+DOCKER_COMPOSE_DIR="$PROJECT_DIR/docker-compose"
 
 if [[ $* == *--stop* ]]; then
-    docker-compose -f ../docker-compose/docker-compose.yaml down
-    exit 0
-fi
-
-if [[ $* == *--clean* ]]; then
-    rm -rf $WORKSPACE/blockchain-tracker/Dockerfile/data
-    rm -rf $WORKSPACE/backend/Dockerfile/data
-
-    if [[ $* == *--clean-all* ]]; then
-        rm -rf $WORKSPACE/backend/build
-        rm -rf $WORKSPACE/backend/.gradle
-        rm -rf $WORKSPACE/backend/.gradle.cache
-        rm -rf $WORKSPACE/blockchain-tracker/.gocache
-
-        if [[ $(docker volume ls | grep -c eticket_main_data) != 0 ]]; then
-            docker volume rm eticket_main_data
-        fi
-
-        if [[ $(docker network ls | grep -c eticket_net) != 0 ]]; then
-            docker network rm eticket_net
-        fi
-    fi
-
+    docker-compose -f "$DOCKER_COMPOSE_DIR/docker-compose.yaml" down
     exit 0
 fi
 
 if [[ $* != *--no-build* ]]; then
-    cd $WORKSPACE/blockchain-tracker || exit 1
-    if ! sh ./build.sh; then
-        echo failed to build blockchain-tracker.
-        exit 1
+    BUILD_TARGETS="blockchain-tracker backend-waiting"
+    if [[ $* != *--without-backend* ]]; then
+        BUILD_TARGETS="$BUILD_TARGETS backend"
     fi
 
-    cd ../backend || exit 1
-    if ! sh ./build.sh; then
-        echo failed to build backend.
-        exit 1
-    fi
+    OIFS=$IFS
+    IFS=" "
+    for SERVICE in $BUILD_TARGETS; do
+        SERVICE_PROJECT_DIR="$WORKSPACE_DIR/$SERVICE"
+        cd "$SERVICE_PROJECT_DIR" || exit 1
 
-    cd ../../scripts || exit 1
+        if ! test -d "$SERVICE_PROJECT_DIR"; then
+            echo "Couldn't find project directory for service \"$SERVICE\""
+            exit 1
+        fi
+
+        if ! test -f "$SERVICE_PROJECT_DIR/build.sh"; then
+            echo "Colunt't find project build script of service \"$SERVICE\"."
+            exit 1
+        fi
+
+        if ! sh "$SERVICE_PROJECT_DIR/build.sh"; then
+            echo "Failed to build service \"$SERVICE\"."
+            exit 1
+        fi
+    done
+
+    IFS=$OIFS
+    cd "$PROJECT_DIR" || exit 1
 fi
 
-if [[ $(docker volume ls | grep -c eticket_main_data) == 0 ]]; then
-    if ! docker volume create eticket_main_data >/dev/null; then
-        echo failed to create docker volume.
-        echo please manually create docker volume "eticket_main_data" and retry.
+if [[ "$(docker network ls --format "{{.Name}}" | grep -c --regex "^eticket_net$")" == 0 ]]; then
+    if ! docker network create eticket_net --driver bridge 1>/dev/null; then
+        echo "Failed to create docker network \"eticket_net\"."
+        exit 1
+    fi
+
+    echo "A docker network \"eticket_net\" created."
+fi
+
+if [[ "$(docker volume ls --format "{{.Name}}" | grep -c --regex "^eticket_main_data$")" == 0 ]]; then
+    if ! docker volume create eticket_main_data 1>/dev/null; then
+        echo "Failed create docker volume \"eticket_main_data\"."
         exit 1
     fi
 fi
 
-if [[ $(docker network ls | grep -c eticket_net) == 0 ]]; then
-    if ! docker network create --driver bridge eticket_net >/dev/null; then
-        echo failed to create docker network
-        exit 1
-    fi
+TARGET_DOCKER_COMPOSE="$DOCKER_COMPOSE_DIR/docker-compose.yaml"
+if [[ $* == *--no-backend* ]]; then
+    TARGET_DOCKER_COMPOSE="$DOCKER_COMPOSE_DIR/docker-compose-no-backend.yaml"
 fi
 
-docker-compose -f $DOCKER_COMPOSE/docker-compose.yaml down
-docker-compose -f $DOCKER_COMPOSE/docker-compose.yaml up -d --force-recreate --no-deps --build eticket_backend eticket_blockchain_tracker
-docker-compose -f $DOCKER_COMPOSE/docker-compose.yaml up -d
+REBUILD_TARGETS="eticket_blockchain_tracker eticket_backend_waiting"
+if [[ $* != *--no-backend* ]]; then
+    REBUILD_TARGETS="$REBUILD_TARGETS eticket_backend"
+fi
+
+docker-compose -f "$TARGET_DOCKER_COMPOSE" down
+
+for SERVICE in $REBUILD_TARGETS; do
+    if ! docker-compose -f "$TARGET_DOCKER_COMPOSE" up -d --force-recreate --no-deps --build "$SERVICE"; then
+        echo "Failed to start service \"$SERVICE\"."
+        exit 1
+    fi
+done
+
+docker-compose -f "$TARGET_DOCKER_COMPOSE" up -d
 
 if [[ $(docker images --filter "dangling=true" -q | wc -l) != 0 ]]; then
     docker image rm "$(docker images --filter "dangling=true" -q)"
