@@ -4,13 +4,12 @@ import (
 	"archive/zip"
 	"bytes"
 	"context"
-	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"path"
 
 	"eticket.org/blockchain-ipfs-uploader/common"
+	kuborpc "eticket.org/blockchain-ipfs-uploader/common/kubo_rpc"
 	"eticket.org/blockchain-ipfs-uploader/config"
 )
 
@@ -19,7 +18,7 @@ type UploadZipService struct {
 	client *http.Client
 }
 
-func appendAll(dirMultipartBuilder common.DirMultipartBuilder, zipReader *zip.Reader) error {
+func (s *UploadZipService) appendAll(dirMultipartBuilder common.DirMultipartBuilder, zipReader *zip.Reader) error {
 	for _, file := range zipReader.File {
 		if fileInfo := file.FileInfo(); !fileInfo.IsDir() {
 			filecontentReader, err := file.Open()
@@ -50,41 +49,15 @@ func (s *UploadZipService) Upload(ctx context.Context, dirname string, zipReader
 	if err := dirMultipartBuilder.Directory(dirname); err != nil {
 		return nil, err
 	}
-	if err := appendAll(dirMultipartBuilder, zipReader); err != nil {
+	if err := s.appendAll(dirMultipartBuilder, zipReader); err != nil {
 		return nil, err
 	}
 	if err := dirMultipartBuilder.Close(); err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "POST", s.cfg.KuboRpcUrl+"/api/v0/add", buf)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Set("Content-Type", "multipart/form-data; boundary="+dirMultipartBuilder.Boundary())
-
-	resp, err := s.client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("UploadZipService.Upload() failed: %w", err)
-	}
-
-	defer resp.Body.Close()
-	payload, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("UploadZipService.Upload() failed: %w", err)
-	}
-
-	uploadedFiles := []map[string]any{}
-	for _, jsonBytes := range bytes.Split(payload, []byte{'\n'}) {
-		if 0 < len(jsonBytes) {
-			uploadResult := map[string]any{}
-			json.Unmarshal(jsonBytes, &uploadResult)
-			uploadedFiles = append(uploadedFiles, uploadResult)
-		}
-	}
-
-	return uploadedFiles, nil
+	apiv0 := kuborpc.NewKuboRpc(s.client, s.cfg.KuboRpcUrl).Apiv0()
+	return apiv0.AddDirectory(ctx, dirMultipartBuilder.Boundary(), buf)
 }
 
 func NewUploadZipService(cfg *config.ApplicationConfig, client *http.Client) *UploadZipService {
