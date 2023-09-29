@@ -10,6 +10,7 @@ import org.oao.eticket.application.domain.model.Performance;
 import org.oao.eticket.application.port.in.GetPerformanceDetailUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.oao.eticket.exception.PerformanceNotFoundException;
+import org.oao.eticket.exception.UnexpectedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,32 +30,36 @@ public class GetPerformanceDetailController {
       responses = {
         @ApiResponse(
             responseCode = "200",
-            description = "OK 공연 상세 불러오기",
+            description = "OK 공연 상세 불러 오기",
             content =
                 @Content(
                     schema = @Schema(implementation = GetPerformanceDetailResponseBody.class))),
         @ApiResponse(
             responseCode = "400",
-            description = "NO CONTENT",
+            description = "BAD REQUEST. performance ID에 해당 하는 공연이 없을 때",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
   @GetMapping(value = "/performances/{performanceId}", produces = "application/json; charset=utf-8")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<GetPerformanceDetailResponseBody> getPerformanceDetail(
       @Valid @PathVariable("performanceId") Integer payload) {
-    // TODO (yoo) : body type
     try {
       final var performance = getPerformanceDetailUseCase.getPerformance(payload);
+
       return ResponseEntity.ok(new GetPerformanceDetailResponseBody(performance));
-    } catch (PerformanceNotFoundException e) {
-      // TODO(yoo) :
+    } catch (PerformanceNotFoundException e) { // performance Id 잘못된 경우
       throw ApiException.builder()
-          .withStatus(HttpStatus.NO_CONTENT)
+          .withStatus(HttpStatus.BAD_REQUEST)
           .withCause(e)
-          .withMessage(String.format("%s 공연이 존재 하지 않습니다.", e.getMessage()))
+          .withMessage(e.getMessage() + "번에 해당 하는 공연은 존재 하지 않아요.")
           .build();
-    } catch (Exception e) {
-      throw ApiException.builder().withCause(e).withMessage(e.getMessage()).build();
+    } catch (UnexpectedException e) {
+      e.printStackTrace();
+      throw ApiException.builder()
+          .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+          .withCause(e)
+          .withMessage(e.getMessage())
+          .build();
     }
   }
 }

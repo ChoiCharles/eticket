@@ -5,6 +5,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.adapter.out.persistence.entity.PerformanceJpaEntity;
+import org.oao.eticket.adapter.out.persistence.entity.PerformanceScheduleJpaEntity;
 import org.oao.eticket.adapter.out.persistence.mapper.PerformanceMapper;
 import org.oao.eticket.application.domain.model.Performance;
 import org.oao.eticket.application.domain.model.PerformanceSummary;
@@ -13,7 +14,9 @@ import org.oao.eticket.application.port.out.LoadPerformanceDetailPort;
 import org.oao.eticket.application.port.out.LoadUpcomingPerformancesPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.PerformanceNotFoundException;
+import org.oao.eticket.exception.UnexpectedException;
 
+import java.util.Comparator;
 import java.util.List;
 
 @PersistenceAdapter
@@ -39,11 +42,13 @@ public class PerformanceRepository
                   PerformanceJpaEntity.class)
               .setParameter("performanceId", performanceId.getValue())
               .getSingleResult();
+      sortSchedules(performanceJpaEntity);
+
       return performanceMapper.mapToDomainEntity(performanceJpaEntity);
     } catch (NoResultException e) {
       throw new PerformanceNotFoundException(String.valueOf(performanceId.getValue()), e);
     } catch (Exception e) {
-      throw e;
+      throw new UnexpectedException(e.getMessage(), e.getCause());
     }
   }
 
@@ -61,13 +66,16 @@ public class PerformanceRepository
                   PerformanceJpaEntity.class)
               .setMaxResults(10)
               .getResultList();
-      // 빈 결과물이면 없다고 띄우기
-      if (queryResults.isEmpty()) {
+      if (queryResults.isEmpty()) { // 빈 결과물이면 없다고 띄우기
         throw new PerformanceNotFoundException("인기 있는 공연이 존재 하지 않습니다.");
       }
+      for (PerformanceJpaEntity performanceJpaEntity : queryResults) {
+        sortSchedules(performanceJpaEntity);
+      }
+
       return performanceMapper.mapToSummaryDomainEntity(queryResults);
     } catch (Exception e) {
-      throw e;
+      throw new UnexpectedException(e.getMessage(), e.getCause());
     }
   }
 
@@ -87,14 +95,23 @@ public class PerformanceRepository
               .setMaxResults(10)
               .getResultList();
       if (queryResults.isEmpty()) {
-        throw new PerformanceNotFoundException("오픈 예정인 공연이 존재 하지 않습니다.");
+        throw new PerformanceNotFoundException("예매 오픈 예정인 공연이 존재 하지 않습니다.");
+      }
+      for (PerformanceJpaEntity performanceJpaEntity : queryResults) {
+        sortSchedules(performanceJpaEntity);
       }
       return performanceMapper.mapToSummaryDomainEntity(queryResults);
     } catch (IllegalArgumentException e) {
       // QUERY 오타
       throw e;
     } catch (Exception e) {
-      throw e;
+      throw new UnexpectedException(e.getMessage(), e.getCause());
     }
+  }
+
+  public void sortSchedules(PerformanceJpaEntity performanceJpaEntity) { // 공연 회차를 시간 순으로 정렬
+    performanceJpaEntity
+        .getPerformanceScheduleJpaEntityList()
+        .sort(Comparator.comparing(PerformanceScheduleJpaEntity::getStartDateTime));
   }
 }

@@ -17,5 +17,4 @@ public class GetHotPerformancesService implements GetHotPerformancesUseCase {
   public List<PerformanceSummary> getHotPerformanceList() {
     return loadHotPerformancesPort.loadHotPerformances();
   }
-  // DB에 조회 메서드
 }

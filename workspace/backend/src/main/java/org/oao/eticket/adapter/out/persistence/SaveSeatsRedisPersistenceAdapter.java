@@ -69,23 +69,26 @@ public class SaveSeatsRedisPersistenceAdapter implements LoadPerformanceSchedule
           // Section에 해당하는 좌석 등급 정보 가져오기
           section.setSeatClass(
               seatClassMapper.mapToDomainEntity(
-                  sectionAndSeatClassRelationRepository.findSeatClassBySectionAndPerformance(
-                          sectionJpa, scheduleJpa.getPerformanceJpaEntity()).getSeatClassJpaEntity()));
+                  sectionAndSeatClassRelationRepository
+                      .findSeatClassBySectionAndPerformance(
+                          sectionJpa, scheduleJpa.getPerformanceJpaEntity())
+                      .getSeatClassJpaEntity()));
           // 만든 하나의 구역을 리스트에 추가
           sectionList.add(section);
         }
         /// concert hall
-        var concertHall =
-            concertHallMapper.mapToDomainEntity(
-                scheduleJpa.getPerformanceJpaEntity().getConcertHallJpaEntity());
-        concertHall.setSectionList(sectionList);
-        // 완성된 Performance Schedule의 좌석표 결과에 저장
-        results.add(
-            PerformanceScheduleSeatTable.builder()
-                .performanceScheduleId(
-                    PerformanceScheduleSeatTable.PerformanceScheduleId.of(scheduleJpa.getId()))
-                .concertHall(concertHall)
-                .build());
+        //        var concertHall =
+        //            concertHallMapper.mapToDomainEntity(
+        //                scheduleJpa.getPerformanceJpaEntity().getConcertHallJpaEntity());
+        //        concertHall.setSectionList(sectionList);
+        //        // 완성된 Performance Schedule의 좌석표 결과에 저장
+        //        results.add(
+        //            PerformanceScheduleSeatTable.builder()
+        //                .performanceScheduleId(
+        //
+        // PerformanceScheduleSeatTable.PerformanceScheduleId.of(scheduleJpa.getId()))
+        //                .concertHall(concertHall)
+        //                .build());
       }
       return results;
     } else {

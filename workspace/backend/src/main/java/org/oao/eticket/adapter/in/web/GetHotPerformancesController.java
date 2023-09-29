@@ -5,11 +5,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.oao.eticket.application.domain.model.Performance;
 import org.oao.eticket.application.domain.model.PerformanceSummary;
 import org.oao.eticket.application.port.in.GetHotPerformancesUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.oao.eticket.exception.PerformanceNotFoundException;
+import org.oao.eticket.exception.UnexpectedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +20,7 @@ import java.util.List;
 @WebAdapter
 @RequiredArgsConstructor
 public class GetHotPerformancesController {
-  record GetHotPerformancesResponseBody(List<PerformanceSummary> hotsList) {
-    // TODO(yoo): List<PerformanceSummary>
-  }
+  record GetHotPerformancesResponseBody(List<PerformanceSummary> hotPerformanceList) {}
 
   private final GetHotPerformancesUseCase getHotPerformancesUseCase;
 
@@ -32,12 +30,12 @@ public class GetHotPerformancesController {
       responses = {
         @ApiResponse(
             responseCode = "200",
-            description = "OK 인기 공연 리스트",
+            description = "OK. 인기 공연 리스트",
             content =
                 @Content(schema = @Schema(implementation = GetHotPerformancesResponseBody.class))),
         @ApiResponse(
-            responseCode = "400",
-            description = "NO CONTENT. (빈 리스트 - 인기 있는 공연 없다)",
+            responseCode = "200-1",
+            description = "OK. (빈 리스트 - 인기 있는 공연 없다)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
   @GetMapping("performances/hot")
@@ -45,13 +43,12 @@ public class GetHotPerformancesController {
   ResponseEntity<?> getHotPerformances() {
     try {
       List<PerformanceSummary> list = getHotPerformancesUseCase.getHotPerformanceList();
-      return ResponseEntity.ok(list);
-      // ResponseBody에 넣어서 전달
-    } catch (PerformanceNotFoundException e) {
-      // TODO(yoo) :
+
+      return ResponseEntity.ok(new GetHotPerformancesResponseBody(list));
+    } catch (PerformanceNotFoundException e) { // 인기 있는 공연이 없을 때.
       throw ApiException.builder()
+          .withStatus(HttpStatus.OK)
           .withCause(e)
-          .withStatus(HttpStatus.NO_CONTENT)
           .withMessage(e.getMessage())
           .build();
     } catch (IllegalArgumentException e) {
@@ -60,7 +57,8 @@ public class GetHotPerformancesController {
           .withStatus(HttpStatus.BAD_REQUEST)
           .withMessage(e.getMessage())
           .build();
-    } catch (Exception e) {
+    } catch (UnexpectedException e) {
+      e.printStackTrace();
       throw ApiException.builder()
           .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
           .withCause(e)
