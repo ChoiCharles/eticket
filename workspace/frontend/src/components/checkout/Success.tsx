@@ -1,10 +1,24 @@
 import React from 'react';
-import useMovePage from 'hooks/useMovePage';
+// import useMovePage from 'hooks/useMovePage';
 import { Box, Button, Typography } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import instance from 'apis/utils/instance';
 
 const Success = () => {
-  const { movePage } = useMovePage();
+  // const { movePage } = useMovePage();
+
+  const handleReserveBtnClick = async () => {
+    const requestBody = {
+      userId: 0,
+      performanceScheduleId: 0,
+      seatId: 0,
+      paymentAmount: 0,
+    };
+    await instance
+      .post('/api/reservations', requestBody)
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
+  };
 
   return (
     <Box
@@ -27,7 +41,8 @@ const Success = () => {
           fontSize: '20px',
         }}
         variant="contained"
-        onClick={() => movePage('/my', null)}
+        // onClick={() => movePage('/my', null)}
+        onClick={handleReserveBtnClick}
       >
         확인
       </Button>
