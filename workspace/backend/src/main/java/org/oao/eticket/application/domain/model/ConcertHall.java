@@ -12,7 +12,6 @@ public class ConcertHall {
   String hallWholeViewImage;
   Integer seatCount;
   Venue venue;
-  List<Section> sectionList;
 
   @Getter
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)

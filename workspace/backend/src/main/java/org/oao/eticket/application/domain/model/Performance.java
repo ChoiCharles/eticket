@@ -2,6 +2,7 @@ package org.oao.eticket.application.domain.model;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -14,6 +15,8 @@ public class Performance {
   String cast;
   String description;
   String posterImagePath;
+  Integer runningTime;
+  LocalDateTime ticketingOpenDateTime;
   ConcertHall concertHall;
   List<SeatClass> seatClassList;
   User host;

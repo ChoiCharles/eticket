@@ -5,10 +5,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.oao.eticket.application.domain.model.Performance;
+import org.oao.eticket.application.domain.model.PerformanceSummary;
 import org.oao.eticket.application.port.in.GetUpcomingPerformancesUsecase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.oao.eticket.exception.PerformanceNotFoundException;
+import org.oao.eticket.exception.UnexpectedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ import java.util.List;
 public class GetUpcomingPerformancesController {
   private final GetUpcomingPerformancesUsecase getUpcomingPerformancesUsecase;
 
-  record UpcomingsResponseBody(List<Performance> upcomingsList) {}
+  record UpcomingsResponseBody(List<PerformanceSummary> upcomingPerformanceList) {}
 
   @Operation(
       summary = "예매 오픈 예정 공연 List GET",
@@ -32,8 +33,8 @@ public class GetUpcomingPerformancesController {
             description = "OK 예매 오픈 예정 공연 리스트",
             content = @Content(schema = @Schema(implementation = UpcomingsResponseBody.class))),
         @ApiResponse(
-            responseCode = "400",
-            description = "NO CONTENT. (빈 리스트 - 예매가 오픈 되지 않은 공연 없다)",
+            responseCode = "200-1",
+            description = "OK. (빈 리스트 - 예매가 오픈 되지 않은 공연 없다)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
   @GetMapping("/performances/upcoming")
@@ -43,14 +44,14 @@ public class GetUpcomingPerformancesController {
       final var resultList = getUpcomingPerformancesUsecase.getUpcomingPerformances();
 
       return ResponseEntity.ok(new UpcomingsResponseBody(resultList));
-    } catch (PerformanceNotFoundException e) {
-      // TODO(yoo) :
+    } catch (PerformanceNotFoundException e) { // 예매 오픈 예정인 공연이 없을 때. (모든 공연이 이미 예매가 오픈 됨)
       throw ApiException.builder()
+          .withStatus(HttpStatus.OK)
           .withCause(e)
-          .withStatus(HttpStatus.NO_CONTENT)
           .withMessage(e.getMessage())
           .build();
-    } catch (Exception e) {
+    } catch (UnexpectedException e) {
+      e.printStackTrace();
       throw ApiException.builder()
           .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
           .withCause(e)
