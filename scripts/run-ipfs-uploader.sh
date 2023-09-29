@@ -23,5 +23,5 @@ docker-compose -f "$DOCKER_COMPOSE_DIR/services/docker-compose-blockchain-ipfs-u
 docker-compose -f "$DOCKER_COMPOSE_DIR/services/docker-compose-blockchain-ipfs-uploader.yaml" up -d --force-recreate --no-deps --build eticket_ipfs_uploader
 
 if [[ $(docker images --filter "dangling=true" -q | wc -l) != 0 ]]; then
-    docker image rm "$(docker images --filter "dangling=true" -q)"
+    docker image rm $(docker images --filter "dangling=true" -q)
 fi

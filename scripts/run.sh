@@ -23,7 +23,6 @@ if [[ $* != *--no-build* ]]; then
     IFS=" "
     for SERVICE in $BUILD_TARGETS; do
         SERVICE_PROJECT_DIR="$WORKSPACE_DIR/$SERVICE"
-        cd "$SERVICE_PROJECT_DIR" || exit 1
 
         if ! test -d "$SERVICE_PROJECT_DIR"; then
             echo "Couldn't find project directory for service \"$SERVICE\""
@@ -35,7 +34,7 @@ if [[ $* != *--no-build* ]]; then
             exit 1
         fi
 
-        if ! sh "$SERVICE_PROJECT_DIR/build.sh"; then
+        if ! sh -c "cd $(realpath "$SERVICE_PROJECT_DIR") && $SERVICE_PROJECT_DIR/build.sh"; then
             echo "Failed to build service \"$SERVICE\"."
             exit 1
         fi
@@ -73,15 +72,18 @@ fi
 
 docker-compose -f "$TARGET_DOCKER_COMPOSE" down
 
+OIFS=$IFS
+IFS=" "
 for SERVICE in $REBUILD_TARGETS; do
     if ! docker-compose -f "$TARGET_DOCKER_COMPOSE" up -d --force-recreate --no-deps --build "$SERVICE"; then
         echo "Failed to start service \"$SERVICE\"."
         exit 1
     fi
 done
+IFS=$OIFS
 
 docker-compose -f "$TARGET_DOCKER_COMPOSE" up -d
 
 if [[ $(docker images --filter "dangling=true" -q | wc -l) != 0 ]]; then
-    docker image rm "$(docker images --filter "dangling=true" -q)"
+    docker image rm $(docker images --filter "dangling=true" -q)
 fi
