@@ -52,5 +52,6 @@ func NewFxModule() fx.Option {
 
 		invoke(func(serv *http.Server) {}),
 		invoke(controller.RegisterZipUploadController),
+		invoke(controller.RegisterJsonUploadController),
 	)
 }
