@@ -61,7 +61,7 @@ func obtainMultipartFileHeader(ctx *gin.Context) *multipart.FileHeader {
 }
 
 func RegisterZipUploadController(e *gin.Engine, uploadZipService *service.UploadZipService) {
-	e.POST("/api/v0/upload/bulk", func(ctx *gin.Context) {
+	e.POST("/api/v0/upload/zip", func(ctx *gin.Context) {
 		if checkContentType(ctx); ctx.IsAborted() {
 			return
 		}
