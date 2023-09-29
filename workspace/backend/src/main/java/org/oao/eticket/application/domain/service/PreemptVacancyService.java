@@ -18,7 +18,7 @@ public class PreemptVacancyService implements PreemptVacancyUseCase {
     final var findVacancyCommand =
         FindVacancyCommand.builder()
             .performanceScheduleId(cmd.getPerformanceScheduleId())
-            .section(cmd.getSection())
+            .sectionId(cmd.getSectionId())
             .seatId(cmd.getSeatId())
             .build();
     final var vacancyRedisEntity = findVacancyPort.findVacancy(findVacancyCommand);
