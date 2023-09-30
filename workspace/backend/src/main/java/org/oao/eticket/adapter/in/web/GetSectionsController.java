@@ -29,7 +29,7 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
   private final GetSectionsUseCase getSectionsUseCase;
 
   @Operation(
-      summary = "특정 공연 회차에 대한 공연장 구역 표 제공",
+      summary = "특정 공연 회차에 대한 공연장 구역 리스트 제공",
       description =
           "예매 대기열에서 빠져 나온 사용자가 처음 예매 화면에 진입 했을 때 제공할 API 입니다. \n 특정 공연 회차에 진행 되는 공연장의 구역 정보가 리스트로 제공 됩니다. ",
       responses = {
