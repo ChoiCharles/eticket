@@ -16,11 +16,11 @@ public class GetVacanciesService implements GetVacanciesUseCase {
   private final LoadVacanciesRedisPort loadVacanciesRedisPort;
 
   @Override
-  public List<Vacancy> getVacncies(final GetVacanciesCommand cmd) {
+  public List<Vacancy> getVacancies(final GetVacanciesCommand cmd) {
     final var loadVacanciesFromRedisCommand =
         LoadVacanciesRedisCommand.builder()
             .performanceScheduleId(cmd.getPerformanceScheduleId())
-            .section(cmd.getSection())
+            .sectionId(cmd.getSectionId())
             .build();
     return loadVacanciesRedisPort.getVacancies(loadVacanciesFromRedisCommand);
   }

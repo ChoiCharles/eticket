@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.oao.eticket.application.domain.model.Section;
+import org.oao.eticket.application.port.in.GetSectionsUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +14,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.List;
+
 @WebAdapter
 @RequiredArgsConstructor
 public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 공연에 대한 공연장 정보
 
-  record GetSectionsResponseBody() {}
+  record GetSectionsResponseBody(List<Section> sectionList) {}
 
-  // private final GetSectionsUseCase getSectionsUseCase;
+  private final GetSectionsUseCase getSectionsUseCase;
 
   @Operation(
       summary = "특정 공연 회차에 대한 공연장 구역 표 제공",
@@ -43,9 +47,13 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
   ResponseEntity<GetSectionsResponseBody> getSections(
       @PathVariable("performanceScheduleId") Integer performancesScheduledId) {
     try {
-      // use case릁 통해 MySql에서 특정 공연의 상세 정보 가져오기
+      // redis에 들러서 대기열에서 나온 유저인지 확인
 
-      return ResponseEntity.ok(new GetSectionsResponseBody());
+      // use case릁 통해 MySql에서 특정 공연의 상세 정보 가져오기
+      final var sections = getSectionsUseCase.getSections(performancesScheduledId);
+
+
+      return ResponseEntity.ok(new GetSectionsResponseBody(sections));
     } catch (Exception e) {
       // TODO(yoo): exception handling
       // AUTHORIZED (대기열에 등록돼있던 사용자 아님)

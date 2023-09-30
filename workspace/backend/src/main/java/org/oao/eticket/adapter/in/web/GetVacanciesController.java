@@ -50,16 +50,16 @@ public class GetVacanciesController { // 특정 공연의 특정 구역의 빈 �
             description = "NO CONTENT. (빈 리스트 - 현재 잔여 좌석 없습니다.)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
-  @GetMapping("schedules/{performanceScheduleId}/sections/{section}/vacancies")
+  @GetMapping("schedules/{performanceScheduleId}/sections/{sectionId}/vacancies")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<GetPerformanceScheduleVacanciesResponseBody> GetPerformanceScheduleVacncies(
-      @PathVariable Integer performanceScheduleId, @PathVariable String section) {
+      @PathVariable Integer performanceScheduleId, @PathVariable Integer sectionId) {
     try {
       final var results =
-          getVacanciesUseCase.getVacncies(
+          getVacanciesUseCase.getVacancies(
               GetVacanciesCommand.builder()
                   .performanceScheduleId(performanceScheduleId)
-                  .section(section)
+                  .sectionId(sectionId)
                   .build());
       // TODO(yoo): Model 객체 -> Response
       return ResponseEntity.ok(new GetPerformanceScheduleVacanciesResponseBody(results));

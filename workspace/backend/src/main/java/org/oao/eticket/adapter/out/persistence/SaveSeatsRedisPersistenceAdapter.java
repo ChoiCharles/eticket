@@ -35,7 +35,7 @@ public class SaveSeatsRedisPersistenceAdapter implements LoadPerformanceSchedule
   private final SeatClassMapper seatClassMapper;
 
   @Override
-  public List<PerformanceScheduleSeatTable> loadOpeningInfo() { // 공연 예매가 오픈 되는 공연 스케줄의 좌석 테이블을 생성
+  public List<PerformanceScheduleSeatTable> loadSeatTable() { // 공연 예매가 오픈 되는 공연 스케줄의 좌석 테이블을 생성
     /*
     PerformanceScheduleSeatTable {
       ps ID
@@ -63,16 +63,16 @@ public class SaveSeatsRedisPersistenceAdapter implements LoadPerformanceSchedule
         for (SectionJpaEntity sectionJpa : sectionJpaEntities) {
           // 각 Section에 좌석 List 넣기
           Section section = sectionMapper.mapToDomainEntity(sectionJpa);
-          section.setSeatList(
-              seatMapper.mapToDomainEntity(
-                  seatRepository.findAllBySectionJpaEntity(sectionJpa))); // query
+//          section.setSeatList(
+//              seatMapper.mapToDomainEntity(
+//                  seatRepository.findAllBySectionJpaEntity(sectionJpa))); // query
           // Section에 해당하는 좌석 등급 정보 가져오기
           section.setSeatClass(
               seatClassMapper.mapToDomainEntity(
                   sectionAndSeatClassRelationRepository
                       .findSeatClassBySectionAndPerformance(
-                          sectionJpa, scheduleJpa.getPerformanceJpaEntity())
-                      .getSeatClassJpaEntity()));
+                          sectionJpa.getId(), scheduleJpa.getPerformanceJpaEntity().getId())
+                      ));
           // 만든 하나의 구역을 리스트에 추가
           sectionList.add(section);
         }
