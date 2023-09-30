@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PerformanceScheduleRepository
@@ -17,5 +18,5 @@ public interface PerformanceScheduleRepository
   List<PerformanceScheduleJpaEntity> loadOpeningPerformanceSchedules();
 
   @Query("SELECT ps.performanceJpaEntity.concertHallJpaEntity FROM PerformanceScheduleJpaEntity ps WHERE ps.id = :id")
-  ConcertHallJpaEntity findConcertHallById(@Param("id") Integer id);
+  Optional<ConcertHallJpaEntity> findConcertHallById(@Param("id") Integer id);
 }

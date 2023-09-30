@@ -15,7 +15,9 @@ import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
 import org.oao.eticket.application.domain.model.Section;
 import org.oao.eticket.application.port.out.LoadPerformanceScheduleSeatTablePort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
+import org.oao.eticket.exception.ConcertHallNotFoundException;
 import org.oao.eticket.exception.NoResultException;
+import org.oao.eticket.exception.SeatClassNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +59,10 @@ public class SaveSeatsRedisPersistenceAdapter implements LoadPerformanceSchedule
         List<Section> sectionList = new ArrayList<>();
         // Performance Schedule이 개최 되는 Concert Hall의 section jpa List
         final var sectionJpaEntities =
-            sectionRepository.findAllByConcertHallJpaEntity(
-                scheduleJpa.getPerformanceJpaEntity().getConcertHallJpaEntity()); // query
+            sectionRepository
+                .findAllByConcertHallJpaEntity(
+                    scheduleJpa.getPerformanceJpaEntity().getConcertHallJpaEntity())
+                .orElseThrow(() -> new ConcertHallNotFoundException(scheduleJpa.getId().toString())); // query
         // Section Jpa List -> Section Redis model
         for (SectionJpaEntity sectionJpa : sectionJpaEntities) {
           // 각 Section에 좌석 List 넣기
@@ -71,7 +75,8 @@ public class SaveSeatsRedisPersistenceAdapter implements LoadPerformanceSchedule
               seatClassMapper.mapToDomainEntity(
                   sectionAndSeatClassRelationRepository
                       .findSeatClassBySectionAndPerformance(
-                          sectionJpa.getId(), scheduleJpa.getPerformanceJpaEntity().getId())
+                          sectionJpa.getId(), scheduleJpa.getId())
+                          .orElseThrow(() -> new SeatClassNotFoundException("section에 seat class 할당 안됨."))
                       ));
           // 만든 하나의 구역을 리스트에 추가
           sectionList.add(section);
