@@ -8,6 +8,8 @@ import QRcode from 'qrcode.react';
 
 import dummyConcerts from 'dummys.ts';
 
+import SlidingImage from '../SlidingImage'
+
 // import useMovePage from 'hooks/useMovePage';
 
 interface ConcertListItem {
@@ -54,7 +56,7 @@ function MyTicket() {
                 <h3>{info.date}</h3>
               </div>
               <div className="slide-image">
-                <h3>움직이는 이미지</h3>
+                <SlidingImage/>
               </div>
               <div className="my-ticket-image">
                 <div className="card-inner" style={{transform: `rotateY(${rotate}deg)`}}>
