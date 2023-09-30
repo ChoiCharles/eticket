@@ -6,20 +6,18 @@ import { Box, LinearProgress, Typography } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Client } from '@stomp/stompjs';
 
-const Waiting = () => {
-  const [order, setOrder] = useState(3);
-  const { waitingId } = useParams();
-  const { dateId } = useParams();
-  const { movePage } = useMovePage();
+const URL = `wss://${window.location.origin.split('//')[1]}/ws`;
 
+const Waiting = () => {
+  const [order, setOrder] = useState<number | null>(null);
   const [connected, setConnected] = useState<boolean>(false);
   const [stompClient, setStompClient] = useState<Client | null>(null);
-  console.log(connected);
-  console.log(stompClient);
+  const { waitingId, dateId } = useParams();
+  const { movePage } = useMovePage();
 
   useEffect(() => {
     const client = new Client({
-      brokerURL: `ws://localhost:8081/ws`,
+      brokerURL: URL,
       reconnectDelay: 5000,
       debug: str => console.log(str),
     });
@@ -28,16 +26,20 @@ const Waiting = () => {
       setConnected(true);
       setStompClient(client);
 
-      // client.subscribe(
-      //   ,
-      //   (response) => {
-      //     const message = JSON.parse(response.body);
-      //     console.log(message);
-      //   }
-      // );
+      client.subscribe('/queue', response => {
+        const message = JSON.parse(response.body);
+        console.log(message);
+        setOrder(Number(message));
+
+        if (order !== null && order <= 0) {
+          movePage(`/seat/${waitingId}/${dateId}`, null);
+        }
+      });
     };
 
     client.onDisconnect = () => {
+      console.log(connected);
+      console.log(stompClient);
       setConnected(false);
       setStompClient(null);
     };
@@ -48,21 +50,6 @@ const Waiting = () => {
       client.deactivate();
     };
   }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setOrder(prev => prev - 3);
-    }, 1000);
-
-    if (order <= 0) {
-      clearInterval(interval);
-      movePage(`/seat/${waitingId}/${dateId}`, null);
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [order, waitingId, movePage]);
 
   return (
     <>
