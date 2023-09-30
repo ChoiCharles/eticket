@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Eticket from 'assets/ETICKET.svg';
 import useMovePage from 'hooks/useMovePage';
 import instance from 'apis/utils/instance';
-// import { useRecoilState } from 'recoil';
-// import accessTokenState from 'atoms/accessTokenState';
+import { useRecoilState } from 'recoil';
+import accessTokenState from 'atoms/accessTokenState';
 
 interface loginDataTyoe {
   username: string;
@@ -22,7 +22,7 @@ function LoginForm() {
   // 비밀번호 데이터
   const [passwordDadta, setPasswordData] = useState('');
   // 리코일에 데이터 저장
-  // const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const [, setAccessToken] = useRecoilState(accessTokenState);
   // 아이디 정보 실시간 저장
   const getUsernameData = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsernameData(event.target.value);
@@ -47,7 +47,9 @@ function LoginForm() {
       }); // POST 요청으로 변경
       if (response.status === 200) {
         // setAccessToken{accessToken}
-        localStorage.setItem('accesstoken', response.data.accessToken);
+        // localStorage.setItem('accesstoken', response.data.accessToken);
+
+        setAccessToken(response.data.accessToken);
         movePage('/', null);
         console.log(response);
       }
