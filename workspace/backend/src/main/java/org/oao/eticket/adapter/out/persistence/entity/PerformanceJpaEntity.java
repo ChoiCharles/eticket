@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.oao.eticket.application.domain.model.PerformanceGenre;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -33,9 +34,13 @@ public class PerformanceJpaEntity {
 
   @Column private String posterImagePath;
 
+  @Column private Integer runningTime;
+
+  @Column @NotBlank private LocalDateTime ticketingOpenDateTime;
+
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "venue_id")
-  private VenueJpaEntity venueJpaEntity;
+  @JoinColumn(name = "concert_hall_id")
+  private ConcertHallJpaEntity concertHallJpaEntity;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
@@ -55,7 +60,9 @@ public class PerformanceJpaEntity {
       String cast,
       String description,
       String posterImagePath,
-      VenueJpaEntity venueJpaEntity,
+      Integer runningTime,
+      LocalDateTime ticketingOpenDateTime,
+      ConcertHallJpaEntity concertHallJpaEntity,
       UserJpaEntity hostJpaEntity,
       List<SeatClassJpaEntity> seatClassJpaEntityList,
       List<PerformanceScheduleJpaEntity> performanceScheduleJpaEntityList) {
@@ -65,7 +72,9 @@ public class PerformanceJpaEntity {
     this.cast = cast;
     this.description = description;
     this.posterImagePath = posterImagePath;
-    this.venueJpaEntity = venueJpaEntity;
+    this.runningTime = runningTime;
+    this.ticketingOpenDateTime = ticketingOpenDateTime;
+    this.concertHallJpaEntity = concertHallJpaEntity;
     this.hostJpaEntity = hostJpaEntity;
     this.seatClassJpaEntityList = seatClassJpaEntityList;
     this.performanceScheduleJpaEntityList = performanceScheduleJpaEntityList;

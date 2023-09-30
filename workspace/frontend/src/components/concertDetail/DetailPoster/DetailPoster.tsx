@@ -4,41 +4,54 @@ import './DetailPoster.scss';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useParams } from 'react-router-dom';
+// import BackNavBar from 'components/common/BackNavBar/BackNavBar';
 // import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 
+interface concertInfoTypes {
+  performanceId?: number;
+  image: string;
+  title: string;
+  location: string;
+  date: string;
+  concertdetail: string;
+  time: string;
+}
+
 /** params: 이미지, 콘서트 제목, 캐스팅 */
-function DetailPoster() {
+function DetailPoster(
+  { info }: { info: concertInfoTypes },
+  // title: string,
+  // location: string,
+  // date: string,
+  // time: string,
+  // image: string,
+) {
   const { performanceId } = useParams();
   console.log(performanceId);
 
   return (
     <div className="detail-poster-container">
       {/* <div>DetailPoster</div> */}
-      <img
-        src="https://tickets.interpark.com/contents/_next/image?url=https%3A%2F%2Fticketimage.interpark.com%2FPlay%2Fimage%2Flarge%2F23%2F23013495_p.gif&w=750&q=75"
-        alt=""
-        className="poster-image"
-      />
-      <div className="good">good</div>
+      <img src={info.image} alt="" className="poster-image" />
       <div className="poster-concert-box">
         {/* <div>good</div> */}
         <div className="poster-left-box">
           <img
-            src="https://tickets.interpark.com/contents/_next/image?url=https%3A%2F%2Fticketimage.interpark.com%2FPlay%2Fimage%2Flarge%2F23%2F23013495_p.gif&w=750&q=75"
+            src={info.image}
             alt="포스토 서잔"
             style={{ width: '90px', height: '120px' }}
           />
         </div>
         <div className="poster-right-box">
-          <div className="concert-title-text">공연제목</div>
-          <div className="concert-time">16:30 ~ 21:00</div>
+          <div className="concert-title-text">{info.title}</div>
+          <div className="concert-time">{info.time}</div>
           <div className="concert-period-box">
             <CalendarMonthIcon sx={{ color: 'gray' }} />
-            <div className="concert-period">공연기간</div>
+            <div className="concert-period">{info.date}</div>
           </div>
           <div className="concert-location-box">
             <PlaceOutlinedIcon sx={{ color: 'gray' }} />
-            <div className="concert-location">공연장</div>
+            <div className="concert-location">{info.location}</div>
           </div>
         </div>
       </div>

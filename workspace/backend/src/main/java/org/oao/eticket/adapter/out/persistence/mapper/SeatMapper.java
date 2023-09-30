@@ -6,14 +6,14 @@ import org.mapstruct.MappingConstants;
 import org.oao.eticket.adapter.out.persistence.entity.SeatJpaEntity;
 import org.oao.eticket.application.domain.model.Seat;
 
-@Mapper(
-    componentModel = MappingConstants.ComponentModel.SPRING,
-    uses = {ConcertHallMapper.class})
+import java.util.List;
+
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface SeatMapper {
 
-  @Mapping(target = "concertHall", source = "concertHallJpaEntity")
   Seat mapToDomainEntity(SeatJpaEntity seatJpaEntity);
 
-  @Mapping(target = "concertHallJpaEntity", source = "concertHall")
+  List<Seat> mapToDomainEntity(List<SeatJpaEntity> seatJpaEntities);
+
   SeatJpaEntity mapToJpaEntity(Seat seat);
 }

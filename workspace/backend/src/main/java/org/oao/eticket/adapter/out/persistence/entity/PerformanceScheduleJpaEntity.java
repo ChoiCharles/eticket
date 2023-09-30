@@ -1,6 +1,7 @@
 package org.oao.eticket.adapter.out.persistence.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,30 +19,17 @@ public class PerformanceScheduleJpaEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  @Column @NotBlank private LocalDateTime startDateTime;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "performance_id")
   private PerformanceJpaEntity performanceJpaEntity;
 
-  @Column(name = "start_date_time")
-  private LocalDateTime startDateTime;
-
-  @Column(name = "running_time")
-  private Integer runningTime;
-
-  @Column(name = "ticketing_date_time")
-  private LocalDateTime ticketingDateTime;
-
   @Builder
   public PerformanceScheduleJpaEntity(
-      Integer id,
-      PerformanceJpaEntity performanceJpaEntity,
-      LocalDateTime startDateTime,
-      Integer runningTime,
-      LocalDateTime ticketingDateTime) {
+      Integer id, LocalDateTime startDateTime, PerformanceJpaEntity performanceJpaEntity) {
     this.id = id;
-    this.performanceJpaEntity = performanceJpaEntity;
     this.startDateTime = startDateTime;
-    this.runningTime = runningTime;
-    this.ticketingDateTime = ticketingDateTime;
+    this.performanceJpaEntity = performanceJpaEntity;
   }
 }

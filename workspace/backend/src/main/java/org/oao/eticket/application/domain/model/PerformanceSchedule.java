@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 @Builder
 public class PerformanceSchedule {
   private Integer id;
-  private Performance performance;
   private LocalDateTime startDateTime;
-  private Integer runningTime;
-  private LocalDateTime ticketingDateTime;
+  private Performance performance;
 }

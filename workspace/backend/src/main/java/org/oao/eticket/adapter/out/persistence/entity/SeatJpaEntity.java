@@ -17,11 +17,8 @@ public class SeatJpaEntity {
   private Integer id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "concert_hall_id")
-  private ConcertHallJpaEntity concertHallJpaEntity;
-
-  @Column(name = "section")
-  private String section;
+  @JoinColumn(name = "section_id")
+  private SectionJpaEntity sectionJpaEntity;
 
   @Column(name = "seat_row")
   private String row;
@@ -38,15 +35,13 @@ public class SeatJpaEntity {
   @Builder
   public SeatJpaEntity(
       Integer id,
-      ConcertHallJpaEntity concertHallJpaEntity,
-      String section,
+      SectionJpaEntity sectionJpaEntity,
       String row,
       String number,
       Integer positionX,
       Integer positionY) {
     this.id = id;
-    this.concertHallJpaEntity = concertHallJpaEntity;
-    this.section = section;
+    this.sectionJpaEntity = sectionJpaEntity;
     this.row = row;
     this.number = number;
     this.positionX = positionX;
