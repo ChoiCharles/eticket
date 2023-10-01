@@ -6,6 +6,8 @@ import { Box, LinearProgress, Typography } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Client } from '@stomp/stompjs';
 
+import Captcha from 'components/common/Captcha/Captcha'
+
 const URL = `wss://${window.location.origin.split('//')[1]}/ws`;
 
 const Waiting = () => {
@@ -14,6 +16,8 @@ const Waiting = () => {
   const [stompClient, setStompClient] = useState<Client | null>(null);
   const { waitingId, dateId } = useParams();
   const { movePage } = useMovePage();
+
+  const [passCaptcha, setPassCaptcha] = useState<boolean>(false);
 
   useEffect(() => {
     const client = new Client({
@@ -53,40 +57,47 @@ const Waiting = () => {
 
   return (
     <>
-      <BackNavBar title="" />
-      <Box
-        sx={{
-          mt: '150px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <AccessTimeIcon fontSize="large" />
-        <Typography my={2} variant="h5">
-          나의 대기 순서
-        </Typography>
-        <Typography variant="h2">{order}</Typography>
-        <LinearProgress
-          sx={{ width: '80%', height: 20, borderRadius: 2, my: 5 }}
-        />
-        <Typography variant="body1">
-          현재 접속 인원이 많아 대기 중입니다.
-        </Typography>
-        <Typography variant="body1">
-          잠시만 기다려주시면 예매 페이지로 이동합니다.
-        </Typography>
-        <Typography mt={2} variant="body2">
-          <b>⚠주의⚠</b>
-        </Typography>
-        <Typography variant="body2">
-          닫기, 새로고침, 뒤로가기 또는 재접속하시면
-        </Typography>
-        <Typography variant="body2">
-          대기 순서가 초기화되어 대기 시간이 더 길어집니다.
-        </Typography>
-      </Box>
+      {
+        passCaptcha ?
+        <div>
+          <BackNavBar title="" />
+          <Box
+            sx={{
+              mt: '150px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <AccessTimeIcon fontSize="large" />
+            <Typography my={2} variant="h5">
+              나의 대기 순서
+            </Typography>
+            <Typography variant="h2">{order}</Typography>
+            <LinearProgress
+              sx={{ width: '80%', height: 20, borderRadius: 2, my: 5 }}
+            />
+            <Typography variant="body1">
+              현재 접속 인원이 많아 대기 중입니다.
+            </Typography>
+            <Typography variant="body1">
+              잠시만 기다려주시면 예매 페이지로 이동합니다.
+            </Typography>
+            <Typography mt={2} variant="body2">
+              <b>⚠주의⚠</b>
+            </Typography>
+            <Typography variant="body2">
+              닫기, 새로고침, 뒤로가기 또는 재접속하시면
+            </Typography>
+            <Typography variant="body2">
+              대기 순서가 초기화되어 대기 시간이 더 길어집니다.
+            </Typography>
+          </Box>
+        </div>
+        : 
+        <Captcha setPassCaptcha={setPassCaptcha}/>
+      }
     </>
   );
 };

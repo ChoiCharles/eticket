@@ -15,8 +15,6 @@ import useAccount from 'hooks/useAccount';
 import { useMetaData } from 'hooks/useMetaData';
 import useMovePage from 'hooks/useMovePage';
 
-import Captcha from 'components/common/Captcha/Captcha'
-
 interface ConcertListItem {
   id: number;
   image: string;
@@ -91,7 +89,6 @@ function MyPage() {
 
   return (
     <div className="container">
-      <Captcha/>
       <div className="my-info">
         <h3 className="nickName">닉네임</h3>
         <button className="edit-info">

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import './Captcha.scss';
-import { Button, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
+import BackNavBar from 'components/common/BackNavBar/BackNavBar';
 
 import {
   loadCaptchaEnginge,
@@ -8,9 +9,10 @@ import {
   validateCaptcha
 } from "react-simple-captcha";
 
-class CaptchaTest extends Component {
+class CaptchaTest extends Component<{setPassCaptcha: (value: boolean) => void}> {
+
   componentDidMount() {
-    loadCaptchaEnginge(6);
+    loadCaptchaEnginge(6, 'black', 'white');
   }
 
   doSubmit = () => {
@@ -18,12 +20,13 @@ class CaptchaTest extends Component {
     let user_captcha = user_captcha_input.value;
 
     if (validateCaptcha(user_captcha) == true) {
-      alert("Captcha Matched");
-      loadCaptchaEnginge(6);
+      loadCaptchaEnginge(6, 'black', 'white');
       user_captcha_input.value = "";
+      this.props.setPassCaptcha(true)
     } else {
-      alert("Captcha Does Not Match");
+      alert("다시 입력해 주세요");
       user_captcha_input.value = "";
+      this.props.setPassCaptcha(false)
     }
     
   };
@@ -31,28 +34,20 @@ class CaptchaTest extends Component {
   render() {
     return (
       <div>
-        <div className="container">
+        <BackNavBar title="" />
+        <div className="captcha-container">
           <div className="form-group">
-            <div className="col mt-3">
-              <LoadCanvasTemplate className="captcha-templa"/>
-            </div>
-
-            <div className="col mt-3">
+            <LoadCanvasTemplate reloadText="새로고침"/>
+            <div className="captcha-input">
               <div>
-                <TextField fullWidth id="user_captcha_input" />
+                <TextField id="user_captcha_input" />
               </div>
-            </div>
-
-            <div className="col mt-3">
-              <div>
-                <Button
-                  variant="contained"
-                  type="button"
+              <div className="captcha-input-button">
+                <button
                   onClick={() => this.doSubmit()}
-                  style={{ background: '#80C0C0', color: 'white' }}
                 >
-                  입력
-                </Button>
+                  <h3>입력</h3>
+                </button>
               </div>
             </div>
           </div>
