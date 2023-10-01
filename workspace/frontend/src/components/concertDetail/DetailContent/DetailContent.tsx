@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 // import DetailImg from 'assets/emphisDetail.svg';
 import ImgDetail from 'components/concertDetail/ImgDetail/ImgDetail';
 import './DetailContent.scss';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import ProducerInfo from 'components/concertDetail/ProducerInfo/ProducerInfo';
 import PriceInfo from '../PriceInfo/PriceInfo';
 
@@ -22,9 +22,15 @@ const tabContentStyles = {
  *  + 상세정보 이미지
  */
 export default function DetailContent({ info }: { info: string }) {
-  const { performanceId } = useParams();
-  console.log(performanceId);
+  // const { performanceId } = useParams();
   const [value, setValue] = React.useState(0);
+  const [showAnswer, setShowAnswer] = useState(Array(4).fill(false)); // 각 질문마다 보이기 여부 배열
+
+  const toggleAnswer = (index: number) => {
+    const newShowAnswer = [...showAnswer];
+    newShowAnswer[index] = !newShowAnswer[index];
+    setShowAnswer(newShowAnswer);
+  };
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -113,9 +119,67 @@ export default function DetailContent({ info }: { info: string }) {
         sx={tabContentStyles}
       >
         {/* QnA 컨텐츠 */}
-        <div>
-          <h2>QnA</h2>
-          {/* 여기에 QnA 컨텐츠 내용을 추가 */}
+        <div className="qna-container">
+          <h2 className="section-title">QnA</h2>
+          <div className="qna-item">
+            <div
+              className="qna-question"
+              onClick={() => toggleAnswer(0)}
+              aria-hidden
+            >
+              Q: 환불은 언제까지 가능한가요?
+            </div>
+            {showAnswer[0] && (
+              <div className="qna-answer">
+                A: 콘서트 시작 하루전까지 가능합니다.
+              </div>
+            )}
+          </div>
+          <div className="qna-item">
+            <div
+              className="qna-question"
+              onClick={() => toggleAnswer(1)}
+              aria-hidden
+            >
+              Q: 포토카드 거래가 가능한가요?
+            </div>
+            {showAnswer[1] && (
+              <div className="qna-answer">
+                A: 네! 포토카드는 언제 어디서든 거래가 가능합니다.
+              </div>
+            )}
+          </div>
+          <div className="qna-item">
+            <div
+              className="qna-question"
+              onClick={() => toggleAnswer(2)}
+              aria-hidden
+            >
+              Q: 티켓 거래가 가능한가요?
+            </div>
+            {showAnswer[2] && (
+              <div className="qna-answer">
+                A: 아니오. 거래는 불가능합니다. 콘서트 하루전까지 환불만
+                가능합니다.
+              </div>
+            )}
+          </div>
+          <div className="qna-item">
+            <div
+              className="qna-question"
+              onClick={() => toggleAnswer(3)}
+              aria-hidden
+            >
+              Q: 포토카드는 언제 생성되나요?
+            </div>
+            {showAnswer[3] && (
+              <div className="qna-answer">
+                A: 콘서트 종료 후에 티켓이 NFT 포토카드로 바뀝니다.
+              </div>
+            )}
+          </div>
+
+          {/* 나머지 Q&A 항목들도 동일한 구조로 추가 */}
         </div>
       </Box>
     </Box>

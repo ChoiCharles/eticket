@@ -21,7 +21,7 @@ function BackNavBar({ title }: { title: string | null }) {
       <div onClick={() => goBack()} aria-hidden>
         <img src={BackIcon} alt="<" />
       </div>
-      <div>{title}</div>
+      <div className="back-nav-title">{title}</div>
       <div />
     </Toolbar>
   );

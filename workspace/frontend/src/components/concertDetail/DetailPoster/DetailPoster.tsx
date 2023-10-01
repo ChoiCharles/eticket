@@ -5,6 +5,7 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useParams } from 'react-router-dom';
 // import BackNavBar from 'components/common/BackNavBar/BackNavBar';
+// import BackNavBar from 'components/common/BackNavBar/BackNavBar';
 // import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 
 interface concertInfoTypes {
@@ -31,6 +32,7 @@ function DetailPoster(
 
   return (
     <div className="detail-poster-container">
+      {/* <BackNavBar title="" /> */}
       {/* <div>DetailPoster</div> */}
       <img src={info.image} alt="" className="poster-image" />
       <div className="poster-concert-box">
