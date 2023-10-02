@@ -40,7 +40,7 @@ type Minter struct {
 	ethContract        *contract.Contract
 	ethContractAddress common.Address
 
-	cachedScheduledPerformances sync.Map
+	cachedPerformanceSchedules sync.Map
 }
 
 func (m *Minter) MinterAddress() common.Address {
@@ -49,13 +49,13 @@ func (m *Minter) MinterAddress() common.Address {
 
 func (m *Minter) IsPerformanceScheduled(ctx context.Context, performanceScheduleId uint32) (bool, error) {
 	for {
-		switch state, _ := m.cachedScheduledPerformances.LoadOrStore(performanceScheduleId, NOT_SCHEDULED); state {
+		switch state, _ := m.cachedPerformanceSchedules.LoadOrStore(performanceScheduleId, NOT_SCHEDULED); state {
 		case NOT_SCHEDULED:
 			if scheduled, err := m.ethContract.IsPerformanceScheduled(&bind.CallOpts{Context: ctx}, performanceScheduleId); err != nil {
 				return false, err
 			} else {
 				if scheduled {
-					m.cachedScheduledPerformances.Store(performanceScheduleId, SCHEDULED)
+					m.cachedPerformanceSchedules.Store(performanceScheduleId, SCHEDULED)
 				}
 				return scheduled, err
 			}
@@ -84,7 +84,7 @@ func (m *Minter) doSchedulePerformance(ctx context.Context, performanceScheduleI
 		GasLimit: 1e+6,
 	}
 
-	tx, err := m.ethContract.SchedulePerformance(txOpts, performanceScheduleId, big.NewInt(ticketExpirationTime.Unix()))
+	tx, err := m.ethContract.SchedulePerformance(txOpts, performanceScheduleId, big.NewInt(ticketExpirationTime.Unix()), "", "")
 	if err != nil {
 		return fmt.Errorf(errPrefix+"%w", err)
 	}
@@ -100,11 +100,11 @@ func (m *Minter) doSchedulePerformance(ctx context.Context, performanceScheduleI
 	}
 }
 
-func (m *Minter) schedulePerformance(ctx context.Context, performanceScheduleId uint32, ticketExpirationTime time.Time) error {
+func (m *Minter) SchedulePerformance(ctx context.Context, performanceScheduleId uint32, ticketExpirationTime time.Time) error {
 	const errPrefix = "minter.schedulePerformance(): "
 
 	for {
-		switch state, _ := m.cachedScheduledPerformances.LoadOrStore(performanceScheduleId, NOT_SCHEDULED); state {
+		switch state, _ := m.cachedPerformanceSchedules.LoadOrStore(performanceScheduleId, NOT_SCHEDULED); state {
 		case TRY_SCHEDULING:
 			select {
 			case <-time.After(100 * time.Millisecond):
@@ -114,23 +114,23 @@ func (m *Minter) schedulePerformance(ctx context.Context, performanceScheduleId 
 			}
 
 		case NOT_SCHEDULED:
-			if !m.cachedScheduledPerformances.CompareAndSwap(performanceScheduleId, NOT_SCHEDULED, TRY_SCHEDULING) {
+			if !m.cachedPerformanceSchedules.CompareAndSwap(performanceScheduleId, NOT_SCHEDULED, TRY_SCHEDULING) {
 				continue
 			}
 
 			if scheduled, err := m.ethContract.IsPerformanceScheduled(&bind.CallOpts{Context: ctx}, performanceScheduleId); !scheduled {
 				if err != nil && errors.Is(err, context.Canceled) {
-					m.cachedScheduledPerformances.Store(performanceScheduleId, NOT_SCHEDULED)
+					m.cachedPerformanceSchedules.Store(performanceScheduleId, NOT_SCHEDULED)
 					return fmt.Errorf(errPrefix+"%w", err)
 				}
 
 				if err := m.doSchedulePerformance(ctx, performanceScheduleId, ticketExpirationTime); err != nil {
-					m.cachedScheduledPerformances.Store(performanceScheduleId, NOT_SCHEDULED)
+					m.cachedPerformanceSchedules.Store(performanceScheduleId, NOT_SCHEDULED)
 					return fmt.Errorf(errPrefix+"%w", err)
 				}
 			}
 
-			m.cachedScheduledPerformances.Store(performanceScheduleId, SCHEDULED)
+			m.cachedPerformanceSchedules.Store(performanceScheduleId, SCHEDULED)
 		}
 
 		return nil
@@ -157,7 +157,7 @@ func (m *Minter) doMintTicket(ctx context.Context, recipient common.Address, per
 		GasLimit: 1e+6,
 	}
 
-	tx, err := m.ethContract.MintTicket(txOpts, recipient, performanceScheduleId, seatId, "")
+	tx, err := m.ethContract.MintTicket(txOpts, recipient, performanceScheduleId, seatId)
 	if err != nil {
 		return err
 	}
@@ -177,7 +177,7 @@ func (m *Minter) MintTicket(ctx context.Context, recipient common.Address, perfo
 		return fmt.Errorf(errPrefix+"%w", err)
 	} else {
 		if !scheduled {
-			if err := m.schedulePerformance(ctx, performanceScheduleId, ticketExpirationTime); err != nil {
+			if err := m.SchedulePerformance(ctx, performanceScheduleId, ticketExpirationTime); err != nil {
 				return fmt.Errorf(errPrefix+"%w", err)
 			}
 		}
