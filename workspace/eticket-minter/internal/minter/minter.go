@@ -34,9 +34,9 @@ func newTaskQueue(capacity int) (chan any, error) {
 	if 0 < capacity {
 		return make(chan any, capacity), nil
 	} else {
-		capacity := os.Getenv("ETICKET_TASK_QUEUE_CAPACITY")
+		capacity := os.Getenv("ETICKET_MINTER_TASK_QUEUE_CAPACITY")
 		if len(capacity) == 0 {
-			return nil, errors.New("missing required environment variable \"ETICKET_TASK_QUEUE_CAPACITY\"")
+			return nil, errors.New("missing required environment variable \"ETICKET_MINTER_TASK_QUEUE_CAPACITY\"")
 		} else {
 			capacity, err := strconv.ParseUint(capacity, 10, 32)
 			if err != nil {

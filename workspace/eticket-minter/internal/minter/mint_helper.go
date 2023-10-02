@@ -217,24 +217,24 @@ func (m *mintHelper) MintTicket(ctx context.Context, opts *MintTicketOpts) (newl
 func newMintHelperWithEnvvar() (*mintHelper, error) {
 	const errPrefix = "newMintHelperWithEnvvar(): "
 
-	ethRpcUrl := os.Getenv("ETICKET_ETH_RPC_URL")
+	ethRpcUrl := os.Getenv("ETICKET_BLOCKCHAIN_RPC_URL")
 	if len(ethRpcUrl) == 0 {
-		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_ETH_RPC_URL\"")
+		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_BLOCKCHAIN_RPC_URL\"")
 	}
 
-	ethChainId := os.Getenv("ETICKET_ETH_CHAIN_ID")
+	ethChainId := os.Getenv("ETICKET_BLOCKCHAIN_CHAIN_ID")
 	if len(ethChainId) == 0 {
-		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_ETH_CHAIN_ID\"")
+		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_BLOCKCHAIN_CHAIN_ID\"")
 	}
 
-	ethPrivateKey := os.Getenv("ETICKET_ETH_PRIVATE_KEY")
+	ethPrivateKey := os.Getenv("ETICKET_BLOCKCHAIN_PRIVATE_KEY")
 	if len(ethPrivateKey) == 0 {
-		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_ETH_PRIVATE_KEY\"")
+		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_BLOCKCHAIN_PRIVATE_KEY\"")
 	}
 
-	ethContractAddress := os.Getenv("ETICKET_ETH_CONTRACT_ADDRESS")
+	ethContractAddress := os.Getenv("ETICKET_BLOCKCHAIN_CONTRACT_ADDRESS")
 	if len(ethContractAddress) == 0 {
-		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_ETH_CONTRACT_ADDRESS\"")
+		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_BLOCKCHAIN_CONTRACT_ADDRESS\"")
 	}
 
 	return newMintHelper(mintHelperInitOpts{
