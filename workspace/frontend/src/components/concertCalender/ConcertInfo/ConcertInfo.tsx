@@ -1,24 +1,29 @@
 import React from 'react';
 import './ConcertInfo.scss';
-import concertImg from 'assets/memphis.svg';
-
+import dummyConcerts from 'dummys';
 /**
  * @params 사진, 공연장, 시간,
  *
  */
-function ConcertInfo() {
+function ConcertInfo({ idx }: { idx: string }) {
+  const index = parseInt(idx, 10);
   return (
     <div className="ConcertInfo-outer-box">
-      {/* <img src={concertImg} alt="" className="poster-image" /> */}
+      <img src={dummyConcerts[index].image} alt="" className="poster-image2" />
       <div className="ConcertPoster-img-box">
         {/* 공연장 포스터 */}
-        <img src={concertImg} alt="이미지" />
+        <img
+          src={dummyConcerts[index].image}
+          alt="이미지"
+          style={{ width: '90px', height: '120px' }}
+        />
       </div>
       <div className="ConcertInformation-box">
-        <div className="concert-title-text2">공연 제목</div>
-        <div className="concert-time2">2023-09-30 19:00 ~ 23: 00</div>
+        <div className="concert-title-text2">{dummyConcerts[index].title}</div>
+        <div className="concert-time2">{dummyConcerts[index].date}</div>
+        <div className="concert-time2">{dummyConcerts[index].time}</div>
         <div className="concert-period-box2">
-          서울 잠실종합운동장 올림픽 경기장
+          {dummyConcerts[index].location}
         </div>
       </div>
     </div>

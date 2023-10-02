@@ -2,6 +2,7 @@ import React from 'react';
 import BackNavBar from 'components/common/BackNavBar/BackNavBar';
 import ConcertInfo from 'components/concertCalender/ConcertInfo/ConcertInfo';
 import Calender from 'components/concertCalender/Calender/Calender';
+import { useParams } from 'react-router-dom';
 /**
  * 여기에서 들어와야하는 데이터
  * 1. 공연포스터 => ConcertInfo
@@ -10,13 +11,18 @@ import Calender from 'components/concertCalender/Calender/Calender';
  * 4. 예정되어있는 해당 공연 날짜들 => Calender
  */
 function ConcertCalender() {
-  return (
-    <div>
-      <BackNavBar title="" />
-      <ConcertInfo />
-      <Calender />
-    </div>
-  );
+  const { performanceScheduleId } = useParams();
+  // const ID = parseInt()
+  console.log(performanceScheduleId);
+  if (performanceScheduleId) {
+    return (
+      <div>
+        <BackNavBar title="" />
+        <ConcertInfo idx={performanceScheduleId} />
+        <Calender />
+      </div>
+    );
+  }
 }
 
 export default ConcertCalender;
