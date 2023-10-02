@@ -33,6 +33,7 @@ type SchedulePerformanceOpts struct {
 }
 
 type MintTicketOpts struct {
+	ReservationId int32
 	SchedulePerformanceOpts
 	Recipient common.Address
 	SeatId    uint32
@@ -181,35 +182,36 @@ func (m *mintHelper) doMintTicket(ctx context.Context, recipient common.Address,
 	}
 }
 
-func (m *mintHelper) MintTicket(ctx context.Context, opts *MintTicketOpts) error {
+func (m *mintHelper) MintTicket(ctx context.Context, opts *MintTicketOpts) (newlyMinted bool, err error) {
 	const errPrefix = "mintHelper.MintTicket(): "
 
 	if scheduled, err := m.IsPerformanceScheduled(ctx, opts.PerformanceScheduleId); err != nil {
-		return fmt.Errorf(errPrefix+"%w", err)
+		return false, fmt.Errorf(errPrefix+"%w", err)
 	} else {
 		if !scheduled {
 			if err := m.SchedulePerformance(ctx, opts.SchedulePerformanceOpts); err != nil {
-				return fmt.Errorf(errPrefix+"%w", err)
+				return false, fmt.Errorf(errPrefix+"%w", err)
 			}
 		}
 	}
 
 	minted, err := m.ethContract.IsTicketMinted(&bind.CallOpts{Pending: true}, opts.PerformanceScheduleId, opts.SeatId)
 	if err != nil {
-		return fmt.Errorf(errPrefix+"%w", err)
+		return false, fmt.Errorf(errPrefix+"%w", err)
 	}
 
 	if minted {
 		if err := m.validateOwnership(ctx, opts.Recipient, opts.PerformanceScheduleId, opts.SeatId); err != nil {
-			return errors.New(errPrefix + "ticket already minted, but owner is other account")
+			return false, errors.New(errPrefix + "ticket already minted, but owner is other account")
 		}
-	} else {
-		if err := m.doMintTicket(ctx, opts.Recipient, opts.PerformanceScheduleId, opts.SeatId); err != nil {
-			return fmt.Errorf(errPrefix+"%w", err)
-		}
+		return false, nil
 	}
 
-	return nil
+	if err := m.doMintTicket(ctx, opts.Recipient, opts.PerformanceScheduleId, opts.SeatId); err != nil {
+		return false, fmt.Errorf(errPrefix+"%w", err)
+	}
+
+	return true, nil
 }
 
 func newMintHelperWithEnvvar() (*mintHelper, error) {
@@ -241,6 +243,10 @@ func newMintHelperWithEnvvar() (*mintHelper, error) {
 		EthPrivateKey:      ethPrivateKey,
 		EthContractAddress: ethContractAddress,
 	})
+}
+
+func (m *mintHelper) Close() {
+	m.ethRpcConn.Close()
 }
 
 func newMintHelper(opts mintHelperInitOpts) (*mintHelper, error) {
