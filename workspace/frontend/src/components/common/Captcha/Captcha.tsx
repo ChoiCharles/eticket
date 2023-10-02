@@ -9,7 +9,7 @@ import {
   validateCaptcha
 } from "react-simple-captcha";
 
-class CaptchaTest extends Component<{setPassCaptcha: (value: boolean) => void}> {
+class CaptchaTest extends Component<{setOpenCaptcha: (value: boolean) => void}> {
 
   componentDidMount() {
     loadCaptchaEnginge(6, 'black', 'white');
@@ -22,11 +22,11 @@ class CaptchaTest extends Component<{setPassCaptcha: (value: boolean) => void}> 
     if (validateCaptcha(user_captcha) == true) {
       loadCaptchaEnginge(6, 'black', 'white');
       user_captcha_input.value = "";
-      this.props.setPassCaptcha(true)
+      this.props.setOpenCaptcha(false)
     } else {
       alert("다시 입력해 주세요");
       user_captcha_input.value = "";
-      this.props.setPassCaptcha(false)
+      this.props.setOpenCaptcha(true)
     }
     
   };
@@ -34,13 +34,16 @@ class CaptchaTest extends Component<{setPassCaptcha: (value: boolean) => void}> 
   render() {
     return (
       <div>
-        <BackNavBar title="" />
+        <div className="header-container">
+          <BackNavBar title="" />
+          <h3>아래 문자를 입력해주세요</h3>
+        </div>
         <div className="captcha-container">
           <div className="form-group">
             <LoadCanvasTemplate reloadText="새로고침"/>
             <div className="captcha-input">
               <div>
-                <TextField id="user_captcha_input" />
+                <TextField fullWidth id="user_captcha_input" placeholder="문자를 입력하세요"/>
               </div>
               <div className="captcha-input-button">
                 <button

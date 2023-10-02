@@ -2,13 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useMovePage from 'hooks/useMovePage';
 import BackNavBar from 'components/common/BackNavBar/BackNavBar';
-import { Box, LinearProgress, Typography } from '@mui/material';
+import { Box, LinearProgress, Typography, Modal } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Client } from '@stomp/stompjs';
 
 import Captcha from 'components/common/Captcha/Captcha'
 
 const URL = `wss://${window.location.origin.split('//')[1]}/ws`;
+
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  width: '70%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 const Waiting = () => {
   const [order, setOrder] = useState<number | null>(null);
@@ -17,50 +29,55 @@ const Waiting = () => {
   const { waitingId, dateId } = useParams();
   const { movePage } = useMovePage();
 
-  const [passCaptcha, setPassCaptcha] = useState<boolean>(false);
+  const [openCaptcha, setOpenCaptcha] = useState<boolean>(true);
 
   useEffect(() => {
-    const client = new Client({
-      brokerURL: URL,
-      reconnectDelay: 5000,
-      debug: str => console.log(str),
-    });
-
-    client.onConnect = () => {
-      setConnected(true);
-      setStompClient(client);
-
-      client.subscribe('/queue', response => {
-        const message = JSON.parse(response.body);
-        console.log(message);
-        setOrder(Number(message));
-
-        if (order !== null && order <= 0) {
-          movePage(`/seat/${waitingId}/${dateId}`, null);
-        }
+    if (openCaptcha === false) {
+      const client = new Client({
+        brokerURL: URL,
+        reconnectDelay: 5000,
+        debug: str => console.log(str),
       });
-    };
-
-    client.onDisconnect = () => {
-      console.log(connected);
-      console.log(stompClient);
-      setConnected(false);
-      setStompClient(null);
-    };
-
-    client.activate();
-
-    return () => {
-      client.deactivate();
-    };
-  }, []);
+  
+      client.onConnect = () => {
+        setConnected(true);
+        setStompClient(client);
+  
+        client.subscribe('/queue', response => {
+          const message = JSON.parse(response.body);
+          console.log(message);
+          setOrder(Number(message));
+  
+          if (order !== null && order <= 0) {
+            movePage(`/seat/${waitingId}/${dateId}`, null);
+          }
+        });
+      };
+  
+      client.onDisconnect = () => {
+        console.log(connected);
+        console.log(stompClient);
+        setConnected(false);
+        setStompClient(null);
+      };
+  
+      client.activate();
+  
+      return () => {
+        client.deactivate();
+      };
+    }
+  }, [openCaptcha]);
 
   return (
     <>
-      {
-        passCaptcha ?
         <div>
           <BackNavBar title="" />
+          <Modal open={openCaptcha}>
+            <Box sx={style}>
+              <Captcha setOpenCaptcha={setOpenCaptcha}/>
+            </Box>
+          </Modal>
           <Box
             sx={{
               mt: '150px',
@@ -95,9 +112,8 @@ const Waiting = () => {
             </Typography>
           </Box>
         </div>
-        : 
-        <Captcha setPassCaptcha={setPassCaptcha}/>
-      }
+        
+      
     </>
   );
 };
