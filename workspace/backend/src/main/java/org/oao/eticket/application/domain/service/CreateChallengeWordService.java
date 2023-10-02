@@ -2,7 +2,7 @@ package org.oao.eticket.application.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.ChallengeWord;
-import org.oao.eticket.application.port.in.ChallengeWordMapper;
+import org.oao.eticket.application.port.in.mapper.ChallengeWordMapper;
 import org.oao.eticket.application.port.in.CreateChallengeWordUseCase;
 import org.oao.eticket.application.port.out.SaveChallengeWordPort;
 import org.oao.eticket.common.annotation.UseCase;
