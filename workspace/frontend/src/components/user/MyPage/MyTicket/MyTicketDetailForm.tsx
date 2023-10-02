@@ -8,7 +8,7 @@ import QRcode from 'qrcode.react';
 
 import dummyConcerts from 'dummys.ts';
 
-import SlidingImage from '../SlidingImage'
+import SlidingImage from '../SlidingImage';
 
 // import useMovePage from 'hooks/useMovePage';
 
@@ -31,16 +31,15 @@ function MyTicket() {
   console.log(idx);
 
   const [isFlipped, setIsFlipped] = useState(false);
-  const [rotate, setRotate] = useState(0)
+  const [rotate, setRotate] = useState(0);
 
   const imageFlip = () => {
-
     if (isFlipped) {
-      setRotate(0)
-      setIsFlipped(false)
+      setRotate(0);
+      setIsFlipped(false);
     } else {
-      setRotate(180)
-      setIsFlipped(true)
+      setRotate(180);
+      setIsFlipped(true);
     }
   };
 
@@ -56,10 +55,13 @@ function MyTicket() {
                 <h3>{info.date}</h3>
               </div>
               <div className="slide-image">
-                <SlidingImage/>
+                <SlidingImage />
               </div>
               <div className="my-ticket-image">
-                <div className="card-inner" style={{transform: `rotateY(${rotate}deg)`}}>
+                <div
+                  className="card-inner"
+                  style={{ transform: `rotateY(${rotate}deg)` }}
+                >
                   <div className="card-front">
                     <img src={info.image} alt="" />
                   </div>
@@ -74,16 +76,15 @@ function MyTicket() {
                     </div>
                   </div>
                 </div>
-                {
-                  isFlipped ? 
+                {isFlipped ? (
                   <button onClick={imageFlip}>
                     <h3>포스터</h3>
                   </button>
-                  :
+                ) : (
                   <button onClick={imageFlip}>
                     <h3>QR 코드 생성</h3>
                   </button>
-                }
+                )}
               </div>
             </div>
           );

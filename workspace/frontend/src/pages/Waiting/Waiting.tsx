@@ -6,7 +6,7 @@ import { Box, LinearProgress, Typography } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Client } from '@stomp/stompjs';
 
-import Captcha from 'components/common/Captcha/Captcha'
+import Captcha from 'components/common/Captcha/Captcha';
 
 const URL = `wss://${window.location.origin.split('//')[1]}/ws`;
 
@@ -56,9 +56,8 @@ const Waiting = () => {
   }, []);
 
   return (
-    <>
-      {
-        passCaptcha ?
+    <div>
+      {passCaptcha ? (
         <div>
           <BackNavBar title="" />
           <Box
@@ -95,10 +94,10 @@ const Waiting = () => {
             </Typography>
           </Box>
         </div>
-        : 
-        <Captcha setPassCaptcha={setPassCaptcha}/>
-      }
-    </>
+      ) : (
+        <Captcha setPassCaptcha={setPassCaptcha} />
+      )}
+    </div>
   );
 };
 

@@ -72,7 +72,6 @@ function SignupForm() {
     }
   };
 
-  // eslint-disable-next-line consistent-return
   const signupData = async () => {
     if (
       userName &&

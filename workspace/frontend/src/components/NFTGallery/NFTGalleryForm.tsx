@@ -9,8 +9,7 @@ import {
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SearchIcon from '@mui/icons-material/Search';
-import NFTCard from 'components/common/NFTCard/NFTCard'
-
+import NFTCard from 'components/common/NFTCard/NFTCard';
 
 function NFTGalleryForm() {
   const [keyword, setKeyword] = useState('');
@@ -22,9 +21,7 @@ function NFTGalleryForm() {
   const handleSubmit = async (event: FormEvent) => {
     event?.preventDefault();
     if (!keyword.trim()) {
-      return;
     }
-
   };
 
   return (
@@ -68,13 +65,12 @@ function NFTGalleryForm() {
               },
             }}
           />
-
         </Box>
       </Toolbar>
       <div className="NFT-list">
-        <NFTCard/>
-        <NFTCard/>
-        <NFTCard/>
+        <NFTCard />
+        <NFTCard />
+        <NFTCard />
       </div>
     </div>
   );
