@@ -15,19 +15,24 @@ const TopNav = ({ handleToggleDrawer }: Props) => {
     movePage('/login', null);
   };
 
+  const Token = localStorage.getItem('accesstoken');
+  // console.log(Token);
+
   return (
-    <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <Button
-        size="large"
-        sx={{ fontSize: '18px', textDecoration: 'underline', color: 'black' }}
-        onClick={handleMovePage}
-      >
-        로그인을 해주세요.
-      </Button>
-      <IconButton onClick={handleToggleDrawer}>
-        <CloseIcon fontSize="large" />
-      </IconButton>
-    </Toolbar>
+    !Token && (
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button
+          size="large"
+          sx={{ fontSize: '18px', textDecoration: 'underline', color: 'black' }}
+          onClick={handleMovePage}
+        >
+          로그인을 해주세요.
+        </Button>
+        <IconButton onClick={handleToggleDrawer}>
+          <CloseIcon fontSize="large" />
+        </IconButton>
+      </Toolbar>
+    )
   );
 };
 
