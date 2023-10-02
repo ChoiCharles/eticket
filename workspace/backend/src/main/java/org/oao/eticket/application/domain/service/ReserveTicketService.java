@@ -2,7 +2,7 @@ package org.oao.eticket.application.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.*;
-import org.oao.eticket.application.port.in.ReserveTicketCommand;
+import org.oao.eticket.application.port.in.dto.ReserveTicketCommand;
 import org.oao.eticket.application.port.in.ReserveTicketUseCase;
 import org.oao.eticket.application.port.out.*;
 import org.oao.eticket.common.annotation.UseCase;

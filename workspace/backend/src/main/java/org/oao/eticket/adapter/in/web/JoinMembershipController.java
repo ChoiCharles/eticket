@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
-import org.oao.eticket.application.port.in.JoinMembershipCommand;
+import org.oao.eticket.application.port.in.dto.JoinMembershipCommand;
 import org.oao.eticket.application.port.in.JoinMembershipUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.oao.eticket.exception.UserDuplicateException;

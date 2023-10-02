@@ -3,7 +3,7 @@ package org.oao.eticket.application.domain.service;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.*;
-import org.oao.eticket.application.port.in.CancelMyReservationCommand;
+import org.oao.eticket.application.port.in.dto.CancelMyReservationCommand;
 import org.oao.eticket.application.port.in.CancelMyReservationUseCase;
 import org.oao.eticket.application.port.out.*;
 import org.oao.eticket.common.annotation.UseCase;

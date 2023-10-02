@@ -1,4 +1,4 @@
-package org.oao.eticket.application.port.in;
+package org.oao.eticket.application.port.in.dto;
 
 import lombok.Builder;
 import lombok.Value;

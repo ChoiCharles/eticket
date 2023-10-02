@@ -1,10 +1,11 @@
-package org.oao.eticket.application.port.in;
+package org.oao.eticket.application.port.in.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.oao.eticket.application.domain.model.BlockChainWallet;
 import org.oao.eticket.application.domain.model.User;
+import org.oao.eticket.application.port.in.dto.UserDto;
 
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,
@@ -24,5 +25,10 @@ public interface UserMapper {
     } else {
       return wallet.getAddress();
     }
+  }
+
+  interface GetUserDetailsUseCase {
+
+      UserDto getByUserId(final User.UserId userId);
   }
 }

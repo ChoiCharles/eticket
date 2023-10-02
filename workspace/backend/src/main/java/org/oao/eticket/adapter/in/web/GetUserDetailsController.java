@@ -1,7 +1,7 @@
 package org.oao.eticket.adapter.in.web;
 
 import lombok.RequiredArgsConstructor;
-import org.oao.eticket.application.port.in.GetUserDetailsUseCase;
+import org.oao.eticket.application.port.in.mapper.UserMapper;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.oao.eticket.infrastructure.security.EticketUserDetails;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class GetUserDetailsController {
 
   private record Response(int id, String username, String nickname, String email, String walletAddress) {}
 
-  private final GetUserDetailsUseCase getUserDetailsUseCase;
+  private final UserMapper.GetUserDetailsUseCase getUserDetailsUseCase;
 
   @GetMapping("/{userId}")
   ResponseEntity<Response> getUserDetails(

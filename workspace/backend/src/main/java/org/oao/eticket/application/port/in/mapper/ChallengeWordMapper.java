@@ -1,4 +1,4 @@
-package org.oao.eticket.application.port.in;
+package org.oao.eticket.application.port.in.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
