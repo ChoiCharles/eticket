@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import instance from 'apis/utils/instance';
 import useMovePage from 'hooks/useMovePage';
 import Logo from 'components/common/Logo/Logo';
+import { Alert } from '@mui/material';
 
 interface signupType {
   username: string;
@@ -28,6 +29,7 @@ function SignupForm() {
   const [emailError, setEmailError] = useState(false); // 이메일 형식 오류 여부 상태
   const [passwordError, setPasswordError] = useState(false);
   const [checkPassword, setCheckPassword] = useState(false);
+  const [checkUser, setCheckUser] = useState(false);
   // useForm
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,9 +46,6 @@ function SignupForm() {
     }
   };
 
-  // const usernameDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setUserName(e.target.value);
-  // };
   const nicknameData = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickName(e.target.value);
   };
@@ -92,12 +91,10 @@ function SignupForm() {
           password: passwordData,
           username: userName,
         };
-        console.log(userData);
         const response = await instance.post('/api/membership/join', userData);
         if (response.status === 201) {
           movePage('/login', null);
         }
-        console.log('회원가입 성공 로그인 페이지로 이동하자', response);
 
         // 여기서 필요한 추가 로직을 수행할 수 있습니다.
         // return response;
@@ -113,7 +110,8 @@ function SignupForm() {
     }
   };
   const validationUsernaem = () => {
-    console.log(userName);
+    setCheckUser(true);
+    // console.log(userName);
     // userName을 백엔드로 보내준다.
     // 백엔드는 userName값이 Data에 이미 존재하는지 알려준다.
     // 이미 존재한다
@@ -165,6 +163,11 @@ function SignupForm() {
             ),
           }}
         />
+        {checkUser && (
+          <Alert severity="success" sx={{ width: '90%' }}>
+            유효한 아이디입니다!
+          </Alert>
+        )}
         <div>비밀번호</div>
         <TextField
           id="outlined-password-input"

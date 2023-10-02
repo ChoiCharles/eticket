@@ -6,9 +6,6 @@ import useMovePage from 'hooks/useMovePage';
 
 function BackNavBar({ title }: { title: string | null }) {
   const { goBack } = useMovePage();
-  //   const moveBack = () => {
-  //     goBack();
-  //   };
   return (
     <Toolbar
       sx={{

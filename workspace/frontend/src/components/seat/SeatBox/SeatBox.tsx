@@ -8,8 +8,6 @@ function SeatBox({ index, state }: { index: number; state: number }) {
   const [, setSelectedSeats] = useRecoilState(SelectSeatState);
 
   const handleClick = () => {
-    // console.log(selectedSeats);
-
     // 인덱스 값이 0일 때만 클릭 가능하도록
     if (state === 0) {
       setIsSelected(!isSelected);
