@@ -11,9 +11,6 @@ import {
 
 class CaptchaTest extends Component<{setOpenCaptcha: (value: boolean) => void}> {
 
-class CaptchaTest extends Component<{
-  setPassCaptcha: (value: boolean) => void;
-}> {
   componentDidMount() {
     loadCaptchaEnginge(6, 'black', 'white');
   }
