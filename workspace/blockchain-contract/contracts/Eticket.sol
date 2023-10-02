@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
+import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
@@ -8,7 +9,6 @@ import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
 contract Eticket is Ownable, ERC721Enumerable {
     struct Ticket {
         bool isUsed;
-        string specialUri;
     }
 
     struct PerformanceSchedule {
@@ -16,6 +16,7 @@ contract Eticket is Ownable, ERC721Enumerable {
         Ticket[] tickets;
         uint ticketExpirationTime;
         string ticketCoverUri;
+        string ticketSpecialContentBaseUrl;
         bool isScheduled;
     }
 
@@ -48,10 +49,19 @@ contract Eticket is Ownable, ERC721Enumerable {
     }
 
     // @dev 공연 스케줄을 등록하는 함수
-    function schedulePerformance(uint32 performanceScheduleId, uint ticketExpirationTime) external onlyOwner {
+    function schedulePerformance(
+        uint32 performanceScheduleId,
+        uint ticketExpirationTime,
+        string memory ticketCoverUri,
+        string memory ticketSpecialContentBaseUrl
+    ) external onlyOwner {
         PerformanceSchedule storage schedule = _performanceSchedules[performanceScheduleId];
+        require(!schedule.isScheduled, 'schedulePerformance(): performance already scheduled.');
+
         schedule.isScheduled = true;
         schedule.ticketExpirationTime = ticketExpirationTime;
+        schedule.ticketCoverUri = ticketCoverUri;
+        schedule.ticketSpecialContentBaseUrl = ticketSpecialContentBaseUrl;
     }
 
     function _unsafe_ticketRef(uint32 performanceScheduleId, uint32 seatId) internal view returns (Ticket storage) {
@@ -114,12 +124,7 @@ contract Eticket is Ownable, ERC721Enumerable {
         return _unsafe_isTicketExpired(tokenId);
     }
 
-    function _mintTicket(
-        address receipent,
-        uint32 performanceScheduleId,
-        uint32 seatId,
-        string memory specialUri_
-    ) internal {
+    function _mintTicket(address receipent, uint32 performanceScheduleId, uint32 seatId) internal {
         _requireScheduled(performanceScheduleId);
 
         PerformanceSchedule storage schedule = _performanceSchedules[performanceScheduleId];
@@ -128,21 +133,20 @@ contract Eticket is Ownable, ERC721Enumerable {
         uint tokenId = makeTokenId(performanceScheduleId, seatId);
         _safeMint(receipent, tokenId);
 
-        schedule.tickets.push(Ticket({isUsed: false, specialUri: specialUri_}));
+        schedule.tickets.push(Ticket({isUsed: false}));
         schedule.ticketIndices[seatId] = schedule.tickets.length;
     }
 
-    function mintTicket(
-        address receipent,
-        uint32 performanceScheduleId,
-        uint32 seatId,
-        string memory speicalUri
-    ) external onlyOwner {
-        _mintTicket(receipent, performanceScheduleId, seatId, speicalUri);
+    function mintTicket(address receipent, uint32 performanceScheduleId, uint32 seatId) external onlyOwner {
+        _mintTicket(receipent, performanceScheduleId, seatId);
     }
 
     function _unsafe_ticketCoverUriOf(uint32 performanceScheduleId) private view returns (string memory) {
         return _performanceSchedules[performanceScheduleId].ticketCoverUri;
+    }
+
+    function _unsafe_ticketSpecialContentBaseUrlOf(uint32 performanceScheduleId) private view returns (string memory) {
+        return _performanceSchedules[performanceScheduleId].ticketSpecialContentBaseUrl;
     }
 
     function getTicketCoverUriWithTokenId(uint tokenId) external view returns (string memory) {
@@ -164,13 +168,31 @@ contract Eticket is Ownable, ERC721Enumerable {
         _performanceSchedules[performanceScheduleId].ticketCoverUri = newTicketCoverUri;
     }
 
+    function setTicketSpecialContentBaseUrl(
+        uint32 performanceScheduleId,
+        string memory newTicketSpecialContentBaseUrl
+    ) external onlyOwner {
+        _requireScheduled(performanceScheduleId);
+
+        _performanceSchedules[performanceScheduleId].ticketSpecialContentBaseUrl = newTicketSpecialContentBaseUrl;
+    }
+
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         _requireMinted(tokenId);
 
-        Ticket storage ticket = _unsafe_ticketRef(obtainPerformanceScheduleId(tokenId), obtainSeatId(tokenId));
-        return
-            _unsafe_isTicketExpired(tokenId) && ticket.isUsed
-                ? ticket.specialUri
-                : _unsafe_ticketCoverUriOf(obtainPerformanceScheduleId(tokenId));
+        uint32 performanceScheduleId = obtainPerformanceScheduleId(tokenId);
+        uint32 seatId = obtainSeatId(tokenId);
+
+        Ticket storage ticket = _unsafe_ticketRef(performanceScheduleId, seatId);
+        if (!_unsafe_isTicketExpired(tokenId) || !ticket.isUsed) {
+            return _unsafe_ticketCoverUriOf(performanceScheduleId);
+        }
+
+        string memory ticketSpecialContentBaseUrl = _unsafe_ticketSpecialContentBaseUrlOf(performanceScheduleId);
+        if (bytes(ticketSpecialContentBaseUrl).length == 0) {
+            return _unsafe_ticketCoverUriOf(performanceScheduleId);
+        }
+
+        return string(abi.encodePacked(ticketSpecialContentBaseUrl, Strings.toString(seatId), '.json'));
     }
 }
