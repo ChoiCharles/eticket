@@ -26,9 +26,4 @@ public interface UserMapper {
       return wallet.getAddress();
     }
   }
-
-  interface GetUserDetailsUseCase {
-
-      UserDto getByUserId(final User.UserId userId);
-  }
 }
