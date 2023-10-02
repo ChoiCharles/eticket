@@ -6,12 +6,15 @@ import org.mapstruct.MappingConstants;
 import org.oao.eticket.application.domain.model.BlockChainWallet;
 import org.oao.eticket.application.domain.model.User;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, implementationName = "UserDomainEntityMapperImpl")
+@Mapper(
+    componentModel = MappingConstants.ComponentModel.SPRING,
+    implementationName = "UserDomainEntityMapperImpl")
 public interface UserMapper {
 
   @Mapping(target = "id", source = "id.value")
+  @Mapping(target = "password", expression = "java(null)")
   @Mapping(target = "walletAddress", source = "blockChainWallet")
-  UserDetails mapToUserDetails(final User domainEntity);
+  UserDto mapToUserDto(final User domainEntity);
 
   default byte[] mapToBytes(final BlockChainWallet wallet) {
     if (wallet == null

@@ -4,5 +4,5 @@ import org.oao.eticket.application.domain.model.User;
 
 public interface GetUserDetailsUseCase {
 
-    UserDetails getByUserId(final User.UserId userId);
+    UserDto getByUserId(final User.UserId userId);
 }
