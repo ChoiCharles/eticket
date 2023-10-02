@@ -4,8 +4,8 @@ li {
 }
 
 .wrapper {
+  overflow: hidden;
   .slide_container {
-    overflow: hidden;
     margin-top: 20px;
 
     .slide_wrapper {

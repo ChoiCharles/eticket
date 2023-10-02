@@ -86,3 +86,53 @@
 .card-back {
   transform: rotateY(180deg);
 }
+
+.cancel-reservation {
+  height: 100px;
+  margin: 0 30px;
+
+  button {
+    width: 100%;
+    border-radius: 7px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    height: 40px;
+    color: white;
+    background-color: #ff4141;
+    border: 0px;
+
+    h3 {
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  }
+}
+
+.ask-cancel {
+  display: flex;
+  justify-content: space-around;
+
+  button {
+    width: 60px;
+    border-radius: 7px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    height: 40px;
+    color: white;
+    background-color: #ff4141;
+    border: 0px;
+
+    h3 {
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  }
+
+  .ask-yes {
+    
+  }
+
+  .ask-no {
+    background-color: #80c0c0;
+  }
+}
