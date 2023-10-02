@@ -1,0 +1,25 @@
+package org.oao.eticket.application.port.in;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.oao.eticket.application.domain.model.BlockChainWallet;
+import org.oao.eticket.application.domain.model.User;
+
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, implementationName = "UserDomainEntityMapperImpl")
+public interface UserMapper {
+
+  @Mapping(target = "id", source = "id.value")
+  @Mapping(target = "walletAddress", source = "blockChainWallet")
+  UserDetails mapToUserDetails(final User domainEntity);
+
+  default byte[] mapToBytes(final BlockChainWallet wallet) {
+    if (wallet == null
+        || wallet.getAddress() == null
+        || wallet.equals(BlockChainWallet.NULL_WALLET)) {
+      return null;
+    } else {
+      return wallet.getAddress();
+    }
+  }
+}
