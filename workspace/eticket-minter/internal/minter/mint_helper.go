@@ -27,14 +27,25 @@ const (
 	SCHEDULED      = performanceScheduleState(2)
 )
 
-type MinterInitOpts struct {
+type SchedulePerformanceOpts struct {
+	PerformanceScheduleId uint32
+	TicketExpirationTime  time.Time
+}
+
+type MintTicketOpts struct {
+	SchedulePerformanceOpts
+	Recipient common.Address
+	SeatId    uint32
+}
+
+type mintHelperInitOpts struct {
 	EthRpcUrl          string
 	EthChainId         string
 	EthPrivateKey      string
 	EthContractAddress string
 }
 
-type Minter struct {
+type mintHelper struct {
 	ethTxOpts          *bind.TransactOpts
 	ethRpcConn         *ethclient.Client
 	ethContract        *contract.Contract
@@ -43,11 +54,11 @@ type Minter struct {
 	cachedPerformanceSchedules sync.Map
 }
 
-func (m *Minter) MinterAddress() common.Address {
+func (m *mintHelper) MinterAddress() common.Address {
 	return m.ethTxOpts.From
 }
 
-func (m *Minter) IsPerformanceScheduled(ctx context.Context, performanceScheduleId uint32) (bool, error) {
+func (m *mintHelper) IsPerformanceScheduled(ctx context.Context, performanceScheduleId uint32) (bool, error) {
 	for {
 		switch state, _ := m.cachedPerformanceSchedules.LoadOrStore(performanceScheduleId, NOT_SCHEDULED); state {
 		case NOT_SCHEDULED:
@@ -67,14 +78,14 @@ func (m *Minter) IsPerformanceScheduled(ctx context.Context, performanceSchedule
 			select {
 			case <-time.After(100 * time.Millisecond):
 			case <-ctx.Done():
-				return false, fmt.Errorf("minter.IsPerformanceScheduled(): %w", context.Canceled)
+				return false, fmt.Errorf("mintHelper.IsPerformanceScheduled(): %w", context.Canceled)
 			}
 		}
 	}
 }
 
-func (m *Minter) doSchedulePerformance(ctx context.Context, performanceScheduleId uint32, ticketExpirationTime time.Time) error {
-	const errPrefix = "minter.schedulePerformance(): "
+func (m *mintHelper) doSchedulePerformance(ctx context.Context, opts SchedulePerformanceOpts) error {
+	const errPrefix = "mintHelper.schedulePerformance(): "
 
 	txOpts := &bind.TransactOpts{
 		Context:  ctx,
@@ -84,7 +95,7 @@ func (m *Minter) doSchedulePerformance(ctx context.Context, performanceScheduleI
 		GasLimit: 1e+6,
 	}
 
-	tx, err := m.ethContract.SchedulePerformance(txOpts, performanceScheduleId, big.NewInt(ticketExpirationTime.Unix()), "", "")
+	tx, err := m.ethContract.SchedulePerformance(txOpts, opts.PerformanceScheduleId, big.NewInt(opts.TicketExpirationTime.Unix()), "", "")
 	if err != nil {
 		return fmt.Errorf(errPrefix+"%w", err)
 	}
@@ -100,11 +111,11 @@ func (m *Minter) doSchedulePerformance(ctx context.Context, performanceScheduleI
 	}
 }
 
-func (m *Minter) SchedulePerformance(ctx context.Context, performanceScheduleId uint32, ticketExpirationTime time.Time) error {
-	const errPrefix = "minter.schedulePerformance(): "
+func (m *mintHelper) SchedulePerformance(ctx context.Context, opts SchedulePerformanceOpts) error {
+	const errPrefix = "mintHelper.schedulePerformance(): "
 
 	for {
-		switch state, _ := m.cachedPerformanceSchedules.LoadOrStore(performanceScheduleId, NOT_SCHEDULED); state {
+		switch state, _ := m.cachedPerformanceSchedules.LoadOrStore(opts.PerformanceScheduleId, NOT_SCHEDULED); state {
 		case TRY_SCHEDULING:
 			select {
 			case <-time.After(100 * time.Millisecond):
@@ -114,41 +125,41 @@ func (m *Minter) SchedulePerformance(ctx context.Context, performanceScheduleId 
 			}
 
 		case NOT_SCHEDULED:
-			if !m.cachedPerformanceSchedules.CompareAndSwap(performanceScheduleId, NOT_SCHEDULED, TRY_SCHEDULING) {
+			if !m.cachedPerformanceSchedules.CompareAndSwap(opts.PerformanceScheduleId, NOT_SCHEDULED, TRY_SCHEDULING) {
 				continue
 			}
 
-			if scheduled, err := m.ethContract.IsPerformanceScheduled(&bind.CallOpts{Context: ctx}, performanceScheduleId); !scheduled {
+			if scheduled, err := m.ethContract.IsPerformanceScheduled(&bind.CallOpts{Context: ctx}, opts.PerformanceScheduleId); !scheduled {
 				if err != nil && errors.Is(err, context.Canceled) {
-					m.cachedPerformanceSchedules.Store(performanceScheduleId, NOT_SCHEDULED)
+					m.cachedPerformanceSchedules.Store(opts.PerformanceScheduleId, NOT_SCHEDULED)
 					return fmt.Errorf(errPrefix+"%w", err)
 				}
 
-				if err := m.doSchedulePerformance(ctx, performanceScheduleId, ticketExpirationTime); err != nil {
-					m.cachedPerformanceSchedules.Store(performanceScheduleId, NOT_SCHEDULED)
+				if err := m.doSchedulePerformance(ctx, opts); err != nil {
+					m.cachedPerformanceSchedules.Store(opts.PerformanceScheduleId, NOT_SCHEDULED)
 					return fmt.Errorf(errPrefix+"%w", err)
 				}
 			}
 
-			m.cachedPerformanceSchedules.Store(performanceScheduleId, SCHEDULED)
+			m.cachedPerformanceSchedules.Store(opts.PerformanceScheduleId, SCHEDULED)
 		}
 
 		return nil
 	}
 }
 
-func (m *Minter) validateOwnership(ctx context.Context, account common.Address, performanceScheduleId, seatId uint32) error {
+func (m *mintHelper) validateOwnership(ctx context.Context, account common.Address, performanceScheduleId, seatId uint32) error {
 	owner, err := m.ethContract.TicketOwnerOf(&bind.CallOpts{Pending: true}, performanceScheduleId, seatId)
 	if err != nil {
-		return fmt.Errorf("minter.validateOwnership(): %w", err)
+		return fmt.Errorf("minterHelper.validateOwnership(): %w", err)
 	}
 	if owner.Cmp(account) != 0 {
-		return errors.New("minter.validateOwnership(): owner mismatch")
+		return errors.New("minterHelper.validateOwnership(): owner mismatch")
 	}
 	return nil
 }
 
-func (m *Minter) doMintTicket(ctx context.Context, recipient common.Address, performanceScheduleId, seatId uint32) error {
+func (m *mintHelper) doMintTicket(ctx context.Context, recipient common.Address, performanceScheduleId, seatId uint32) error {
 	txOpts := &bind.TransactOpts{
 		Context:  ctx,
 		From:     m.ethTxOpts.From,
@@ -170,30 +181,30 @@ func (m *Minter) doMintTicket(ctx context.Context, recipient common.Address, per
 	}
 }
 
-func (m *Minter) MintTicket(ctx context.Context, recipient common.Address, performanceScheduleId, seatId uint32, ticketExpirationTime time.Time) error {
-	const errPrefix = "minter.MintTicket(): "
+func (m *mintHelper) MintTicket(ctx context.Context, opts *MintTicketOpts) error {
+	const errPrefix = "mintHelper.MintTicket(): "
 
-	if scheduled, err := m.IsPerformanceScheduled(ctx, performanceScheduleId); err != nil {
+	if scheduled, err := m.IsPerformanceScheduled(ctx, opts.PerformanceScheduleId); err != nil {
 		return fmt.Errorf(errPrefix+"%w", err)
 	} else {
 		if !scheduled {
-			if err := m.SchedulePerformance(ctx, performanceScheduleId, ticketExpirationTime); err != nil {
+			if err := m.SchedulePerformance(ctx, opts.SchedulePerformanceOpts); err != nil {
 				return fmt.Errorf(errPrefix+"%w", err)
 			}
 		}
 	}
 
-	minted, err := m.ethContract.IsTicketMinted(&bind.CallOpts{Pending: true}, performanceScheduleId, seatId)
+	minted, err := m.ethContract.IsTicketMinted(&bind.CallOpts{Pending: true}, opts.PerformanceScheduleId, opts.SeatId)
 	if err != nil {
 		return fmt.Errorf(errPrefix+"%w", err)
 	}
 
 	if minted {
-		if err := m.validateOwnership(ctx, recipient, performanceScheduleId, seatId); err != nil {
+		if err := m.validateOwnership(ctx, opts.Recipient, opts.PerformanceScheduleId, opts.SeatId); err != nil {
 			return errors.New(errPrefix + "ticket already minted, but owner is other account")
 		}
 	} else {
-		if err := m.doMintTicket(ctx, recipient, performanceScheduleId, seatId); err != nil {
+		if err := m.doMintTicket(ctx, opts.Recipient, opts.PerformanceScheduleId, opts.SeatId); err != nil {
 			return fmt.Errorf(errPrefix+"%w", err)
 		}
 	}
@@ -201,30 +212,30 @@ func (m *Minter) MintTicket(ctx context.Context, recipient common.Address, perfo
 	return nil
 }
 
-func NewWithEnvvar() (*Minter, error) {
-	const ERR_PREFIX = "minter.NewWithEnvvar(): "
+func newMintHelperWithEnvvar() (*mintHelper, error) {
+	const errPrefix = "newMintHelperWithEnvvar(): "
 
 	ethRpcUrl := os.Getenv("ETICKET_ETH_RPC_URL")
 	if len(ethRpcUrl) == 0 {
-		return nil, errors.New(ERR_PREFIX + "missing required environment variable \"ETICKET_ETH_RPC_URL\"")
+		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_ETH_RPC_URL\"")
 	}
 
 	ethChainId := os.Getenv("ETICKET_ETH_CHAIN_ID")
 	if len(ethChainId) == 0 {
-		return nil, errors.New(ERR_PREFIX + "missing required environment variable \"ETICKET_ETH_CHAIN_ID\"")
+		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_ETH_CHAIN_ID\"")
 	}
 
 	ethPrivateKey := os.Getenv("ETICKET_ETH_PRIVATE_KEY")
 	if len(ethPrivateKey) == 0 {
-		return nil, errors.New(ERR_PREFIX + "missing required environment variable \"ETICKET_ETH_PRIVATE_KEY\"")
+		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_ETH_PRIVATE_KEY\"")
 	}
 
 	ethContractAddress := os.Getenv("ETICKET_ETH_CONTRACT_ADDRESS")
 	if len(ethContractAddress) == 0 {
-		return nil, errors.New(ERR_PREFIX + "missing required environment variable \"ETICKET_ETH_CONTRACT_ADDRESS\"")
+		return nil, errors.New(errPrefix + "missing required environment variable \"ETICKET_ETH_CONTRACT_ADDRESS\"")
 	}
 
-	return New(MinterInitOpts{
+	return newMintHelper(mintHelperInitOpts{
 		EthRpcUrl:          ethRpcUrl,
 		EthChainId:         ethChainId,
 		EthPrivateKey:      ethPrivateKey,
@@ -232,8 +243,8 @@ func NewWithEnvvar() (*Minter, error) {
 	})
 }
 
-func New(opts MinterInitOpts) (*Minter, error) {
-	const ERR_PREFIX = "minter.New(): "
+func newMintHelper(opts mintHelperInitOpts) (*mintHelper, error) {
+	const ERR_PREFIX = "newMintHelper(): "
 
 	ethPrivateKey, err := crypto.ToECDSA(hexutil.MustDecode(opts.EthPrivateKey))
 	if err != nil {
@@ -260,7 +271,7 @@ func New(opts MinterInitOpts) (*Minter, error) {
 		return nil, fmt.Errorf(ERR_PREFIX+": %w", err)
 	}
 
-	return &Minter{
+	return &mintHelper{
 		ethTxOpts:          ethTxOpts,
 		ethRpcConn:         ethRpcConn,
 		ethContractAddress: common.HexToAddress(opts.EthContractAddress),
