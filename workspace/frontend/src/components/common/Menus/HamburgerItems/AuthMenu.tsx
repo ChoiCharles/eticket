@@ -11,15 +11,18 @@ const AuthMenu = ({ handleToggleDrawer }: Props) => {
     { name: '로그인', url: '/login' },
     { name: '회원가입', url: '/signup' },
   ];
-
+  const logoutMenus = [{ name: '로그아웃', url: '/' }];
+  const logout = () => {
+    localStorage.removeItem('accesstoken');
+  };
   const { movePage } = useMovePage();
 
   const handleMovePage = (url: string) => {
     handleToggleDrawer();
     movePage(url, null);
   };
-
-  return (
+  const Token = localStorage.getItem('accesstoken');
+  return !Token ? (
     <List disablePadding>
       {menus.map(menu => (
         <ListItem key={menu.name}>
@@ -29,6 +32,18 @@ const AuthMenu = ({ handleToggleDrawer }: Props) => {
         </ListItem>
       ))}
     </List>
+  ) : (
+    <div onClick={logout} aria-hidden>
+      <List disablePadding>
+        {logoutMenus.map(menu => (
+          <ListItem key={menu.name}>
+            <ListItemButton onClick={() => handleMovePage(menu.url)}>
+              <ListItemText primary={menu.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </div>
   );
 };
 

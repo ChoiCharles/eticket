@@ -6,7 +6,7 @@ import { Box, LinearProgress, Typography, Modal } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Client } from '@stomp/stompjs';
 
-import Captcha from 'components/common/Captcha/Captcha'
+import Captcha from 'components/common/Captcha/Captcha';
 
 const URL = `wss://${window.location.origin.split('//')[1]}/ws`;
 

@@ -16,9 +16,12 @@
 .seat-section-wrapper2 {
   margin: 10px; /* 간격 조절 */
 }
-
+.select-seat-total-area {
+    max-height: 280px;
+    overflow-y: auto; 
+}
 .selected-seat {
-  width: 80px;
+  width: 100px;
   text-align: center;
   background-color: #80c0c0;
   color: white;

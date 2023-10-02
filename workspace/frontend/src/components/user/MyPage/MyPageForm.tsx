@@ -51,8 +51,8 @@ function MyPage() {
   }, []);
 
   useEffect(() => {
-    setMyAccount(account)
-  }, [account])
+    setMyAccount(account);
+  }, [account]);
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const MyTicket = () => {
@@ -95,18 +95,17 @@ function MyPage() {
           <h4 className="edit-info-text">회원정보수정</h4>
         </button>
       </div>
-        {
-          myAccount=='' ? 
-          <div className="wallet">
-            <h3 style={{marginLeft: '10px'}}>메타마스크 연동이 필요합니다</h3>
-          </div> :
-          <div className="wallet">
-            <h3 className="my-wallet">내 지갑 : </h3>
-            <h3 className="address">{myAccount}</h3>
-            <img src={copyText} alt="" onClick={() => copyAddress(account)} />
-          </div>
-          
-        }
+      {myAccount === '' ? (
+        <div className="wallet">
+          <h3 style={{ marginLeft: '10px' }}>메타마스크 연동이 필요합니다</h3>
+        </div>
+      ) : (
+        <div className="wallet">
+          <h3 className="my-wallet">내 지갑 : </h3>
+          <h3 className="address">{myAccount}</h3>
+          <img src={copyText} alt="" onClick={() => copyAddress(account)} />
+        </div>
+      )}
       <div className="inventory">
         <div className="my-NFT">
           <div className="upper-text">

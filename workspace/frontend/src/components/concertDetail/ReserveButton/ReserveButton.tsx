@@ -8,9 +8,14 @@ function ReserveButton() {
   const { movePage } = useMovePage();
   const { performanceId } = useParams();
   console.log(performanceId);
-
+  const token = localStorage.getItem('accesstoken');
   const moveReservePage = () => {
-    movePage(`/ConcertCalender/${performanceId}`, null);
+    // eslint-disable-next-line no-unused-expressions
+    token
+      ? movePage(`/ConcertCalender/${performanceId}`, null)
+      : movePage(`/login`, null);
+
+    // movePage(`/ConcertCalender/${performanceId}`, null);
   };
   return (
     <div className="reservation-btn">
