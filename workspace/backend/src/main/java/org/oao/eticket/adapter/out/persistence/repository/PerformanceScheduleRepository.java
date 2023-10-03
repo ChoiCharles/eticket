@@ -14,9 +14,12 @@ import java.util.Optional;
 public interface PerformanceScheduleRepository
     extends JpaRepository<PerformanceScheduleJpaEntity, Integer> {
 
-  @Query("SELECT p.performanceScheduleJpaEntityList FROM PerformanceJpaEntity p WHERE FUNCTION('DATE', p.ticketingOpenDateTime) = FUNCTION('DATE', CURRENT_DATE)")
-  List<PerformanceScheduleJpaEntity> loadOpeningPerformanceSchedules();
+  @Query(
+      "SELECT ps FROM PerformanceScheduleJpaEntity ps WHERE ps.performanceJpaEntity = "
+          + "(SELECT p FROM PerformanceJpaEntity p WHERE FUNCTION('DATE', p.ticketingOpenDateTime) = FUNCTION('DATE', CURRENT_DATE))")
+  Optional<List<PerformanceScheduleJpaEntity>> loadOpeningPerformanceSchedules();
 
-  @Query("SELECT ps.performanceJpaEntity.concertHallJpaEntity FROM PerformanceScheduleJpaEntity ps WHERE ps.id = :id")
+  @Query(
+      "SELECT ps.performanceJpaEntity.concertHallJpaEntity FROM PerformanceScheduleJpaEntity ps WHERE ps.id = :id")
   Optional<ConcertHallJpaEntity> findConcertHallById(@Param("id") Integer id);
 }

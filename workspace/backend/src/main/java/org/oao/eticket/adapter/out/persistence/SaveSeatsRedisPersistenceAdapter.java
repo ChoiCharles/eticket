@@ -50,7 +50,10 @@ public class SaveSeatsRedisPersistenceAdapter implements LoadPerformanceSchedule
      */
     // 오늘 예매가 오픈 되는 공연 스케줄 가져오기
     final var scheduleJpaEntities =
-        performanceScheduleRepository.loadOpeningPerformanceSchedules(); // query
+        performanceScheduleRepository
+            .loadOpeningPerformanceSchedules()
+            .orElseThrow(() -> new NoResultException("오늘 예매가 오픈 되는 공연이 없습니다.")); // query
+    System.out.println(scheduleJpaEntities.get(0).getId().toString());
     // (PerformanceScheduleSeatTable) Redis에 넣을 형식 으로 변환 (JPA -> Redis)
     if (!scheduleJpaEntities.isEmpty()) {
       List<PerformanceScheduleSeatTable> results = new ArrayList<>();
@@ -62,22 +65,23 @@ public class SaveSeatsRedisPersistenceAdapter implements LoadPerformanceSchedule
             sectionRepository
                 .findAllByConcertHallJpaEntity(
                     scheduleJpa.getPerformanceJpaEntity().getConcertHallJpaEntity())
-                .orElseThrow(() -> new ConcertHallNotFoundException(scheduleJpa.getId().toString())); // query
+                .orElseThrow(
+                    () ->
+                        new ConcertHallNotFoundException(scheduleJpa.getId().toString())); // query
         // Section Jpa List -> Section Redis model
         for (SectionJpaEntity sectionJpa : sectionJpaEntities) {
           // 각 Section에 좌석 List 넣기
           Section section = sectionMapper.mapToDomainEntity(sectionJpa);
-//          section.setSeatList(
-//              seatMapper.mapToDomainEntity(
-//                  seatRepository.findAllBySectionJpaEntity(sectionJpa))); // query
+          //          section.setSeatList(
+          //              seatMapper.mapToDomainEntity(
+          //                  seatRepository.findAllBySectionJpaEntity(sectionJpa))); // query
           // Section에 해당하는 좌석 등급 정보 가져오기
           section.setSeatClass(
               seatClassMapper.mapToDomainEntity(
                   sectionAndSeatClassRelationRepository
-                      .findSeatClassBySectionAndPerformance(
-                          sectionJpa.getId(), scheduleJpa.getId())
-                          .orElseThrow(() -> new SeatClassNotFoundException("section에 seat class 할당 안됨."))
-                      ));
+                      .findSeatClassBySectionAndPerformance(sectionJpa.getId(), scheduleJpa.getId())
+                      .orElseThrow(
+                          () -> new SeatClassNotFoundException("section에 seat class 할당 안됨."))));
           // 만든 하나의 구역을 리스트에 추가
           sectionList.add(section);
         }
