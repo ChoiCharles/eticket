@@ -1,8 +1,8 @@
 package org.oao.eticket.application.port.in;
 
-import org.oao.eticket.application.domain.model.Reservation;
 import org.oao.eticket.application.port.in.dto.ReserveTicketCommand;
+import org.oao.eticket.application.port.in.dto.TicketReservationResult;
 
 public interface ReserveTicketUseCase {
-  Reservation reserveTicket(final ReserveTicketCommand cmd);
+  TicketReservationResult reserveTicket(final ReserveTicketCommand cmd);
 }

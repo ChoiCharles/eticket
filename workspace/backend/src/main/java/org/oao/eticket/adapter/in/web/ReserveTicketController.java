@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.oao.eticket.application.domain.model.Reservation;
-import org.oao.eticket.application.domain.model.User;
 import org.oao.eticket.application.port.in.dto.ReserveTicketCommand;
 import org.oao.eticket.application.port.in.ReserveTicketUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
@@ -19,49 +18,46 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @WebAdapter
 @RequiredArgsConstructor
 public class ReserveTicketController {
 
   private final ReserveTicketUseCase reserveTicketUseCase;
 
-  @Value
-  static class ReservationDetail {
-    @NotNull Integer userId;
-    @NotNull Integer performanceScheduleId;
-    @NotNull Integer seatId;
-    @NotNull Integer paymentAmount;
-  }
+  private record Request(
+      @NotNull Integer performanceScheduleId,
+      @NotNull Integer seatId,
+      @NotNull Integer paymentAmount) {}
+
+  private record Response(int reservationId) {}
 
   @Operation(
       summary = "티켓 예매",
-      responses = {
-        @ApiResponse(
-            responseCode = "201",
-            description = "티켓 예매 성공",
-            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
-      })
+      responses = {@ApiResponse(responseCode = "201", description = "티켓 예매 성공")})
   @PostMapping(path = "/reservations")
-  ResponseEntity<Reservation> reserveTicket(
-          @Valid @RequestBody ReservationDetail reservationDetail, Authentication authentication) {
+  ResponseEntity<Response> reserveTicket(
+      @Valid @RequestBody final Request payload, final Authentication authentication) {
 
     if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
-      throw new RuntimeException("out");
-    }
-    if (!(User.UserId.of(reservationDetail.getUserId()).equals(userDetails.getId()))) {
-      throw ApiException.builder().withStatus(HttpStatus.FORBIDDEN).withMessage("Invalid Permission").build();
+      throw ApiException.builder()
+          .withStatus(HttpStatus.UNAUTHORIZED)
+          .withMessage("Unknown credentials is used.")
+          .build();
     }
 
-    ReserveTicketCommand command =
+    final var cmd =
         ReserveTicketCommand.builder()
-            .userId(User.UserId.of(reservationDetail.userId))
-            .performanceScheduleId(reservationDetail.performanceScheduleId)
-            .seatId(reservationDetail.seatId)
-            .paymentAmount(reservationDetail.paymentAmount)
+            .userId(userDetails.getId())
+            .performanceScheduleId(payload.performanceScheduleId())
+            .seatId(payload.seatId())
+            .paymentAmount(payload.paymentAmount())
             .build();
 
-    Reservation reservation = reserveTicketUseCase.reserveTicket(command);
-
-    return ResponseEntity.status(201).body(reservation);
+    final var ticketReservationResult = reserveTicketUseCase.reserveTicket(cmd);
+    return ResponseEntity.created(
+            URI.create("/reservations/" + ticketReservationResult.getReservationId()))
+        .body(new Response(ticketReservationResult.getReservationId()));
   }
 }
