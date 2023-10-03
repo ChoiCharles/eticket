@@ -9,11 +9,7 @@ import { useParams } from 'react-router-dom';
 
 function ConcertDetail() {
   const { performanceId = '0' } = useParams();
-  // performanceId에 해당하는 데이터 axios 받아오기
-  // performanceId, image, title, location, date, concertdetail, time
   const performanceIdAsInt = parseInt(performanceId, 10);
-  console.log(performanceIdAsInt);
-  console.log(dummyConcerts[performanceIdAsInt]);
 
   // url중에서 idx에 해당하는 데이터를 axios로 받아온다.
   // 사진, 공연제목, 공연기간, 공연장, 시간 => DetailPoster

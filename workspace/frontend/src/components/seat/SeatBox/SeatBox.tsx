@@ -5,14 +5,9 @@ import SelectSeatState from 'atoms/SelectSeatState';
 
 function SeatBox({ index, state }: { index: number; state: number }) {
   const [isSelected, setIsSelected] = useState(false);
-  const [selectedSeats, setSelectedSeats] = useRecoilState(SelectSeatState);
-  //   const isAlreadyInSeatList = selectedSeats.findIndex((e) => e.id === index)
-  const isAlreadyInSeatList = selectedSeats.findIndex(e => e === index);
-  console.log('isAlreadyInSeatList', isAlreadyInSeatList);
+  const [, setSelectedSeats] = useRecoilState(SelectSeatState);
 
   const handleClick = () => {
-    console.log(selectedSeats);
-
     // 인덱스 값이 0일 때만 클릭 가능하도록
     if (state === 0) {
       setIsSelected(!isSelected);

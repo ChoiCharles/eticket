@@ -2,7 +2,7 @@ package org.oao.eticket.application.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Vacancy;
-import org.oao.eticket.application.port.in.GetVacanciesCommand;
+import org.oao.eticket.application.port.in.dto.GetVacanciesCommand;
 import org.oao.eticket.application.port.in.GetVacanciesUseCase;
 import org.oao.eticket.application.port.out.LoadVacanciesRedisCommand;
 import org.oao.eticket.application.port.out.LoadVacanciesRedisPort;

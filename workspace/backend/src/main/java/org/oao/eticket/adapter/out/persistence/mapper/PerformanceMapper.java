@@ -2,9 +2,13 @@ package org.oao.eticket.adapter.out.persistence.mapper;
 
 import org.mapstruct.*;
 import org.oao.eticket.adapter.out.persistence.entity.PerformanceJpaEntity;
+import org.oao.eticket.adapter.out.persistence.entity.PerformanceScheduleJpaEntity;
 import org.oao.eticket.application.domain.model.Performance;
+import org.oao.eticket.application.domain.model.PerformanceSummary;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,
@@ -15,21 +19,7 @@ import java.util.List;
       PerformanceScheduleMapper.class
     })
 public interface PerformanceMapper {
-
-  // 일반적 (공연의 간략한 정보만 포함할 때는 좌석 등급과 공연 스케줄은 생략)
-  @Mappings({
-    @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))"),
-    @Mapping(target = "concertHall", source = "concertHallJpaEntity"),
-    @Mapping(target = "host", source = "hostJpaEntity"),
-    @Mapping(target = "seatClassList", source = "seatClassJpaEntityList"),
-    @Mapping(target = "performanceScheduleList", ignore = true)
-  })
-  Performance mapToDomainEntity(PerformanceJpaEntity jpaEntity);
-
-  List<Performance> mapToDomainEntity(List<PerformanceJpaEntity> jpaEntityList);
-
-  // 공연 세부 사항을 보여줄 때는 좌석 등급과 공연 스케줄 리스트 포함
-  @Named("mapToDomainDetail")
+  // 공연 세부 사항 Mapping. - 좌석 등급과 공연 스케줄 리스트 포함
   @Mappings({
     @Mapping(target = "id", expression = "java(Performance.PerformanceId.of(jpaEntity.getId()))"),
     @Mapping(target = "concertHall", source = "concertHallJpaEntity"),
@@ -37,7 +27,25 @@ public interface PerformanceMapper {
     @Mapping(target = "seatClassList", source = "seatClassJpaEntityList"),
     @Mapping(target = "performanceScheduleList", source = "performanceScheduleJpaEntityList")
   })
-  Performance mapToDomainEntityInDetail(PerformanceJpaEntity jpaEntity);
+  Performance mapToDomainEntity(PerformanceJpaEntity jpaEntity);
+
+  // 공연 리스트 Mapping [Hot 공연, Upcoming 공연] - 간략한 정보만
+  List<PerformanceSummary> mapToSummaryDomainEntity(List<PerformanceJpaEntity> jpaEntity);
+
+  @Mappings({
+    @Mapping(
+        target = "id",
+        expression = "java(PerformanceSummary.PerformanceSummaryId.of(jpaEntity.getId()))"),
+    @Mapping(target = "performanceScheduleList", source = "performanceScheduleJpaEntityList")
+  })
+  PerformanceSummary mapToSummaryDomainEntity(PerformanceJpaEntity jpaEntity);
+
+  default List<LocalDate> mapToPerformanceDateList(
+      List<PerformanceScheduleJpaEntity> scheduleEntities) {
+    return scheduleEntities.stream()
+        .map(scheduleEntity -> scheduleEntity.getStartDateTime().toLocalDate())
+        .collect(Collectors.toList());
+  }
 
   @Mappings({
     @Mapping(target = "id", source = "id.value"),
@@ -45,8 +53,6 @@ public interface PerformanceMapper {
     @Mapping(target = "hostJpaEntity", source = "host"),
     @Mapping(target = "seatClassJpaEntityList", ignore = true),
     @Mapping(target = "performanceScheduleJpaEntityList", ignore = true)
-    //    @Mapping(target = "seatClassJpaEntityList", source = "seatClassList"),
-    //    @Mapping(target = "performanceScheduleJpaEntityList", source = "performanceScheduleList")
   })
   PerformanceJpaEntity mapToJpaEntity(Performance model);
 }

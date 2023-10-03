@@ -14,28 +14,20 @@ if [[ $* == *--stop* ]]; then
 fi
 
 if [[ $* != *--no-build* ]]; then
-    BUILD_TARGETS="blockchain-tracker backend-waiting"
+    BUILD_SCRIPTS="backend-waiting/build.sh blockchain-tracker/build.sh eticket-minter/scripts/build.sh"
     if [[ $* != *--without-backend* ]]; then
-        BUILD_TARGETS="$BUILD_TARGETS backend"
+        BUILD_SCRIPTS="backend/build.sh $BUILD_SCRIPTS"
     fi
 
     OIFS=$IFS
     IFS=" "
-    for SERVICE in $BUILD_TARGETS; do
-        SERVICE_PROJECT_DIR="$WORKSPACE_DIR/$SERVICE"
-
-        if ! test -d "$SERVICE_PROJECT_DIR"; then
-            echo "Couldn't find project directory for service \"$SERVICE\""
+    for BUILD_SCRIPT in $BUILD_SCRIPTS; do
+        if ! test -f "$WORKSPACE_DIR/$BUILD_SCRIPT"; then
+            echo "Colunt't find project build script \"$WORKSPACE_DIR/$BUILD_SCRIPT\"."
             exit 1
         fi
 
-        if ! test -f "$SERVICE_PROJECT_DIR/build.sh"; then
-            echo "Colunt't find project build script of service \"$SERVICE\"."
-            exit 1
-        fi
-
-        if ! sh -c "cd $(realpath "$SERVICE_PROJECT_DIR") && $SERVICE_PROJECT_DIR/build.sh"; then
-            echo "Failed to build service \"$SERVICE\"."
+        if ! sh "$WORKSPACE_DIR/$BUILD_SCRIPT"; then
             exit 1
         fi
     done

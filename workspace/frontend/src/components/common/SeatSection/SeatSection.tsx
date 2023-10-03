@@ -8,8 +8,6 @@ function SeatSection({ index }: { index: number }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [, setSelectedSeats] = useRecoilState(SelectSeatState);
   const selectSeat = () => {
-    console.log(index);
-    // 모달 열기
     setModalOpen(true);
   };
 

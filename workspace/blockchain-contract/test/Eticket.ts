@@ -5,6 +5,7 @@ import { time, mine } from '@nomicfoundation/hardhat-toolbox/network-helpers';
 const MSG_PERFORMANCE_IS_NOT_SCHEDULED = /performance is not scheduled$/;
 const MSG_INVALID_TOKEN_ID = /^ERC721: invalid token ID$/;
 const MSG_TICKET_ALREADY_MINTED = /ticket was already minted$/;
+const MSG_PERFORMANCE_ALREADY_SCHEDULED = /performance already scheduled\.$/;
 
 describe('Eticket', function () {
   async function deployFixture() {
@@ -32,16 +33,16 @@ describe('Eticket', function () {
 
     await eticket
       .connect(owner)
-      .schedulePerformance(scheduledPerformance.id, scheduledPerformance.getTicketExpirationTime());
+      .schedulePerformance(scheduledPerformance.id, scheduledPerformance.getTicketExpirationTime(), '', 'special url/');
     await eticket
       .connect(owner)
       .setTicketCoverUri(scheduledPerformance.id, 'default cover uri');
 
-    await eticket.connect(owner).mintTicket(owner.address, scheduledPerformance.id, scheduledPerformance.seats.MINTED, 'special uri');
+    await eticket.connect(owner).mintTicket(owner.address, scheduledPerformance.id, scheduledPerformance.seats.MINTED);
 
     await eticket
       .connect(owner)
-      .mintTicket(owner.address, scheduledPerformance.id, scheduledPerformance.seats.MINTED_AND_USED, 'special uri');
+      .mintTicket(owner.address, scheduledPerformance.id, scheduledPerformance.seats.MINTED_AND_USED);
     await eticket.connect(owner).markTicketAsUsed(scheduledPerformance.id, scheduledPerformance.seats.MINTED_AND_USED);
 
     return {
@@ -77,13 +78,13 @@ describe('Eticket', function () {
   describe('Access control', function () {
     it('Should fail if non-owner account try to schedule performance', async function () {
       const { eticket, otherAccount } = await deployFixture();
-      expect(eticket.connect(otherAccount).schedulePerformance(0, 0)).to.be.revertedWith(/^Ownable:.+/);
+      expect(eticket.connect(otherAccount).schedulePerformance(0, 0, '', '')).to.be.revertedWith(/^Ownable:.+/);
     });
 
     it('Should revert if non-owner account try to mint ticket', async function () {
       const { eticket, otherAccount, UNSCHEDULED_PERFORMANCE_ID } = await deployFixture();
       expect(
-        eticket.connect(otherAccount).mintTicket(otherAccount.address, UNSCHEDULED_PERFORMANCE_ID, -1, ''),
+        eticket.connect(otherAccount).mintTicket(otherAccount.address, UNSCHEDULED_PERFORMANCE_ID, -1),
       ).to.be.revertedWith(/^Ownable:.+/);
     });
 
@@ -117,9 +118,14 @@ describe('Eticket', function () {
       });
     });
 
+    it('Should revert when performance already scheduled', async function () {
+      const { eticket, owner, scheduledPerformance } = await deployFixture();
+      expect(eticket.connect(owner).schedulePerformance(scheduledPerformance.id, 0, '', '')).to.be.revertedWith(MSG_PERFORMANCE_ALREADY_SCHEDULED);
+    });
+
     it('Should schedule performance', async function () {
       const { eticket, owner, UNSCHEDULED_PERFORMANCE_ID } = await deployFixture();
-      await eticket.connect(owner).schedulePerformance(UNSCHEDULED_PERFORMANCE_ID, 0);
+      await eticket.connect(owner).schedulePerformance(UNSCHEDULED_PERFORMANCE_ID, 0, '', '');
       expect(await eticket.connect(owner).isPerformanceScheduled(UNSCHEDULED_PERFORMANCE_ID)).equals(true);
     });
 
@@ -254,7 +260,7 @@ describe('Eticket', function () {
       it('Should revert when performance is not scheduled', async function () {
         const { UNSCHEDULED_PERFORMANCE_ID, eticket, owner } = await deployFixture();
 
-        expect(eticket.connect(owner).mintTicket(owner.address, UNSCHEDULED_PERFORMANCE_ID, 0, '')).to.be.revertedWith(
+        expect(eticket.connect(owner).mintTicket(owner.address, UNSCHEDULED_PERFORMANCE_ID, 0)).to.be.revertedWith(
           MSG_PERFORMANCE_IS_NOT_SCHEDULED,
         );
       });
@@ -263,7 +269,7 @@ describe('Eticket', function () {
         const { eticket, owner, scheduledPerformance } = await deployFixture();
 
         expect(
-          eticket.connect(owner).mintTicket(owner.address, scheduledPerformance.id, scheduledPerformance.seats.MINTED, ''),
+          eticket.connect(owner).mintTicket(owner.address, scheduledPerformance.id, scheduledPerformance.seats.MINTED),
         ).to.be.revertedWith(MSG_TICKET_ALREADY_MINTED);
       });
 
@@ -272,7 +278,7 @@ describe('Eticket', function () {
 
         await eticket
           .connect(owner)
-          .mintTicket(otherAccount.address, scheduledPerformance.id, scheduledPerformance.seats.NOT_MINTED, '');
+          .mintTicket(otherAccount.address, scheduledPerformance.id, scheduledPerformance.seats.NOT_MINTED);
 
         const tokenId = await eticket
           .connect(owner)
@@ -316,7 +322,7 @@ describe('Eticket', function () {
           .connect(otherAccount)
           .makeTokenId(scheduledPerformance.id, scheduledPerformance.seats.MINTED_AND_USED);
 
-        expect(await eticket.connect(otherAccount).tokenURI(tokenId)).equals('special uri');
+        expect(await eticket.connect(otherAccount).tokenURI(tokenId)).contains('special url/');
       });
     });
 

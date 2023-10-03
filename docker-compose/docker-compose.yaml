@@ -26,6 +26,13 @@ services:
     depends_on:
       - eticket_mysql
 
+  eticket_minter:
+    extends:
+      file: ./services/docker-compose-eticket-minter.yaml
+      service: eticket_minter
+    depends_on:
+      - eticket_mysql
+
   eticket_backend_waiting:
     extends:
       file: ./services/docker-compose-backend-waiting.yaml

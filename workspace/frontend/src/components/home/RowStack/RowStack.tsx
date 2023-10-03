@@ -19,7 +19,7 @@ const RowStack = ({ title, items, url }: Props) => {
   const { movePage } = useMovePage();
 
   return (
-    <Box>
+    <Box px={1.5}>
       <Typography mt={4} mb={2} fontWeight="bold" variant="h5">
         {title}
       </Typography>

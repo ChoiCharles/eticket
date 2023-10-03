@@ -16,6 +16,7 @@ import MyPage from 'pages/User/MyPage';
 import MyTicketDetail from 'pages/User/MyTicketDetail';
 import NFTGallery from 'pages/Etc/NFTGallery';
 import Error from 'pages/Etc/Error';
+import Soon from 'pages/Etc/Soon';
 
 function AppRouter() {
   return (
@@ -34,8 +35,9 @@ function AppRouter() {
           element={<ConcertCalender />}
         />
         <Route path="/seat/:seatId/:dateId" element={<Seat />} />
-        {/* <Route path="/seat/:seatId/:" element={<Seat />} /> */}
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/soon" element={<Soon />} />
+        <Route path="/receipts" element={<Soon />} />
         <Route path="/fail" element={<Navigate replace to="/checkout" />} />
         <Route path="/success" element={<Success />} />
         <Route path="/my" element={<MyPage />} />

@@ -5,7 +5,7 @@ import org.oao.eticket.adapter.out.persistence.entity.ReservationJpaEntity;
 import org.oao.eticket.adapter.out.persistence.mapper.ReservationMapper;
 import org.oao.eticket.adapter.out.persistence.repository.ReservationRepository;
 import org.oao.eticket.application.domain.model.Reservation;
-import org.oao.eticket.application.port.in.CancelMyReservationCommand;
+import org.oao.eticket.application.port.in.dto.CancelMyReservationCommand;
 import org.oao.eticket.application.port.out.CancelMyReservationPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 
