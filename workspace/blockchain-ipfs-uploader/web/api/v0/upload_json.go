@@ -1,11 +1,11 @@
-package controller
+package apiV0
 
 import (
 	"context"
 	"log"
 	"net/http"
 
-	"eticket.org/blockchain-ipfs-uploader/service"
+	"eticket.org/blockchain-ipfs-uploader/internal/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +14,7 @@ type uploadJsonRequest struct {
 	Jsons   map[string]map[string]any `json:"jsons" binding:"required"`
 }
 
-func RegisterJsonUploadController(e *gin.Engine, uploadJsonService *service.UploadJsonService) {
+func RegisterUploadJsonApi(e *gin.Engine, uploadJsonService *service.UploadJsonService) {
 	e.POST("/api/v0/upload/json", func(ctx *gin.Context) {
 		var payload uploadJsonRequest
 		if err := ctx.ShouldBindJSON(&payload); err != nil {
