@@ -48,7 +48,7 @@ const Checkout = () => {
   };
 
   return (
-    <Box sx={{ px: 3 }}>
+    <Box>
       <Paper
         sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
         elevation={0}
@@ -63,8 +63,14 @@ const Checkout = () => {
         type="button"
         variant="contained"
         size="large"
-        fullWidth
-        sx={{ mb: 5 }}
+        sx={{
+          width: '90%',
+          position: 'fixed',
+          bottom: 30,
+          color: 'white',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
         onClick={handlePay}
       >
         결제하기
