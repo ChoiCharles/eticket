@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}",
+            "program": "${workspaceFolder}/cmd/eticket-ipfs-uploader",
             "console": "integratedTerminal",
             "env": {
                 "ETICKET_KUBO_RPC_URL": "http://localhost:60882"

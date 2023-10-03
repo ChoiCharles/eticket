@@ -1,4 +1,4 @@
-package controller
+package apiV0
 
 import (
 	"archive/zip"
@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"eticket.org/blockchain-ipfs-uploader/service"
+	"eticket.org/blockchain-ipfs-uploader/internal/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -60,7 +60,7 @@ func obtainMultipartFileHeader(ctx *gin.Context) *multipart.FileHeader {
 	return file
 }
 
-func RegisterZipUploadController(e *gin.Engine, uploadZipService *service.UploadZipService) {
+func RegisterUploadZipApi(e *gin.Engine, uploadZipService *service.UploadZipService) {
 	e.POST("/api/v0/upload/zip", func(ctx *gin.Context) {
 		if checkContentType(ctx); ctx.IsAborted() {
 			return
