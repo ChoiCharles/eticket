@@ -6,7 +6,7 @@ import org.oao.eticket.application.domain.model.User;
 import org.oao.eticket.application.domain.model.UserRole;
 import org.oao.eticket.application.port.in.dto.JoinMembershipCommand;
 import org.oao.eticket.application.port.in.JoinMembershipUseCase;
-import org.oao.eticket.application.port.out.CreateUserCommand;
+import org.oao.eticket.application.port.out.dto.CreateUserCommand;
 import org.oao.eticket.application.port.out.CreateUserPort;
 import org.oao.eticket.common.annotation.UseCase;
 

@@ -3,9 +3,9 @@ package org.oao.eticket.adapter.out.persistence.repository;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.adapter.out.persistence.entity.VacancyRedisEntity;
 import org.oao.eticket.application.domain.model.Vacancy;
-import org.oao.eticket.application.port.out.FindVacancyCommand;
+import org.oao.eticket.application.port.out.dto.FindVacancyCommand;
 import org.oao.eticket.application.port.out.FindVacancyPort;
-import org.oao.eticket.application.port.out.LoadVacanciesRedisCommand;
+import org.oao.eticket.application.port.out.dto.LoadVacanciesRedisCommand;
 import org.oao.eticket.application.port.out.LoadVacanciesRedisPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 

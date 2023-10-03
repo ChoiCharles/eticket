@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import org.oao.eticket.application.domain.model.*;
 import org.oao.eticket.application.port.in.CreateAuthTokenUseCase;
-import org.oao.eticket.application.port.out.SaveAuthTokenMetadataCommand;
+import org.oao.eticket.application.port.out.dto.SaveAuthTokenMetadataCommand;
 import org.oao.eticket.application.port.out.SaveAuthTokenMetadataPort;
 import org.oao.eticket.common.Pair;
 import org.oao.eticket.common.TokenUtils;

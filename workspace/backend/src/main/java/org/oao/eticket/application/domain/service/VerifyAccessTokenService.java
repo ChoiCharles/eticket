@@ -10,7 +10,7 @@ import org.oao.eticket.application.domain.model.AuthTokenId;
 import org.oao.eticket.application.domain.model.User;
 import org.oao.eticket.application.domain.model.UserRole;
 import org.oao.eticket.application.port.in.VerifyAccessTokenUseCase;
-import org.oao.eticket.application.port.out.LoadAccessTokenMetadataCommand;
+import org.oao.eticket.application.port.out.dto.LoadAccessTokenMetadataCommand;
 import org.oao.eticket.application.port.out.LoadAccessTokenMetadataPort;
 import org.oao.eticket.common.Pair;
 import org.oao.eticket.common.TokenUtils;

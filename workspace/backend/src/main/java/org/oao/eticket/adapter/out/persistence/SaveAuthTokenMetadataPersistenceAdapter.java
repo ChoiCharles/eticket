@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.oao.eticket.adapter.out.persistence.mapper.AccessTokenMetadataMapper;
 import org.oao.eticket.adapter.out.persistence.mapper.RefreshTokenMetadataMapper;
-import org.oao.eticket.application.port.out.SaveAuthTokenMetadataCommand;
+import org.oao.eticket.application.port.out.dto.SaveAuthTokenMetadataCommand;
 import org.oao.eticket.application.port.out.SaveAuthTokenMetadataPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.UnexpectedException;
