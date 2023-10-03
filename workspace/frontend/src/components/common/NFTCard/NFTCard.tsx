@@ -1,7 +1,7 @@
 import './NFTCard.scss';
 import React from 'react';
 
-import testimage from 'assets/test.jfif'
+import testimage from 'assets/test.jfif';
 
 function NFTCard() {
   return (
@@ -14,7 +14,7 @@ function NFTCard() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default NFTCard;

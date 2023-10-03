@@ -11,7 +11,7 @@ const instance: AxiosInstance = axios.create({
 
 // Axios 요청시 인터셉트
 instance.interceptors.request.use(req => {
-  const accessToken = LocalStorage.getItem('accessToken');
+  const accessToken = LocalStorage.getItem('accesstoken');
   if (accessToken) {
     req.headers.authorization = `Bearer ${accessToken}`;
   }

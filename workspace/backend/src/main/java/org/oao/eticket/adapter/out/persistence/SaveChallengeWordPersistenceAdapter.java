@@ -1,7 +1,7 @@
 package org.oao.eticket.adapter.out.persistence;
 
 import java.time.Duration;
-import org.oao.eticket.application.port.out.SaveChallengeWordCommand;
+import org.oao.eticket.application.port.out.dto.SaveChallengeWordCommand;
 import org.oao.eticket.application.port.out.SaveChallengeWordPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.ExternalServiceException;

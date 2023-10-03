@@ -13,8 +13,9 @@ const Carousel = () => {
       navButtonsAlwaysInvisible
       fullHeightHover
     >
-      {items.map(item => {
-        return <CarouselItem item={item} key={item.id} />;
+      {items.map((item, index) => {
+        const orderedItem = { ...item, index, total: items.length };
+        return <CarouselItem key={item.id} item={orderedItem} />;
       })}
     </MuiCarousel>
   );

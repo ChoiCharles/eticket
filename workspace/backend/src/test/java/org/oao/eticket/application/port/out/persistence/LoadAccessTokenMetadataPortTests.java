@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.oao.eticket.application.domain.model.*;
 import org.oao.eticket.application.port.in.CreateAuthTokenUseCase;
-import org.oao.eticket.application.port.out.LoadAccessTokenMetadataCommand;
+import org.oao.eticket.application.port.out.dto.LoadAccessTokenMetadataCommand;
 import org.oao.eticket.application.port.out.LoadAccessTokenMetadataPort;
 import org.oao.eticket.common.Pair;
 import org.oao.eticket.config.AuthRedisContainer;

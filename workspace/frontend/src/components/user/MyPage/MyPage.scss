@@ -5,7 +5,7 @@
 
 .my-info {
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   background-color: white;
 
   .nickName {
@@ -14,9 +14,12 @@
   }
 
   .edit-info {
-    height: 30px;
-    margin-top: auto;
-    margin-bottom: auto;
+    height: 40px;
+    margin: auto 20px;
+    border-radius: 7px;
+    color: white;
+    background-color: #80c0c0;
+    border: 0px;
 
     .edit-info-text {
       margin: auto;

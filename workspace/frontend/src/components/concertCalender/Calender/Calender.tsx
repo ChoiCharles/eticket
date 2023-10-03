@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 function Calender() {
   const { movePage } = useMovePage();
   const { performanceScheduleId } = useParams();
-  const dayList = ['2023-09-17', '2023-09-27'];
+  const dayList = ['2023-10-12', '2023-10-17'];
   const [today, setToday] = useState(new Date());
   const [selectedDayIndex, setSelectedDayIndex] = useState(-1);
 

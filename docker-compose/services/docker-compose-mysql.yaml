@@ -10,12 +10,12 @@ networks:
 
 services:
   eticket_mysql:
-    image: "mysql:8.1"
-    container_name: eticket_mysql
-    restart: on-failure
     environment:
       MYSQL_ROOT_PASSWORD: hello_eticket
       TZ: Asia/Seoul
+    image: "mysql:8.1"
+    container_name: eticket_mysql
+    restart: on-failure
     volumes:
       - "eticket_main_data:/var/lib/mysql"
       - "./data/mysql/initdb.d:/docker-entrypoint-initdb.d"

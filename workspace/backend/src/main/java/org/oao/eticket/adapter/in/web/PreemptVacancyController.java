@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Vacancy;
-import org.oao.eticket.application.port.in.PreemptVacancyCommand;
+import org.oao.eticket.application.port.in.dto.PreemptVacancyCommand;
 import org.oao.eticket.application.port.in.PreemptVacancyUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.springframework.http.HttpStatus;

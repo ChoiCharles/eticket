@@ -28,6 +28,10 @@ public class BlockChainWallet {
     }
 
     final var otherAddress = ((BlockChainWallet) other).address;
+    if (otherAddress == null) {
+      return false;
+    }
+
     for (int i = 0; i < address.length; ++i) {
       if (address[i] != otherAddress[i]) {
         return false;

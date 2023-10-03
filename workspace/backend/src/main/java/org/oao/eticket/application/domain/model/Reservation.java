@@ -16,5 +16,4 @@ public class Reservation {
   private TicketStatus ticketStatus;
   private LocalDateTime reservationTime;
   private LocalDateTime cancellationTime;
-
 }

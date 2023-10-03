@@ -6,7 +6,7 @@ import org.mapstruct.MappingConstants;
 import org.oao.eticket.adapter.out.persistence.entity.AccessTokenMetadataRedisEntity;
 import org.oao.eticket.application.domain.model.AccessTokenMetadata;
 import org.oao.eticket.application.domain.model.AuthTokenId;
-import org.oao.eticket.application.port.out.SaveAuthTokenMetadataCommand;
+import org.oao.eticket.application.port.out.dto.SaveAuthTokenMetadataCommand;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AccessTokenMetadataMapper {

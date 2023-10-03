@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.oao.eticket.adapter.out.persistence.entity.UserJpaEntity;
 import org.oao.eticket.application.domain.model.User;
-import org.oao.eticket.application.port.out.CreateUserCommand;
+import org.oao.eticket.application.port.out.dto.CreateUserCommand;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {

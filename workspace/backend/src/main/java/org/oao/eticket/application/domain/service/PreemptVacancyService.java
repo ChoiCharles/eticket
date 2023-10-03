@@ -2,9 +2,9 @@ package org.oao.eticket.application.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Vacancy;
-import org.oao.eticket.application.port.in.PreemptVacancyCommand;
+import org.oao.eticket.application.port.in.dto.PreemptVacancyCommand;
 import org.oao.eticket.application.port.in.PreemptVacancyUseCase;
-import org.oao.eticket.application.port.out.FindVacancyCommand;
+import org.oao.eticket.application.port.out.dto.FindVacancyCommand;
 import org.oao.eticket.application.port.out.FindVacancyPort;
 import org.oao.eticket.common.annotation.UseCase;
 
