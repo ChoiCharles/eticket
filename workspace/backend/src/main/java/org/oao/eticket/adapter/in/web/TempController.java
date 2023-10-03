@@ -15,7 +15,7 @@ public class TempController {
     // 스케줄러로 만든 서비스 API 테스트 해보려고 만든 애
     private final PerformanceScheduleRepository performanceScheduleRepository;
     private final LoadPerformanceScheduleSeatTablePort loadPerformanceScheduleSeatTablePort;
-    @GetMapping("performances/test")
+    @GetMapping("api/performances/test")
     List<PerformanceScheduleSeatTable> test() {
         return loadPerformanceScheduleSeatTablePort.loadOpeningInfo();
     }
