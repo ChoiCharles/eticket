@@ -111,7 +111,7 @@ class SpringSecurityConfig {
     authenticationFilter.setSuccessHandler(authenticationResultHandler);
     authenticationFilter.setFailureHandler(authenticationResultHandler);
 
-    authenticationFilter.setRequestMatcher(new AntPathRequestMatcher("/auth/signin", "POST"));
+    authenticationFilter.setRequestMatcher(new AntPathRequestMatcher("/api/auth/signin", "POST"));
 
     return authenticationFilter;
   }
