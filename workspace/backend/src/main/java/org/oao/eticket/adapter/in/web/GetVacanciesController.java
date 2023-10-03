@@ -49,7 +49,7 @@ public class GetVacanciesController { // 특정 공연의 특정 구역의 빈 �
             description = "NO CONTENT. (빈 리스트 - 현재 잔여 좌석 없습니다.)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
-  @GetMapping("api/schedules/{performanceScheduleId}/sections/{section}/vacancies")
+  @GetMapping("/api/schedules/{performanceScheduleId}/sections/{section}/vacancies")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<GetPerformanceScheduleVacanciesResponseBody> GetPerformanceScheduleVacncies(
       @PathVariable Integer performanceScheduleId, @PathVariable String section) {

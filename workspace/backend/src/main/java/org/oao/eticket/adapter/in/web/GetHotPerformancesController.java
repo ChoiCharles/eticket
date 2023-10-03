@@ -38,7 +38,7 @@ public class GetHotPerformancesController {
             description = "OK. (빈 리스트 - 인기 있는 공연 없다)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
-  @GetMapping("api/performances/hot")
+  @GetMapping("/api/performances/hot")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<?> getHotPerformances() {
     try {
