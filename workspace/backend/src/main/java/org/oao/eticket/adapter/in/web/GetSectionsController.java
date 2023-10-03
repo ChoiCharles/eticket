@@ -50,7 +50,7 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
             description = "NOT FOUND. (해당 공연이 개최 되는 콘서트 홀에 section 정보가 없거나 각 section에 좌석 등급이 할당 되지 않았습니다.)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
-  @GetMapping("schedules/{performanceScheduleId}/sections")
+  @GetMapping("/api/schedules/{performanceScheduleId}/sections")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<GetSectionsResponseBody> getSections(
       @PathVariable("performanceScheduleId") Integer performancesScheduledId) {

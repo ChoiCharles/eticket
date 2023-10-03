@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.web3j.utils.Numeric;
 
 @WebAdapter
-@RequestMapping("/users")
 @RequiredArgsConstructor
 public class GetUserDetailsController {
 
@@ -22,7 +21,7 @@ public class GetUserDetailsController {
 
   private final GetUserDetailsUseCase getUserDetailsUseCase;
 
-  @GetMapping("/{userId}")
+  @GetMapping("/api/users/{userId}")
   ResponseEntity<Response> getUserDetails(
       @PathVariable final int userId, final Authentication authentication) {
 

@@ -57,7 +57,7 @@ class JoinMembershipController {
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
   @PostMapping(
-      value = "/membership/join",
+      value = "/api/membership/join",
       consumes = "application/json",
       produces = "application/json; charset=utf-8")
   @ResponseStatus(HttpStatus.CREATED)

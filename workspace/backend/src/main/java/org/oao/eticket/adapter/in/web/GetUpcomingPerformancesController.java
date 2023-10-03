@@ -37,7 +37,7 @@ public class GetUpcomingPerformancesController {
             description = "OK. (빈 리스트 - 예매가 오픈 되지 않은 공연 없다)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
-  @GetMapping("/performances/upcoming")
+  @GetMapping("/api/performances/upcoming")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<UpcomingsResponseBody> getUpcomingPerformances() {
     try {

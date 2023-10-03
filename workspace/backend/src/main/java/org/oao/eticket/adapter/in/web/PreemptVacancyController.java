@@ -44,7 +44,7 @@ public class PreemptVacancyController {
             description = "CONFLICT. (사용자가 선택한 좌석이 이미 다른 사용자에 의해 선점된 좌석 입니다.)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
-  @PostMapping("schedules/{performanceScheduleId}/sections/{section}/seats/{seatId}")
+  @PostMapping("/api/schedules/{performanceScheduleId}/sections/{section}/seats/{seatId}")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<PreemptVacancyResponseBody> preemptVacancy(
       @PathVariable Integer performanceScheduleId,

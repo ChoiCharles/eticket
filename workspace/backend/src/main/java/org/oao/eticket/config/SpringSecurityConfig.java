@@ -111,7 +111,7 @@ class SpringSecurityConfig {
     authenticationFilter.setSuccessHandler(authenticationResultHandler);
     authenticationFilter.setFailureHandler(authenticationResultHandler);
 
-    authenticationFilter.setRequestMatcher(new AntPathRequestMatcher("/auth/signin", "POST"));
+    authenticationFilter.setRequestMatcher(new AntPathRequestMatcher("/api/auth/signin", "POST"));
 
     return authenticationFilter;
   }
@@ -139,9 +139,13 @@ class SpringSecurityConfig {
         .authorizeHttpRequests(
             httpRequests ->
                 httpRequests
-                    .requestMatchers("/membership/join", "/auth/signin", "/swagger-ui/*", "/v3/**")
-                    .permitAll()
-                    .requestMatchers("/performances/**", "/schedules/**" )
+                    .requestMatchers(
+                        "/swagger-ui/*",
+                        "/v3/**",
+                        "/api/membership/join",
+                        "/api/auth/signin",
+                        "/api/performances/*",
+                        "/api/schedules/**")
                     .permitAll()
                     .requestMatchers("/**")
                     .authenticated()

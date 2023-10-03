@@ -14,7 +14,7 @@ public class SearchPerformancesController {
 
   record SearchPerformancesResponseBody(Object result) {}
 
-  @GetMapping("/performances/search")
+  @GetMapping("/api/performances/search")
   ResponseEntity<SearchPerformancesResponseBody> searchPerformances(@RequestParam String keyword) {
     try {
       final var searchResults = searchPerformancesUseCase.search(keyword);
