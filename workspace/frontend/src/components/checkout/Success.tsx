@@ -9,9 +9,8 @@ const Success = () => {
 
   const handleReserveBtnClick = async () => {
     const requestBody = {
-      userId: 0,
-      performanceScheduleId: 0,
-      seatId: 0,
+      performanceScheduleId: 2,
+      seatId: 1,
       paymentAmount: 0,
     };
     try {
