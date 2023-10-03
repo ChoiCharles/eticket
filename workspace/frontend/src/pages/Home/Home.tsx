@@ -9,7 +9,6 @@ import items from '../../dummys';
 const Home = () => {
   const menus = [
     { title: '공연 랭킹', items, url: '/concert' },
-    { title: 'NFT Gallery', items, url: '/gallery' },
     { title: '💥예매 임박💥', items, url: '/soon' },
   ];
 
@@ -26,7 +25,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', px: 1.5 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <NavBar />
       <TopFiveConcertList />
       {menus.map((menu, index) => {
