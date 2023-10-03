@@ -38,7 +38,7 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
             description = "BAD REQUEST. (요청한 API에 해당하는 공연 스케줄 ID가 존재하지 않습니다.)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
-  @GetMapping("schedules/{performanceScheduleId}/sections")
+  @GetMapping("api/schedules/{performanceScheduleId}/sections")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<GetSectionsResponseBody> getSections(
       @PathVariable("performanceScheduleId") Integer performancesScheduledId) {

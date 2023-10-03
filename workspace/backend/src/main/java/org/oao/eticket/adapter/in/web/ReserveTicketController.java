@@ -36,7 +36,7 @@ public class ReserveTicketController {
   @Operation(
       summary = "티켓 예매",
       responses = {@ApiResponse(responseCode = "201", description = "티켓 예매 성공")})
-  @PostMapping(path = "/reservations")
+  @PostMapping(path = "/api/reservations")
   ResponseEntity<Response> reserveTicket(
       @Valid @RequestBody final Request payload, final Authentication authentication) {
 

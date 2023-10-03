@@ -19,7 +19,7 @@ public class LoadMyReservationsController {
 
   private final LoadMyReservationsUseCase loadMyReservationsUseCase;
 
-  @GetMapping(path = "/reservations/{userId}")
+  @GetMapping(path = "/api/reservations/{userId}")
   ResponseEntity<List<Reservation>> loadMyReservations(@PathVariable Integer userId, Authentication authentication) {
 
     if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {

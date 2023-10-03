@@ -20,7 +20,7 @@ public class CancelMyReservationController {
 
   private final CancelMyReservationUseCase cancelMyReservationUseCase;
 
-  @PutMapping(path = "/reservations/{id}")
+  @PutMapping(path = "/api/reservations/{id}")
   ResponseEntity<Reservation> cancelMyReservation(
           @PathVariable Integer id, Authentication authentication) {
 

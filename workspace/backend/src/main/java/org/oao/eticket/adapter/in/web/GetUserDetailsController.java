@@ -22,7 +22,7 @@ public class GetUserDetailsController {
 
   private final GetUserDetailsUseCase getUserDetailsUseCase;
 
-  @GetMapping("/{userId}")
+  @GetMapping("/api/{userId}")
   ResponseEntity<Response> getUserDetails(
       @PathVariable final int userId, final Authentication authentication) {
 

@@ -20,7 +20,7 @@ class CreateChallengeWordController {
 
   private final CreateChallengeWordUseCase createChallengeWordUseCase;
 
-  @PostMapping("/auth/challenge")
+  @PostMapping("/api/auth/challenge")
   ResponseEntity<?> createChallengeWord() {
     try {
       final var challengeWord = createChallengeWordUseCase.create();

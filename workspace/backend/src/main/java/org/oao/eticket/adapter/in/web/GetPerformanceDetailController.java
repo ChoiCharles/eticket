@@ -39,7 +39,7 @@ public class GetPerformanceDetailController {
             description = "BAD REQUEST. performance ID에 해당 하는 공연이 없을 때",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
-  @GetMapping(value = "/performances/{performanceId}", produces = "application/json; charset=utf-8")
+  @GetMapping(value = "/api/performances/{performanceId}", produces = "application/json; charset=utf-8")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<GetPerformanceDetailResponseBody> getPerformanceDetail(
       @Valid @PathVariable("performanceId") Integer payload) {
