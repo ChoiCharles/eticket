@@ -9,6 +9,7 @@ func FxModule() fx.Option {
 		fx.Provide(
 			NewUploadZipService,
 			NewUploadJsonService,
+			NewUploadService,
 		),
 	)
 }
