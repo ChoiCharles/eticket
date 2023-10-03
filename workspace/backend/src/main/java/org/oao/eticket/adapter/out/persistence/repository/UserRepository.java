@@ -8,20 +8,20 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.oao.eticket.adapter.out.persistence.entity.UserJpaEntity;
 import org.oao.eticket.adapter.out.persistence.mapper.UserMapper;
 import org.oao.eticket.application.domain.model.User;
+import org.oao.eticket.application.port.out.UpdateUserWalletAddressPort;
 import org.oao.eticket.application.port.out.dto.CreateUserCommand;
 import org.oao.eticket.application.port.out.CreateUserPort;
 import org.oao.eticket.application.port.out.LoadUserPort;
+import org.oao.eticket.application.port.out.dto.UpdateUserWalletAddressCommand;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
-import org.oao.eticket.exception.ExternalServiceException;
-import org.oao.eticket.exception.UserDuplicateException;
-import org.oao.eticket.exception.UserNotFoundException;
-import org.oao.eticket.exception.UsernameNotFoundException;
+import org.oao.eticket.exception.*;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 import org.web3j.utils.Numeric;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-class UserRepository implements CreateUserPort, LoadUserPort {
+class UserRepository implements CreateUserPort, LoadUserPort, UpdateUserWalletAddressPort {
 
   private final UserMapper userMapper;
 
@@ -108,5 +108,28 @@ class UserRepository implements CreateUserPort, LoadUserPort {
   @Override
   public User loadByWallet(final String address) {
     return loadByWallet(Numeric.hexStringToByteArray(address));
+  }
+
+  @Override
+  @Transactional
+  public boolean update(final UpdateUserWalletAddressCommand cmd) {
+    try {
+      final var numAffectedRows =
+          entityManager
+              .createQuery(
+                  """
+                      UPDATE UserJpaEntity u
+                         SET u.walletAddress=:address
+                       WHERE u.id=:userId""")
+              .setParameter("userId", cmd.getTargetUserId().getValue())
+              .setParameter("address", cmd.getNewBlockChainWallet().getAddress())
+              .executeUpdate();
+      return 0 < numAffectedRows;
+    } catch (ConstraintViolationException e) {
+      throw new WalletDuplicateException(
+          String.format("Duplicate wallet \"%s\".", cmd.getNewBlockChainWallet().toString()), e);
+    } catch (Exception e) {
+      throw new ExternalServiceException(e);
+    }
   }
 }
