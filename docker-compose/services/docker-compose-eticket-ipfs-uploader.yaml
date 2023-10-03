@@ -5,8 +5,8 @@ services:
     environment:
       GIN_MODE: release
       ETICKET_KUBO_RPC_URL: http://localhost:60882
-    build: ../../workspace/blockchain-ipfs-uploader/Dockerfile
-    image: eticket/blockchain-ipfs-uploader
-    container_name: eticket_blockchain_ipfs_uploader
+    build: ../../workspace/eticket-ipfs-uploader/Dockerfile
+    image: eticket/ipfs-uploader
+    container_name: eticket_ipfs_uploader
     restart: on-failure
     network_mode: host
