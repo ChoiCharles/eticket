@@ -7,7 +7,7 @@ import org.mapstruct.Mappings;
 import org.oao.eticket.adapter.out.persistence.entity.ReservationJpaEntity;
 import org.oao.eticket.application.domain.model.Reservation;
 import org.oao.eticket.application.port.in.dto.CancelMyReservationCommand;
-import org.oao.eticket.application.port.out.CreateReservationCommand;
+import org.oao.eticket.application.port.out.dto.CreateReservationCommand;
 
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,

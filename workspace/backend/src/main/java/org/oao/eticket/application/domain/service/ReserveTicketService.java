@@ -5,6 +5,7 @@ import org.oao.eticket.application.domain.model.*;
 import org.oao.eticket.application.port.in.dto.ReserveTicketCommand;
 import org.oao.eticket.application.port.in.ReserveTicketUseCase;
 import org.oao.eticket.application.port.out.*;
+import org.oao.eticket.application.port.out.dto.CreateReservationCommand;
 import org.oao.eticket.common.annotation.UseCase;
 import org.springframework.transaction.annotation.Transactional;
 

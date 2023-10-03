@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.oao.eticket.adapter.out.persistence.entity.RefreshTokenMetadataRedisEntity;
-import org.oao.eticket.application.port.out.SaveAuthTokenMetadataCommand;
+import org.oao.eticket.application.port.out.dto.SaveAuthTokenMetadataCommand;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RefreshTokenMetadataMapper {

@@ -8,7 +8,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.oao.eticket.adapter.out.persistence.entity.UserJpaEntity;
 import org.oao.eticket.adapter.out.persistence.mapper.UserMapper;
 import org.oao.eticket.application.domain.model.User;
-import org.oao.eticket.application.port.out.CreateUserCommand;
+import org.oao.eticket.application.port.out.dto.CreateUserCommand;
 import org.oao.eticket.application.port.out.CreateUserPort;
 import org.oao.eticket.application.port.out.LoadUserPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Vacancy;
 import org.oao.eticket.application.port.in.dto.GetVacanciesCommand;
 import org.oao.eticket.application.port.in.GetVacanciesUseCase;
-import org.oao.eticket.application.port.out.LoadVacanciesRedisCommand;
+import org.oao.eticket.application.port.out.dto.LoadVacanciesRedisCommand;
 import org.oao.eticket.application.port.out.LoadVacanciesRedisPort;
 import org.oao.eticket.common.annotation.UseCase;
 

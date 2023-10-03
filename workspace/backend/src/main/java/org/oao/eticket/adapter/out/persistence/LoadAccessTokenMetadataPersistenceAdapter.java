@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.oao.eticket.adapter.out.persistence.entity.AccessTokenMetadataRedisEntity;
 import org.oao.eticket.adapter.out.persistence.mapper.AccessTokenMetadataMapper;
 import org.oao.eticket.application.domain.model.AccessTokenMetadata;
-import org.oao.eticket.application.port.out.LoadAccessTokenMetadataCommand;
+import org.oao.eticket.application.port.out.dto.LoadAccessTokenMetadataCommand;
 import org.oao.eticket.application.port.out.LoadAccessTokenMetadataPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.NoResultException;
