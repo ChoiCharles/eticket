@@ -48,5 +48,6 @@ func FxModule() fx.Option {
 		fx.Invoke(func(serv *http.Server) {}),
 		fx.Invoke(apiV0.RegisterUploadJsonApi),
 		fx.Invoke(apiV0.RegisterUploadZipApi),
+		fx.Invoke(apiV0.RegisterUploadApi),
 	)
 }
