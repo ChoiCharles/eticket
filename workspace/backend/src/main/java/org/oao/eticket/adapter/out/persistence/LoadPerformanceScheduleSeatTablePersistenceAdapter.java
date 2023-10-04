@@ -33,11 +33,15 @@ public class LoadPerformanceScheduleSeatTablePersistenceAdapter
 
   @Override
   public List<PerformanceScheduleSeatTable> loadSeatTable() { // 공연 예매가 오픈 되는 공연 스케줄의 좌석 테이블을 생성
-    // 오늘 예매가 오픈 되는 공연 스케줄 가져오기
+    // TMP 일단 모든 스케줄 저장하기
     final var scheduleJpaEntities =
-        performanceScheduleRepository
-            .loadOpeningPerformanceSchedules()
-            .orElseThrow(() -> new NoResultException("오늘 예매가 오픈 되는 공연이 없습니다.")); // query
+            performanceScheduleRepository.findAll();
+
+    // 오늘 예매가 오픈 되는 공연 스케줄 가져오기
+//    final var scheduleJpaEntities =
+//        performanceScheduleRepository
+//            .loadOpeningPerformanceSchedules()
+//            .orElseThrow(() -> new NoResultException("오늘 예매가 오픈 되는 공연이 없습니다.")); // query
 
     List<PerformanceScheduleSeatTable> results = new ArrayList<>();
 

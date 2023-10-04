@@ -21,7 +21,7 @@ import java.util.List;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class VacanciesRedisRepository implements SaveVacanciesRedisPort, LoadVacanciesRedisPort {
+public class VacanciesRedisRepository implements SaveVacanciesRedisPort, LoadVacanciesRedisPort, FindVacancyPort {
   private final RedisTemplate<String, Object> redisTemplate;
   private final HashOperations<String, String, PerformanceScheduleSeatTable> hashOperations;
   private static final String TABLE_KEY = "SeatTable";
@@ -31,7 +31,8 @@ public class VacanciesRedisRepository implements SaveVacanciesRedisPort, LoadVac
   public void saveTable(PerformanceScheduleSeatTable table) {
     String key = getKey(table);
     if (hashOperations.hasKey(TABLE_KEY, key)) {
-      throw new SeatTableDuplicatedException(String.format("%s에 대한 좌석 정보가 이미 존재 합니다.", key));
+      System.out.println(TABLE_KEY+"에 "+key+"는 이미 들어 있다.");
+//      throw new SeatTableDuplicatedException(String.format("%s에 대한 좌석 정보가 이미 존재 합니다.", key));
     } else {
       hashOperations.put(TABLE_KEY, key, table);
     }
@@ -86,5 +87,10 @@ public class VacanciesRedisRepository implements SaveVacanciesRedisPort, LoadVac
 
   private String getKey(Integer performanceScheduleId, Integer sectionId) {
     return performanceScheduleId + ":" + sectionId;
+  }
+
+  @Override
+  public VacancyRedisEntity findVacancy(FindVacancyCommand cmd) {
+    return null;
   }
 }
