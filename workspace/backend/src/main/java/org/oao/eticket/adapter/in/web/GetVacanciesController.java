@@ -45,20 +45,20 @@ public class GetVacanciesController { // 특정 공연의 특정 구역의 빈 �
             description = "BAD REQUEST. (요청한 API에 해당하는 공연 스케줄 ID 혹은 Section이 존재하지 않습니다.)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
         @ApiResponse(
-            responseCode = "204",
-            description = "NO CONTENT. (빈 리스트 - 현재 잔여 좌석 없습니다.)",
+            responseCode = "200-1",
+            description = "OK. NO CONTENT. (빈 리스트 - 현재 잔여 좌석 없습니다.)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
-  @GetMapping("/api/schedules/{performanceScheduleId}/sections/{section}/vacancies")
+  @GetMapping("/api/schedules/{performanceScheduleId}/sections/{sectionId}/vacancies")
   @ResponseStatus(HttpStatus.OK)
-  ResponseEntity<GetPerformanceScheduleVacanciesResponseBody> GetPerformanceScheduleVacncies(
-      @PathVariable Integer performanceScheduleId, @PathVariable String section) {
+  ResponseEntity<GetPerformanceScheduleVacanciesResponseBody> GetPerformanceScheduleVacancies(
+      @PathVariable Integer performanceScheduleId, @PathVariable Integer sectionId) {
     try {
       final var results =
-          getVacanciesUseCase.getVacncies(
+          getVacanciesUseCase.getVacancies(
               GetVacanciesCommand.builder()
                   .performanceScheduleId(performanceScheduleId)
-                  .section(section)
+                  .sectionId(sectionId)
                   .build());
       // TODO(yoo): Model 객체 -> Response
       return ResponseEntity.ok(new GetPerformanceScheduleVacanciesResponseBody(results));

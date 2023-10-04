@@ -7,5 +7,5 @@ import lombok.Value;
 @Builder
 public class GetVacanciesCommand {
     Integer performanceScheduleId;
-    String section;
+    Integer sectionId;
 }

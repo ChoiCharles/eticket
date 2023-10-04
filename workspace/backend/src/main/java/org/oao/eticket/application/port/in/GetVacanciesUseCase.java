@@ -6,5 +6,5 @@ import org.oao.eticket.application.port.in.dto.GetVacanciesCommand;
 import java.util.List;
 
 public interface GetVacanciesUseCase {
-    List<Vacancy>  getVacncies(GetVacanciesCommand getVacanciesCommand);
+    List<Vacancy>  getVacancies(GetVacanciesCommand getVacanciesCommand);
 }

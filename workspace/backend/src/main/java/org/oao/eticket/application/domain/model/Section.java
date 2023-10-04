@@ -11,7 +11,6 @@ public class Section {
     String name;
     Integer sectionSeatCount;
     SeatClass seatClass;
-    List<Seat> seatList;
 
 
     @Getter
