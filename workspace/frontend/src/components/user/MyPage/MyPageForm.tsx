@@ -26,7 +26,7 @@ function MyPage() {
   // const { metadata, connectIPFS } = useMetaData()
   const { connectIPFS } = useMetaData();
   const [myAccount, setMyAccount] = useState('');
-  const [userId, setUserId] = useState()
+  const [userId, setUserId] = useState();
   const [userNickName, setUserNickName] = useState('닉네임');
   const [userName, setUserName] = useState('');
   const [myTicketData, setMyTicketData] = useState([]);
@@ -45,21 +45,21 @@ function MyPage() {
   };
 
   const getUserData = async () => {
-    const token = localStorage.getItem('accesstoken')
-    
+    const token = localStorage.getItem('accesstoken');
+
     if (token === null) {
       movePage(`/login`, null);
     } else {
-      setUserId(JSON.parse(atob(token.split('.')[1]))['sub'])
+      setUserId(JSON.parse(atob(token.split('.')[1]))['sub']);
       try {
         const userDataResponse = await instance.get(
           `/api/users/${JSON.parse(atob(token.split('.')[1]))['sub']}`,
         );
         if (userDataResponse.status === 200) {
-          setUserNickName(userDataResponse.data.nickname)
-          setUserName(userDataResponse.data.username)
+          setUserNickName(userDataResponse.data.nickname);
+          setUserName(userDataResponse.data.username);
           if (userDataResponse.data.walletAddress) {
-            setMyAccount(userDataResponse.data.walletAddress)
+            setMyAccount(userDataResponse.data.walletAddress);
           }
         }
       } catch (error) {
@@ -86,24 +86,26 @@ function MyPage() {
   const personal_sign = async () => {
     loginMetaMask();
     if (account != '') {
-
-      console.log(account)
+      console.log(account);
       const personalSignResult = await window.ethereum.request({
-        "method": "personal_sign",
-        "params": [
+        method: 'personal_sign',
+        params: [
           `I agree to register blockchain account "${account}" to Eticket account "${userName}".`,
-          account
-        ]
+          account,
+        ],
       });
       const personalSignData = {
-          "personalSign": personalSignResult, 
-          "walletAddress": account
-      }
-  
-      const personalSignVerify = await instance.post(`/api/users/${userId}/register-wallet`, personalSignData)
-      setMyAccount(personalSignVerify.data.walletAddress)
+        personalSign: personalSignResult,
+        walletAddress: account,
+      };
+
+      const personalSignVerify = await instance.post(
+        `/api/users/${userId}/register-wallet`,
+        personalSignData,
+      );
+      setMyAccount(personalSignVerify.data.walletAddress);
     }
-  }
+  };
 
   useEffect(() => {
     connectIPFS();
@@ -161,9 +163,9 @@ function MyPage() {
           <button className="edit-info" onClick={() => personal_sign()}>
             <h3 className="edit-info-text">메타마스크 연결</h3>
           </button>
-        )
-        : <></>
-      }
+        ) : (
+          <></>
+        )}
       </div>
       {myAccount === '' ? (
         <div className="wallet">
