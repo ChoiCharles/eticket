@@ -5,17 +5,15 @@ import { Box, Button, IconButton } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import hamburgerState from 'atoms/NavState';
 import useMovePage from 'hooks/useMovePage';
-import siwe from 'hooks/siwe';
 
 const Buttons = () => {
   const { movePage } = useMovePage();
   const [, setHamburger] = useRecoilState(hamburgerState);
   const token = localStorage.getItem('accesstoken');
-  const { getSIWE } = siwe();
   return (
     <Box>
       {!token && (
-        <Button onClick={() => getSIWE()}>
+        <Button onClick={() => movePage('/login', null)}>
           <b>로그인</b>
         </Button>
       )}
