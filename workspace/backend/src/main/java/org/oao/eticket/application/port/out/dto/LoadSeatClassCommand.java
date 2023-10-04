@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class LoadVacanciesRedisCommand {
+public class LoadSeatClassCommand {
     Integer performanceScheduleId;
     Integer sectionId;
 }

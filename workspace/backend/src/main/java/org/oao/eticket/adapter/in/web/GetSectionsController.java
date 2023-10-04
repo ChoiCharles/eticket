@@ -5,25 +5,33 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.oao.eticket.application.domain.model.Section;
+import org.oao.eticket.application.port.in.GetSectionsUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
+import org.oao.eticket.exception.ConcertHallNotFoundException;
+import org.oao.eticket.exception.PerformanceNotFoundException;
+import org.oao.eticket.exception.SeatClassNotFoundException;
+import org.oao.eticket.exception.SectionNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.List;
+
 @WebAdapter
 @RequiredArgsConstructor
 public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 공연에 대한 공연장 정보
 
-  record GetSectionsResponseBody() {}
+  record GetSectionsResponseBody(List<Section> sectionList) {}
 
-  // private final GetSectionsUseCase getSectionsUseCase;
+  private final GetSectionsUseCase getSectionsUseCase;
 
   @Operation(
-      summary = "특정 공연 회차에 대한 공연장 구역 표 제공",
+      summary = "특정 공연 회차에 대한 공연장 구역 리스트 제공",
       description =
-          "예매 대기열에서 빠져 나온 사용자가 처음 예매 화면에 진입 했을 때 제공할 API 입니다. \n 특정 공연 회차에 진행 되는 공연장의 구역 정보가 리스트로 제공됩니다. ",
+          "예매 대기열에서 빠져 나온 사용자가 처음 예매 화면에 진입 했을 때 제공할 API 입니다. \n 특정 공연 회차에 진행 되는 공연장의 구역 정보가 리스트로 제공 됩니다. ",
       responses = {
         @ApiResponse(
             responseCode = "200",
@@ -31,11 +39,15 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
             content = @Content(schema = @Schema(implementation = GetSectionsResponseBody.class))),
         @ApiResponse(
             responseCode = "401",
-            description = "NO AUTHORIZED. (권한이 없습니다. 대기열에서 빠져나온 유저의 요청이 아닙니다.)",
+            description = "NO AUTHORIZED. (권한이 없습니다. 대기열에서 빠져 나온 유저의 요청이 아닙니다.)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
         @ApiResponse(
             responseCode = "400",
-            description = "BAD REQUEST. (요청한 API에 해당하는 공연 스케줄 ID가 존재하지 않습니다.)",
+            description = "BAD REQUEST. (요청한 API에 해당 하는 공연 스케줄 ID가 존재 하지 않습니다.)",
+            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "NOT FOUND. (해당 공연이 개최 되는 콘서트 홀에 section 정보가 없거나 각 section에 좌석 등급이 할당 되지 않았습니다.)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
   @GetMapping("/api/schedules/{performanceScheduleId}/sections")
@@ -43,15 +55,37 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
   ResponseEntity<GetSectionsResponseBody> getSections(
       @PathVariable("performanceScheduleId") Integer performancesScheduledId) {
     try {
-      // use case릁 통해 MySql에서 특정 공연의 상세 정보 가져오기
+      // redis에 들러서 대기열에서 나온 유저인지 확인
 
-      return ResponseEntity.ok(new GetSectionsResponseBody());
+      // use case릁 통해 MySql에서 특정 공연의 상세 정보 가져 오기
+      final var sections = getSectionsUseCase.getSections(performancesScheduledId);
+
+      return ResponseEntity.ok(new GetSectionsResponseBody(sections));
+    } catch (ConcertHallNotFoundException e) { // DB에 공연에 해당 하는 콘서트 홀 연결 안함
+      throw ApiException.builder()
+          .withStatus(HttpStatus.BAD_REQUEST)
+          .withCause(e)
+          .withMessage(e.getMessage() + "번 공연 회차는 존재 하지 않아요.")
+          .build();
+    } catch (SectionNotFoundException e) { // DB에 공연에 해당 하는 콘서트 홀에 Section을 등록 안함
+      throw ApiException.builder()
+          .withStatus(HttpStatus.NOT_FOUND)
+          .withCause(e)
+          .withMessage(e.getMessage() + "번 공연 회차에 해당 하는 콘서트 홀에 구역 정보가 존재 하지 않아요.")
+          .build();
+    } catch (SeatClassNotFoundException e) { // Section에 SeatClass 등록을 안함
+      throw ApiException.builder()
+          .withStatus(HttpStatus.NOT_FOUND)
+          .withCause(e)
+          .withMessage(e.getMessage())
+          .build();
     } catch (Exception e) {
-      // TODO(yoo): exception handling
-      // AUTHORIZED (대기열에 등록돼있던 사용자 아님)
-      // API BAD REQUEST (performance Schedule과 section의 id가 잘못됨)
-      // NO CONTENT (잔여 좌석 없음) or NOT FOUND
-      throw e;
+      e.printStackTrace();
+      throw ApiException.builder()
+          .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+          .withCause(e)
+          .withMessage(e.getMessage())
+          .build();
     }
   }
 }

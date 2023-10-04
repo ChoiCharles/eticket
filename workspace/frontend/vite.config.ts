@@ -15,10 +15,23 @@ export default defineConfig({
   ],
   server: {
     proxy: {
+      '/api/waiting': {
+        target: 'http://localhost:31880',
+        rewrite: path_ => path_.replace(/^\/api/, ''),
+      },
+      '/api/ticketing': {
+        target: 'http://localhost:31880',
+        rewrite: path_ => path_.replace(/^\/api/, ''),
+      },
+      '/ws': {
+        target: 'ws://localhost:31880',
+        changeOrigin: true,
+        secure: false,
+        ws: true,
+      },
       '/api': {
         target: 'http://localhost:38080',
         changeOrigin: true,
-        rewrite: path_ => path_.replace(/^\/api/, ''),
         secure: false,
         ws: true,
       },
