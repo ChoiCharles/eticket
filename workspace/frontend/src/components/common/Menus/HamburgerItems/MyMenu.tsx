@@ -18,7 +18,7 @@ interface Props {
 const MyMenu = ({ handleToggleDrawer }: Props) => {
   const menus = [
     { name: '홈', url: '/' },
-    { name: '구매 내역', url: '/receipts' },
+    { name: '구매 내역', url: '/receipt' },
     { name: '마이 페이지', url: '/my' },
   ];
 

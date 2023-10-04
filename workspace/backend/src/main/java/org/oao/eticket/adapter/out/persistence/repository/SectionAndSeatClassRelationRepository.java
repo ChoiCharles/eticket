@@ -15,12 +15,13 @@ import java.util.Optional;
 public interface SectionAndSeatClassRelationRepository
     extends JpaRepository<SectionAndSeatClassRelationJpaEntity, Integer> {
 
-  @Query("SELECT s " +
-          "FROM SectionAndSeatClassRelationJpaEntity s " +
-          "WHERE s.seatClassJpaEntity.performanceJpaEntity = :performance " +
-          "AND s.sectionJpaEntity = :section")
-  SectionAndSeatClassRelationJpaEntity findSeatClassBySectionAndPerformance(
-          @Param("section") SectionJpaEntity sectionId,
-          @Param("performance") PerformanceJpaEntity performanceId);
-
+  @Query(
+      "SELECT s.seatClassJpaEntity "
+          + "FROM SectionAndSeatClassRelationJpaEntity s "
+          + "WHERE s.sectionJpaEntity.id = :sectionId "
+          + "AND s.seatClassJpaEntity.performanceJpaEntity = "
+          + "(SELECT ps.performanceJpaEntity FROM PerformanceScheduleJpaEntity ps WHERE ps.id = :performanceScheduleId)")
+  Optional<SeatClassJpaEntity> findSeatClassBySectionAndPerformance(
+      @Param("sectionId") Integer sectionId,
+      @Param("performanceScheduleId") Integer performanceScheduleId);
 }

@@ -17,6 +17,6 @@ public class TempController {
     private final LoadPerformanceScheduleSeatTablePort loadPerformanceScheduleSeatTablePort;
     @GetMapping("api/performances/test")
     List<PerformanceScheduleSeatTable> test() {
-        return loadPerformanceScheduleSeatTablePort.loadOpeningInfo();
+        return loadPerformanceScheduleSeatTablePort.loadSeatTable();
     }
 }
