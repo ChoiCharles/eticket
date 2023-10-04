@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Section;
 import org.oao.eticket.application.port.in.GetSectionsUseCase;
 import org.oao.eticket.application.port.out.LoadPerformanceScheduleSectionsPort;
-import org.oao.eticket.application.port.out.LoadSeatClassCommand;
+import org.oao.eticket.application.port.out.dto.LoadSeatClassCommand;
 import org.oao.eticket.application.port.out.LoadSeatClassPort;
 import org.oao.eticket.common.annotation.UseCase;
 
