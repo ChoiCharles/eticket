@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 MAIN_DIR="$(realpath "$(dirname "$0")"/..)"
 BLOCKCHAIN_DIR="$MAIN_DIR/blockchain"
@@ -7,6 +7,7 @@ GETH_IMAGE=ethereum/client-go:v1.13.0
 # shellcheck disable=all
 ACCOUNT=$(cat $BLOCKCHAIN_DIR/accounts/node/keystore/* | jq -r ".address")
 docker run --rm -d \
+    --user "${UID}:${GID}" \
     --volume "$BLOCKCHAIN_DIR:/workspace" --network host \
     $GETH_IMAGE \
     --networkid 55 \

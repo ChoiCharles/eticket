@@ -3,7 +3,6 @@
 GETH_IMAGE=ethereum/client-go:v1.13.0
 BOOTNODE_IMAGE=eticket/bootnode:latest
 MAIN_DIR="$(realpath "$(dirname "$0")/..")"
-SCRIPTS_DIR="$MAIN_DIR/scripts"
 BLOCKCHAIN_DIR="$MAIN_DIR/blockchain"
 CHAIN_ID="12345"
 
@@ -20,7 +19,8 @@ require_bootnode_image() {
         return 0
     fi
 
-    docker build -t "$BOOTNODE_IMAGE" "$SCRIPTS_DIR" <<EOF
+    mkdir -p "$BLOCKCHAIN_DIR/Dockerfile"
+    cat <<EOF >"$BLOCKCHAIN_DIR/Dockerfile/Dockerfile"
 FROM ubuntu:22.04
 
 RUN apt-get update
@@ -30,6 +30,7 @@ RUN apt-get update
 RUN apt-get install -y bootnode
 EOF
 
+    docker build -t "$BOOTNODE_IMAGE" "$BLOCKCHAIN_DIR/Dockerfile"
     if test $? -ne 0; then
         exit 1
     fi
@@ -54,7 +55,7 @@ generate_genesis() {
     "arrowGlacierBlock": 0,
     "grayGlacierBlock": 0,
     "clique": {
-      "period": 5,
+      "period": 10,
       "epoch": 30000
     }
   },
