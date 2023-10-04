@@ -142,8 +142,9 @@ class SpringSecurityConfig {
                     .requestMatchers(
                         "/swagger-ui/*",
                         "/v3/**",
-                        "/api/membership/join",
+			"/api/auth/challenge",
                         "/api/auth/signin",
+                        "/api/membership/join",
                         "/api/performances/*",
                         "/api/schedules/**")
                     .permitAll()
