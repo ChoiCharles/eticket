@@ -1,5 +1,7 @@
 package org.oao.eticket.application.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.List;
@@ -7,28 +9,18 @@ import java.util.List;
 @Data
 @Builder
 public class PerformanceScheduleSeatTable {
-  PerformanceScheduleId performanceScheduleId;
-  SectionId sectionId;
+  Integer performanceScheduleId;
+  Integer sectionId;
 
   List<Seat> seats;
 
-  @Getter
-  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class PerformanceScheduleId {
-    private final int value;
-
-    public static PerformanceScheduleSeatTable.PerformanceScheduleId of(final int value) {
-      return new PerformanceScheduleSeatTable.PerformanceScheduleId(value);
-    }
-  }
-
-  @Getter
-  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class SectionId {
-    private final int value;
-
-    public static PerformanceScheduleSeatTable.SectionId of(final int value) {
-      return new PerformanceScheduleSeatTable.SectionId(value);
-    }
+  @JsonCreator
+  public PerformanceScheduleSeatTable(
+          @JsonProperty("performanceScheduleId") Integer performanceScheduleId,
+          @JsonProperty("sectionId") Integer sectionId,
+          @JsonProperty("seats") List<Seat> seats) {
+    this.performanceScheduleId = performanceScheduleId;
+    this.sectionId = sectionId;
+    this.seats = seats;
   }
 }
