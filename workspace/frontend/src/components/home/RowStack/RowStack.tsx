@@ -7,10 +7,10 @@ interface Props {
   title: string;
   items: {
     id: number;
-    image: string;
+    performanceScheduleList: string[];
+    posterImagePath: string;
+    ticketingOpenDateTime: string;
     title: string;
-    location: string;
-    date: string;
   }[];
   url: string;
 }
@@ -34,7 +34,13 @@ const RowStack = ({ title, items, url }: Props) => {
       >
         <Stack direction="row" spacing={2}>
           {items.map(item => {
-            return <StackItem item={item} key={item.id} />;
+            return (
+              <StackItem
+                key={Number(item.id)}
+                item={item}
+                length={items.length}
+              />
+            );
           })}
         </Stack>
       </Box>
