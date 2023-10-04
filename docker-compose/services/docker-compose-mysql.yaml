@@ -19,6 +19,7 @@ services:
     volumes:
       - "eticket_main_data:/var/lib/mysql"
       - "./data/mysql/initdb.d:/docker-entrypoint-initdb.d"
+      - "./data/mysql/conf.d/charset.cnf:/etc/mysql/conf.d/charset.cnf"
     ports:
       - "33066:3306"
     networks:
