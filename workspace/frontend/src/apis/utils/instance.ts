@@ -1,9 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import LocalStorage from 'apis/storage/LocalStorage';
-import SessionStorage from 'apis/storage/SessionStorage';
 
 const instance: AxiosInstance = axios.create({
-  // baseURL: 'http://localhost:38080/api/',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -26,8 +24,7 @@ instance.interceptors.response.use(
     if (error.response?.status === 401) {
       // 401 에러 처리 로직
       window.location.href = '/auth';
-      LocalStorage.removeItem('accessToken');
-      SessionStorage.initUser();
+      LocalStorage.removeItem('accesstoken');
     }
     return Promise.reject(error);
   },
