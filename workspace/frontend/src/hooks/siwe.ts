@@ -56,6 +56,8 @@ const siwe = () => {
     await axios(config)
     .then((response) => {
       console.log('res', response.data);
+      localStorage.setItem('accesstoken', response.data.accessToken);
+      localStorage.setItem('refreshtoken', response.data.refreshToken);
     })
     .catch((error) => {
       console.log('err', error);
