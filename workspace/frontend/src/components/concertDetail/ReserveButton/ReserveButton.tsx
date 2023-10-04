@@ -7,7 +7,6 @@ import useMovePage from 'hooks/useMovePage';
 function ReserveButton() {
   const { movePage } = useMovePage();
   const { performanceId } = useParams();
-  console.log(performanceId);
   const token = localStorage.getItem('accesstoken');
   const moveReservePage = () => {
     // eslint-disable-next-line no-unused-expressions
