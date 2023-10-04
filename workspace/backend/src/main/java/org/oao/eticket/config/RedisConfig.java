@@ -1,10 +1,12 @@
 package org.oao.eticket.config;
 
+import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -26,12 +28,20 @@ public class RedisConfig {
   private RedisTemplate<String, Object> createObjectRedisTemplate(
       final RedisConnectionFactory connectionFactory) {
     RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-    redisTemplate.setKeySerializer(new StringRedisSerializer());
-    redisTemplate.setValueSerializer(new StringRedisSerializer());
-    redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-    redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
     redisTemplate.setConnectionFactory(connectionFactory);
+    redisTemplate.setKeySerializer(new StringRedisSerializer());
+    redisTemplate.setValueSerializer(
+        new Jackson2JsonRedisSerializer<>(PerformanceScheduleSeatTable.class)); // JSON 직렬화 설정
+    redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+    redisTemplate.setHashValueSerializer(
+        new Jackson2JsonRedisSerializer<>(PerformanceScheduleSeatTable.class)); // JSON 직렬화 설정
     return redisTemplate;
+  }
+
+  @Bean
+  public HashOperations<String, String, PerformanceScheduleSeatTable> hashOperations(
+      RedisTemplate<String, Object> redisTemplate) {
+    return redisTemplate.opsForHash();
   }
 
   @Bean("eticketAuthRedisConnectionFactory")

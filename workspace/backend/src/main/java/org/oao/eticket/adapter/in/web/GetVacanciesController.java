@@ -5,10 +5,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.oao.eticket.application.domain.model.Seat;
 import org.oao.eticket.application.domain.model.Vacancy;
 import org.oao.eticket.application.port.in.dto.GetVacanciesCommand;
 import org.oao.eticket.application.port.in.GetVacanciesUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
+import org.oao.eticket.exception.ConcertHallNotFoundException;
+import org.oao.eticket.exception.UnexpectedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +23,7 @@ import java.util.List;
 @WebAdapter
 @RequiredArgsConstructor
 public class GetVacanciesController { // 특정 공연의 특정 구역의 빈 좌석들 불러오기
-  record GetPerformanceScheduleVacanciesResponseBody(List<Vacancy> vacancies) {}
+  record GetPerformanceScheduleVacanciesResponseBody(List<Seat> vacancies) {}
 
   private final GetVacanciesUseCase getVacanciesUseCase;
 
@@ -60,8 +63,13 @@ public class GetVacanciesController { // 특정 공연의 특정 구역의 빈 �
                   .performanceScheduleId(performanceScheduleId)
                   .sectionId(sectionId)
                   .build());
-      // TODO(yoo): Model 객체 -> Response
       return ResponseEntity.ok(new GetPerformanceScheduleVacanciesResponseBody(results));
+    } catch (UnexpectedException e) { // performance Schedule ID나 Section ID 잘못 됨.
+      throw ApiException.builder()
+              .withStatus(HttpStatus.BAD_REQUEST)
+              .withCause(e)
+              .withMessage(e.getMessage())
+              .build();
     } catch (Exception e) {
       // TODO(yoo): exception handling
       // AUTHORIZED (대기열에 등록돼있던 사용자 아님)

@@ -3,47 +3,42 @@ package org.oao.eticket.adapter.out.persistence;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.adapter.out.persistence.entity.PerformanceScheduleJpaEntity;
 import org.oao.eticket.adapter.out.persistence.entity.SectionJpaEntity;
-import org.oao.eticket.adapter.out.persistence.mapper.ConcertHallMapper;
-import org.oao.eticket.adapter.out.persistence.mapper.SeatClassMapper;
-import org.oao.eticket.adapter.out.persistence.mapper.SeatMapper;
-import org.oao.eticket.adapter.out.persistence.mapper.SectionMapper;
+import org.oao.eticket.adapter.out.persistence.mapper.*;
 import org.oao.eticket.adapter.out.persistence.repository.PerformanceScheduleRepository;
 import org.oao.eticket.adapter.out.persistence.repository.SeatRepository;
-import org.oao.eticket.adapter.out.persistence.repository.SectionAndSeatClassRelationRepository;
 import org.oao.eticket.adapter.out.persistence.repository.SectionRepository;
 import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
-import org.oao.eticket.application.domain.model.Section;
 import org.oao.eticket.application.port.out.LoadPerformanceScheduleSeatTablePort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.ConcertHallNotFoundException;
 import org.oao.eticket.exception.NoResultException;
-import org.oao.eticket.exception.SeatClassNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class SaveVacanciesToRedisPersistenceAdapter
+public class LoadPerformanceScheduleSeatTablePersistenceAdapter
     implements LoadPerformanceScheduleSeatTablePort {
   // repository
   private final PerformanceScheduleRepository performanceScheduleRepository;
   private final SectionRepository sectionRepository;
   private final SeatRepository seatRepository;
-  private final SectionAndSeatClassRelationRepository sectionAndSeatClassRelationRepository;
   // mapper
-  private final ConcertHallMapper concertHallMapper;
   private final SeatMapper seatMapper;
-  private final SectionMapper sectionMapper;
-  private final SeatClassMapper seatClassMapper;
+  private final PerformanceScheduleMapper performanceScheduleMapper;
 
   @Override
-  public List<PerformanceScheduleSeatTable> loadSeatTable() { // 공연 예매가 오픈 되는 공연 스케줄의 좌석 테이블을 생성
-    // 오늘 예매가 오픈 되는 공연 스케줄 가져오기
-    final var scheduleJpaEntities =
-        performanceScheduleRepository
-            .loadOpeningPerformanceSchedules()
-            .orElseThrow(() -> new NoResultException("오늘 예매가 오픈 되는 공연이 없습니다.")); // query
+  public List<PerformanceScheduleSeatTable>
+      loadSeatTablesOpenToday() { // 공연 예매가 오픈 되는 공연 스케줄의 좌석 테이블을 생성
+    // TMP 일단 모든 스케줄 저장하기
+    final var scheduleJpaEntities = performanceScheduleRepository.findAll();
+
+    //     오늘 예매가 오픈 되는 공연 스케줄 가져오기
+    //    final var scheduleJpaEntities =
+    //        performanceScheduleRepository
+    //            .loadOpeningPerformanceSchedules()
+    //            .orElseThrow(() -> new NoResultException("오늘 예매가 오픈 되는 공연이 없습니다.")); // query
 
     List<PerformanceScheduleSeatTable> results = new ArrayList<>();
 
@@ -69,10 +64,8 @@ public class SaveVacanciesToRedisPersistenceAdapter
           // PerformanceSchedule Seat Table
           PerformanceScheduleSeatTable performanceScheduleSeatTable =
               PerformanceScheduleSeatTable.builder()
-                  .performanceScheduleId(
-                      PerformanceScheduleSeatTable.PerformanceScheduleId.of(
-                          scheduleJpaEntity.getId()))
-                  .sectionId(PerformanceScheduleSeatTable.SectionId.of(sectionJpaEntity.getId()))
+                  .performanceScheduleId(scheduleJpaEntity.getId())
+                  .sectionId(sectionJpaEntity.getId())
                   .seats(seats)
                   .build();
           // 만든 하나의 구역을 리스트에 추가
