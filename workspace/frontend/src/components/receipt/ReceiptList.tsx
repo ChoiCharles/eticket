@@ -9,11 +9,7 @@ const ReceiptList = () => {
     try {
       const token = localStorage.getItem('accesstoken');
       if (token !== null) {
-        const userDataResponse = await instance.get(
-          `/api/users/${JSON.parse(atob(token.split('.')[1])).sub}`,
-        );
-
-        const userId = userDataResponse.data.id;
+        const userId = JSON.parse(atob(token.split('.')[1])).sub;
 
         const response = await instance.get(`/api/reservations/${userId}`);
         console.log(response);

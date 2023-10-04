@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { useNavigate } from 'react-router-dom';
 import instance from 'apis/utils/instance';
 import { SiweMessage } from 'siwe';
 import { BrowserProvider, ethers } from 'ethers';
@@ -6,7 +7,7 @@ import useMetaMask from './metamask'
 
 
 const siwe = () => {
-
+  const navigate = useNavigate();
   const metaMask = useMetaMask()
 
   const domain = "localhost";
@@ -14,9 +15,8 @@ const siwe = () => {
 
   const getSIWE = async () => {
     const challenge = await instance.post('/api/auth/challenge')
-    console.log(challenge.data)
+    console.log(challenge)
   
-    // const address = '0xAbfDe2Db501B02007fE29c17F3b1b43AF1263f5b';
     const nonce = challenge.data.challengeWord;
     
     const browserProvider = new BrowserProvider(metaMask.provider as any)
@@ -32,10 +32,7 @@ const siwe = () => {
     }).prepareMessage();
   
     const signature = await signer?.signMessage(siweMessage)
-    console.log(signature)
-    console.log(siweMessage);
-    console.log('2', siweMessage)    
-  
+
     const requestData = {
       'account': address.toLowerCase(),
       'challenge': challenge.data.challengeWordId,
@@ -51,13 +48,12 @@ const siwe = () => {
       },
       data: requestData,
     };
-    console.log(config)
   
     await axios(config)
     .then((response) => {
-      console.log('res', response.data);
       localStorage.setItem('accesstoken', response.data.accessToken);
       localStorage.setItem('refreshtoken', response.data.refreshToken);
+      navigate('/');
     })
     .catch((error) => {
       console.log('err', error);

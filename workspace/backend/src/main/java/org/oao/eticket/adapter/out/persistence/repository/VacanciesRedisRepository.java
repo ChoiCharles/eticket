@@ -12,7 +12,6 @@ import org.oao.eticket.application.port.out.dto.LoadVacanciesRedisCommand;
 import org.oao.eticket.application.port.out.LoadVacanciesRedisPort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.NoResultException;
-import org.oao.eticket.exception.SeatTableDuplicatedException;
 import org.oao.eticket.exception.UnexpectedException;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,7 +20,8 @@ import java.util.List;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class VacanciesRedisRepository implements SaveVacanciesRedisPort, LoadVacanciesRedisPort, FindVacancyPort {
+public class VacanciesRedisRepository
+    implements SaveVacanciesRedisPort, LoadVacanciesRedisPort, FindVacancyPort {
   private final RedisTemplate<String, Object> redisTemplate;
   private final HashOperations<String, String, PerformanceScheduleSeatTable> hashOperations;
   private static final String TABLE_KEY = "SeatTable";
@@ -31,8 +31,9 @@ public class VacanciesRedisRepository implements SaveVacanciesRedisPort, LoadVac
   public void saveTable(PerformanceScheduleSeatTable table) {
     String key = getKey(table);
     if (hashOperations.hasKey(TABLE_KEY, key)) {
-      System.out.println(TABLE_KEY+"에 "+key+"는 이미 들어 있다.");
-//      throw new SeatTableDuplicatedException(String.format("%s에 대한 좌석 정보가 이미 존재 합니다.", key));
+      System.out.println(TABLE_KEY + "에 " + key + "는 이미 들어 있다.");
+      //      throw new SeatTableDuplicatedException(String.format("%s에 대한 좌석 정보가 이미 존재 합니다.",
+      // key));
     } else {
       hashOperations.put(TABLE_KEY, key, table);
     }
@@ -42,7 +43,7 @@ public class VacanciesRedisRepository implements SaveVacanciesRedisPort, LoadVac
   @Override
   public List<Seat> getSeatTable(LoadVacanciesRedisCommand cmd) {
     PerformanceScheduleSeatTable table =
-            getTable(cmd.getPerformanceScheduleId(), cmd.getSectionId());
+        getTable(cmd.getPerformanceScheduleId(), cmd.getSectionId());
     if (table != null) {
       return table.getSeats();
     } else {
@@ -60,8 +61,6 @@ public class VacanciesRedisRepository implements SaveVacanciesRedisPort, LoadVac
       throw new UnexpectedException("performance Schedule Id나 section Id 틀림. 그런 데이터 없음");
     }
   }
-
-
 
   // 특정 좌석의 status 업데이트
   public boolean updateSeatStatus(

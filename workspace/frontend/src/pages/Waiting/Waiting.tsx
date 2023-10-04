@@ -21,16 +21,37 @@ const Waiting = () => {
 
   const [openCaptcha, setOpenCaptcha] = useState<boolean>(true);
 
+  const userId = 9;
+
+  const requestBody = {
+    userId,
+    performanceScheduleId: 2,
+  };
+
+  const postWaiting = async () => {
+    try {
+      const response = await instance.post('/api/waiting', requestBody);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const deleteTicketing = async () => {
+  //   await instance
+  //     .delete('/api/ticketing', {
+  //       data: {
+  //         userId,
+  //         performanceScheduleId: 2,
+  //       },
+  //     })
+  //     .then(response => console.log(response))
+  //     .catch(error => console.log(error));
+  // };
+
   useEffect(() => {
-    const requestBody = {
-      userId: 0,
-      performanceScheduleId: 2,
-    };
-    instance
-      .post('/api/waiting', requestBody)
-      .then(response => console.log(response))
-      .catch(error => console.log(error));
     if (openCaptcha === false) {
+      postWaiting();
       const client = new Client({
         brokerURL: URL,
         reconnectDelay: 5000,
@@ -40,23 +61,19 @@ const Waiting = () => {
       client.onConnect = () => {
         setConnected(true);
         setStompClient(client);
-        console.log(connected);
 
-        client.subscribe('/sub', response => {
-          console.log(response);
+        client.subscribe(`/sub/userId/${userId}`, response => {
           const message = JSON.parse(response.body);
           console.log(message);
-          setOrder(Number(message));
+          setOrder(Number(message.order) + 1);
 
-          if (order !== null && order <= 0) {
+          if (message.myTurn) {
             movePage(`/seat/${waitingId}/${dateId}`, null);
           }
         });
       };
 
       client.onDisconnect = () => {
-        console.log(connected);
-        console.log(stompClient);
         setConnected(false);
         setStompClient(null);
       };
@@ -67,17 +84,6 @@ const Waiting = () => {
         client.deactivate();
       };
     }
-    return () => {
-      instance
-        .delete('/api/ticketing', {
-          data: {
-            userId: 0,
-            performanceScheduleId: 2,
-          },
-        })
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
-    };
   }, [openCaptcha]);
 
   return (

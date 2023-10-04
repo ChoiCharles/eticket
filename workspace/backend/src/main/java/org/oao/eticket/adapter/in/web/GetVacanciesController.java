@@ -70,7 +70,7 @@ public class GetVacanciesController { // 특정 공연의 특정 구역의 빈 �
               .withCause(e)
               .withMessage(e.getMessage())
               .build();
-    }catch (Exception e) {
+    } catch (Exception e) {
       // TODO(yoo): exception handling
       // AUTHORIZED (대기열에 등록돼있던 사용자 아님)
       // API BAD REQUEST (performance Schedule과 section의 id가 잘못됨)

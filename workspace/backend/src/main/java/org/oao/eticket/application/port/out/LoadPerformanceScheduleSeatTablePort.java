@@ -5,5 +5,5 @@ import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
 import java.util.List;
 
 public interface LoadPerformanceScheduleSeatTablePort {
-    List<PerformanceScheduleSeatTable> loadSeatTable();
+  List<PerformanceScheduleSeatTable> loadSeatTablesOpenToday();
 }

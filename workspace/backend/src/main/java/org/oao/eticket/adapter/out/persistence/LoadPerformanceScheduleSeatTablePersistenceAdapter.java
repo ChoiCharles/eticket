@@ -3,13 +3,9 @@ package org.oao.eticket.adapter.out.persistence;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.adapter.out.persistence.entity.PerformanceScheduleJpaEntity;
 import org.oao.eticket.adapter.out.persistence.entity.SectionJpaEntity;
-import org.oao.eticket.adapter.out.persistence.mapper.ConcertHallMapper;
-import org.oao.eticket.adapter.out.persistence.mapper.SeatClassMapper;
-import org.oao.eticket.adapter.out.persistence.mapper.SeatMapper;
-import org.oao.eticket.adapter.out.persistence.mapper.SectionMapper;
+import org.oao.eticket.adapter.out.persistence.mapper.*;
 import org.oao.eticket.adapter.out.persistence.repository.PerformanceScheduleRepository;
 import org.oao.eticket.adapter.out.persistence.repository.SeatRepository;
-import org.oao.eticket.adapter.out.persistence.repository.SectionAndSeatClassRelationRepository;
 import org.oao.eticket.adapter.out.persistence.repository.SectionRepository;
 import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
 import org.oao.eticket.application.port.out.LoadPerformanceScheduleSeatTablePort;
@@ -30,18 +26,19 @@ public class LoadPerformanceScheduleSeatTablePersistenceAdapter
   private final SeatRepository seatRepository;
   // mapper
   private final SeatMapper seatMapper;
+  private final PerformanceScheduleMapper performanceScheduleMapper;
 
   @Override
-  public List<PerformanceScheduleSeatTable> loadSeatTable() { // 공연 예매가 오픈 되는 공연 스케줄의 좌석 테이블을 생성
+  public List<PerformanceScheduleSeatTable>
+      loadSeatTablesOpenToday() { // 공연 예매가 오픈 되는 공연 스케줄의 좌석 테이블을 생성
     // TMP 일단 모든 스케줄 저장하기
-    final var scheduleJpaEntities =
-            performanceScheduleRepository.findAll();
+    final var scheduleJpaEntities = performanceScheduleRepository.findAll();
 
-    // 오늘 예매가 오픈 되는 공연 스케줄 가져오기
-//    final var scheduleJpaEntities =
-//        performanceScheduleRepository
-//            .loadOpeningPerformanceSchedules()
-//            .orElseThrow(() -> new NoResultException("오늘 예매가 오픈 되는 공연이 없습니다.")); // query
+    //     오늘 예매가 오픈 되는 공연 스케줄 가져오기
+    //    final var scheduleJpaEntities =
+    //        performanceScheduleRepository
+    //            .loadOpeningPerformanceSchedules()
+    //            .orElseThrow(() -> new NoResultException("오늘 예매가 오픈 되는 공연이 없습니다.")); // query
 
     List<PerformanceScheduleSeatTable> results = new ArrayList<>();
 
