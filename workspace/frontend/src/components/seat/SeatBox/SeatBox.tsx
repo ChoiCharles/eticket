@@ -22,6 +22,21 @@ function SeatBox({ index, state }: { index: number; state: number }) {
       }
     }
   };
+  //   const handleClick = () => {
+  //     // 인덱스 값이 0일 때만 클릭 가능하도록
+  //     if (status === "ONSALE") {
+  //       setIsSelected(!isSelected);
+
+  //       // 선택한 좌석을 추가 또는 제거
+  //       if (isSelected) {
+  //         setSelectedSeats(prevSelectedSeats =>
+  //           prevSelectedSeats.filter(seat => seat !== index),
+  //         );
+  //       } else {
+  //         setSelectedSeats(prevSelectedSeats => [...prevSelectedSeats, index]);
+  //       }
+  //     }
+  //   };
 
   // 인덱스 값에 따라 색상 지정
   const boxStyle = {

@@ -12,7 +12,7 @@ interface loginDataTyoe {
 }
 
 function LoginForm() {
-  const { movePage } = useMovePage();
+  const { goBack } = useMovePage();
   // 이동 로직
   const navigate = useNavigate();
   // 아이디 데이터 상태 선언
@@ -34,7 +34,6 @@ function LoginForm() {
         username: usernameData,
         password: passwordDadta,
       };
-      console.log(loginData);
 
       const response = await instance.post(`/api/auth/signin`, loginData, {
         headers: {
@@ -43,14 +42,11 @@ function LoginForm() {
       }); // POST 요청으로 변경
       if (response.status === 200) {
         localStorage.setItem('accesstoken', response.data.accessToken);
-        movePage('/', null);
-        console.log(response);
+        goBack();
       }
     } catch (error) {
       console.log(error);
     }
-    console.log(usernameData);
-    console.log(passwordDadta);
   };
 
   return (

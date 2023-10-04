@@ -30,8 +30,8 @@ function MyPage() {
   // const { metadata, connectIPFS } = useMetaData()
   const { connectIPFS } = useMetaData();
   const [myAccount, setMyAccount] = useState('');
-  const [userNickName, setUserNickName] = useState('닉네임')
-  const [myTicketData, setMyTicketData] = useState([])
+  const [userNickName, setUserNickName] = useState('닉네임');
+  const [myTicketData, setMyTicketData] = useState([]);
 
   const copyAddress = (text: string) => {
     try {
@@ -47,36 +47,38 @@ function MyPage() {
   };
 
   const getUserData = async () => {
-    const token = localStorage.getItem('accesstoken')
+    const token = localStorage.getItem('accesstoken');
 
     if (token === null) {
-      movePage(`/login`, null)
+      movePage(`/login`, null);
     } else {
-
       try {
-        const userDataResponse = await instance.get(`/api/users/${JSON.parse(atob(token.split('.')[1]))['sub']}`)
+        const userDataResponse = await instance.get(
+          `/api/users/${JSON.parse(atob(token.split('.')[1]))['sub']}`,
+        );
         if (userDataResponse.status === 200) {
-          setUserNickName(userDataResponse.data.nickname)
+          setUserNickName(userDataResponse.data.nickname);
         }
       } catch (error) {
-        console.log('유저 정보 호출 에러', error)
+        console.log('유저 정보 호출 에러', error);
       }
 
       try {
-        const response = await instance.get(`/api/reservations/${JSON.parse(atob(token.split('.')[1]))['sub']}`)
-        
+        const response = await instance.get(
+          `/api/reservations/${JSON.parse(atob(token.split('.')[1]))['sub']}`,
+        );
+
         if (response.status === 200) {
-          console.log('예매 정보', response.data)
-          setMyTicketData(response.data)
+          console.log('예매 정보', response.data);
+          setMyTicketData(response.data);
         } else {
-          alert('예매 목록을 불러오는데 실패했습니다')
+          alert('예매 목록을 불러오는데 실패했습니다');
         }
       } catch (error) {
-        console.log('예매 정보 호출 에러', error)
+        console.log('예매 정보 호출 에러', error);
       }
-
     }
-  }
+  };
 
   useEffect(() => {
     loginMetaMask();
@@ -92,18 +94,15 @@ function MyPage() {
   const MyTicket = () => {
     return (
       <div className="ticket-container">
-        {
-          myTicketData.length ? 
+        {myTicketData.length ? (
           <div>
             <h3>ㅎㅇ</h3>
           </div>
-          :
+        ) : (
           <div>
-            <h3>
-              예매 정보가 없습니다
-            </h3>
+            <h3>예매 정보가 없습니다</h3>
           </div>
-        }
+        )}
         <h3>아래 정보는 더미데이터 입니다</h3>
         {dummyConcerts.map((info: ConcertListItem) => {
           return (
