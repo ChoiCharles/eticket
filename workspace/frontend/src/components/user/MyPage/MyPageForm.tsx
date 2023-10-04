@@ -10,16 +10,6 @@ import useMetaData from 'hooks/useMetaData';
 import instance from 'apis/utils/instance';
 import useMovePage from 'hooks/useMovePage';
 
-import dummyConcerts from 'dummys.ts';
-import './MyPage.scss';
-
-interface ConcertListItem {
-  id: number;
-  image: string;
-  title: string;
-  location: string;
-  date: string;
-}
 
 function MyPage() {
   const { movePage } = useMovePage();
@@ -41,8 +31,8 @@ function MyPage() {
     }
   };
 
-  const handleMovePage = (myticket: ConcertListItem) => {
-    movePage(`/myticket/${myticket.id}`, myticket);
+  const handleMovePage = (index: number, reservationId: number) => {
+    movePage(`/myticket/${reservationId}`, myTicketData[index]);
   };
 
   const getUserData = async () => {
@@ -68,13 +58,10 @@ function MyPage() {
       }
 
       try {
-        const response = await instance.get(
-          `/api/reservations/${JSON.parse(atob(token.split('.')[1])).sub}`,
-        );
-
+        const response = await instance.get(`/api/tickets/${JSON.parse(atob(token.split('.')[1]))['sub']}`)
+        
         if (response.status === 200) {
-          console.log('예매 정보', response.data);
-          setMyTicketData(response.data);
+          setMyTicketData(response.data)
         } else {
           alert('예매 목록을 불러오는데 실패했습니다');
         }
@@ -117,41 +104,48 @@ function MyPage() {
   const MyTicket = () => {
     return (
       <div className="ticket-container">
-        {myTicketData.length ? (
-          <div>
-            <h3>ㅎㅇ</h3>
-          </div>
-        ) : (
-          <div>
-            <h3>예매 정보가 없습니다</h3>
-          </div>
-        )}
-        <h3>아래 정보는 더미데이터 입니다</h3>
-        {dummyConcerts.map((info: ConcertListItem) => {
-          return (
-            <div className="concert-container">
-              <div className="my-concert" onClick={() => handleMovePage(info)}>
-                <div className="concert-poster">
-                  <img src={info.image} alt="" />
-                </div>
-                <div className="concert-info">
-                  <div className="conert-info-box">
-                    <div className="concert-title">
-                      <h3>{info.title}</h3>
+        {
+          myTicketData.length ? 
+          (
+            myTicketData.map((info: any, index: number) => {
+              return (
+                <div className="concert-container">
+                  {
+                    info.ticketStatus == "CANCEL" ? <></> :
+                    <div>
+                      <hr />
+                      <div className="my-concert" onClick={() => handleMovePage(index, info.id)}>
+                        <div className="concert-poster">
+                          <img src={info.performanceSchedule.performance.posterImagePath} alt="" />
+                        </div>
+                        <div className="concert-info">
+                          <div className="conert-info-box">
+                            <div className="concert-title">
+                              <h3>{info.performanceSchedule.performance.title}</h3>
+                            </div>
+                            <div className="concert-date">
+                              <h4>{info.performanceSchedule.startDateTime}</h4>
+                            </div>
+                          </div>
+                          <div className="my-ticket-arrow">
+                            <h3>{'>'}</h3>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="concert-date">
-                      <h4>{info.date}</h4>
-                    </div>
-                  </div>
-                  <div className="my-ticket-arrow">
-                    <h3>{'>'}</h3>
-                  </div>
+                  }
                 </div>
-              </div>
-              <hr />
-            </div>
-          );
-        })}
+              )
+            })
+          )
+          :
+          <div>
+            <hr />
+            <h3>
+              예매 정보가 없습니다
+            </h3>
+          </div>
+        }
       </div>
     );
   };

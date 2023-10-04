@@ -2,26 +2,15 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react/button-has-type */
 import './MyTicketDetail.scss';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import QRcode from 'qrcode.react';
 import { Box, Typography, Modal } from '@mui/material';
-
-import dummyConcerts from 'dummys.ts';
+import instance from 'apis/utils/instance';
+import useMovePage from 'hooks/useMovePage';
 
 import SlidingImage from './SlidingImage';
 
-// 예매 취소 api 연결필요
-// import instance from 'apis/utils/instance';
-// import useMovePage from 'hooks/useMovePage';
-
-interface ConcertListItem {
-  id: number;
-  image: string;
-  title: string;
-  location: string;
-  date: string;
-}
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -36,22 +25,43 @@ const style = {
 };
 
 function MyTicket() {
-  // const movePage = useMovePage();
+  const { movePage } = useMovePage();
+  const [myTicketData, setMyTicketData] = useState([]);
 
   // const handleMovePage = () => {
   //   movePage('/login', null);
   // };
 
   const { idx } = useParams();
-  console.log(idx);
-
   const [isFlipped, setIsFlipped] = useState(false);
   const [rotate, setRotate] = useState(0);
 
   const [openCancelModal, setOpenCancelModal] = useState(false);
   
   // 예매 취소 api 연결필요
-  // const { goBack } = useMovePage();
+  const { goBack } = useMovePage();
+
+  const getUserData = async () => {
+    const token = localStorage.getItem('accesstoken')
+    
+    if (token === null) {
+      movePage(`/login`, null)
+    } else {
+
+      try {
+        const response = await instance.get(`/api/tickets/${JSON.parse(atob(token.split('.')[1]))['sub']}`)
+        
+        if (response.status === 200) {
+          setMyTicketData(response.data)
+        } else {
+          alert('예매 목록을 불러오는데 실패했습니다')
+        }
+      } catch (error) {
+        console.log('예매 정보 호출 에러', error)
+      }
+
+    }
+  }
 
   const imageFlip = () => {
     if (isFlipped) {
@@ -72,31 +82,32 @@ function MyTicket() {
   }
 
   const cancellReservation = async () => {
-    console.log('취소')
-    
-    // 예매 취소 api 연결필요
-    // try {
-    //   const response = await instance.put(`/reservations/${id}`)
+    try {
+      const response = await instance.put(`/api/reservations/${idx}`)
       
-    //   if (response.status === 200) {
-    //     alert('예매 취소되었습니다')
-    //     goBack()
-    //   }
-    // } catch (error) {
-    //   console.log(error)
-    // }
+      if (response.status === 200) {
+        alert('예매 취소되었습니다')
+        goBack()
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
+  useEffect(() => {
+    getUserData()
+  }, [])
+  console.log(idx)
   return (
     <div className="container">
-      {dummyConcerts.map((info: ConcertListItem) => {
+      {myTicketData.map((info: any) => {
         if (info.id === Number(idx)) {
           return (
             <div className="my-ticket-detail">
               <div className="my-ticket-info">
-                <h3>{info.title}</h3>
+                <h3>{info.performanceSchedule.performance.title}</h3>
                 <h3>좌석, 인원</h3>
-                <h3>{info.date}</h3>
+                <h3>{info.performanceSchedule.startDateTime}</h3>
               </div>
               <div className="slide-image">
                 <SlidingImage />
@@ -107,7 +118,7 @@ function MyTicket() {
                   style={{ transform: `rotateY(${rotate}deg)` }}
                 >
                   <div className="card-front">
-                    <img src={info.image} alt="" />
+                    <img src={info.performanceSchedule.performance.posterImagePath} alt="" />
                   </div>
                   <div className="card-back">
                     <div className="QRcode">
