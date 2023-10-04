@@ -19,15 +19,12 @@ public class SaveVacanciesToRedisSchedulerService implements SaveVacanciesToRedi
   @Override
   public List<PerformanceScheduleSeatTable> saveVacanciesToRedis() {
     // 1. 저장할 공연 객체 DB에서 가져오기 (특정 시간에 그날 예매 열리는 공연 회차의 section과 좌석 정보)
-    final var seatTables = loadPerformanceScheduleSeatTablePort.loadSeatTable();
+    final var seatTables = loadPerformanceScheduleSeatTablePort.loadSeatTablesOpenToday();
     // 2. 레디스에 저장. (List<PerformanceScheduleSeatTable>)     schedule Id랑 section Id 조합해서 키로, List?
     for (PerformanceScheduleSeatTable seatTable : seatTables) {
-      System.out.println(
-          seatTable.getPerformanceScheduleId() + " " + seatTable.getSectionId());
+      System.out.println(seatTable.getPerformanceScheduleId() + " " + seatTable.getSectionId());
       saveVacanciesRedisPort.saveTable(seatTable);
     }
-    final var table = saveVacanciesRedisPort.getTable(1, 1);
-    System.out.println(table.getSeats().toString());
     return seatTables;
   }
 }
