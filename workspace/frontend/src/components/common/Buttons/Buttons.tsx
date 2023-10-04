@@ -1,31 +1,31 @@
 import React from 'react';
-import MetaMask from 'assets/MetaMask.png';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
-import { IconButton } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import hamburgerState from 'atoms/NavState';
-
-import './Buttons.scss';
 import useMovePage from 'hooks/useMovePage';
 import siwe from 'hooks/siwe';
 
 const Buttons = () => {
   const { movePage } = useMovePage();
   const [, setHamburger] = useRecoilState(hamburgerState);
-  const { getSIWE } = siwe()
+  const token = localStorage.getItem('accesstoken');
+  const { getSIWE } = siwe();
   return (
-    <div>
-      <IconButton onClick={() => getSIWE()}>
-        <img id="metamask" src={MetaMask} alt="metamask" />
-      </IconButton>
+    <Box>
+      {!token && (
+        <Button onClick={() => getSIWE()}>
+          <b>로그인</b>
+        </Button>
+      )}
       <IconButton onClick={() => movePage('/search', null)}>
         <SearchIcon />
       </IconButton>
       <IconButton onClick={() => setHamburger(true)}>
         <MenuIcon />
       </IconButton>
-    </div>
+    </Box>
   );
 };
 
