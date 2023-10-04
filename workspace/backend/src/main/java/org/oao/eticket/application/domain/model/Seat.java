@@ -11,8 +11,6 @@ public class Seat {
   private Integer id;
   private String row;
   private String number;
-  private Integer positionX;
-  private Integer positionY;
   @Builder.Default
   private SeatStatus seatStatus = SeatStatus.ONSALE;
 }

@@ -24,25 +24,15 @@ public class SeatJpaEntity {
   @Column(name = "number")
   private String number;
 
-  @Column(name = "position_x")
-  private Integer positionX;
-
-  @Column(name = "position_y")
-  private Integer positionY;
-
   @Builder
   public SeatJpaEntity(
       Integer id,
       SectionJpaEntity sectionJpaEntity,
       String row,
-      String number,
-      Integer positionX,
-      Integer positionY) {
+      String number) {
     this.id = id;
     this.sectionJpaEntity = sectionJpaEntity;
     this.row = row;
     this.number = number;
-    this.positionX = positionX;
-    this.positionY = positionY;
   }
 }
