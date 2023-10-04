@@ -9,7 +9,8 @@ import { Client } from '@stomp/stompjs';
 import Captcha from 'components/common/Captcha/Captcha';
 import instance from 'apis/utils/instance';
 
-const URL = `wss://${window.location.origin.split('//')[1]}/ws`;
+const protocol = /https$/.test(window.location.protocol) ? 'wss' : 'ws';
+const URL = `${protocol}://${window.location.origin.split('//')[1]}/ws`;
 
 const Waiting = () => {
   const [order, setOrder] = useState<number | null>(null);
@@ -39,8 +40,10 @@ const Waiting = () => {
       client.onConnect = () => {
         setConnected(true);
         setStompClient(client);
+        console.log(connected);
 
         client.subscribe('/sub', response => {
+          console.log(response);
           const message = JSON.parse(response.body);
           console.log(message);
           setOrder(Number(message));
@@ -66,7 +69,12 @@ const Waiting = () => {
     }
     return () => {
       instance
-        .delete('/api/ticketing', requestBody)
+        .delete('/api/ticketing', {
+          data: {
+            userId: 0,
+            performanceScheduleId: 2,
+          },
+        })
         .then(response => console.log(response))
         .catch(error => console.log(error));
     };
