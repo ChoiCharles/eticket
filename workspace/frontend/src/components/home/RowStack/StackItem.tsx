@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 
 type Item = {
-  id: number;
+  id: { value: number };
   performanceScheduleList: string[];
   posterImagePath: string;
   ticketingOpenDateTime: string;
@@ -17,10 +17,11 @@ type Item = {
 
 interface Props {
   item: Item;
-  length: number;
 }
 
-const StackItem = ({ item, length }: Props) => {
+const StackItem = ({ item }: Props) => {
+  const itemLength = item.performanceScheduleList.length;
+
   return (
     <Card sx={{ minWidth: '150px' }} elevation={0}>
       <CardActionArea>
@@ -36,7 +37,7 @@ const StackItem = ({ item, length }: Props) => {
           </Typography>
           <Typography variant="body2">
             {`${item.performanceScheduleList[0]} ~ ${
-              item.performanceScheduleList[length - 1]
+              item.performanceScheduleList[itemLength - 1]
             }`}
           </Typography>
         </CardContent>

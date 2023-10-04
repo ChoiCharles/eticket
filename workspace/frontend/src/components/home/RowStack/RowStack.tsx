@@ -6,7 +6,7 @@ import StackItem from './StackItem';
 interface Props {
   title: string;
   items: {
-    id: number;
+    id: { value: number };
     performanceScheduleList: string[];
     posterImagePath: string;
     ticketingOpenDateTime: string;
@@ -34,13 +34,7 @@ const RowStack = ({ title, items, url }: Props) => {
       >
         <Stack direction="row" spacing={2}>
           {items.map(item => {
-            return (
-              <StackItem
-                key={Number(item.id)}
-                item={item}
-                length={items.length}
-              />
-            );
+            return <StackItem item={item} key={item.id.value} />;
           })}
         </Stack>
       </Box>
