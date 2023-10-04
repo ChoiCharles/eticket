@@ -6,6 +6,7 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material';
+import useMovePage from 'hooks/useMovePage';
 
 type Item = {
   id: { value: number };
@@ -21,10 +22,13 @@ interface Props {
 
 const StackItem = ({ item }: Props) => {
   const itemLength = item.performanceScheduleList.length;
+  const { movePage } = useMovePage();
 
   return (
     <Card sx={{ minWidth: '150px' }} elevation={0}>
-      <CardActionArea>
+      <CardActionArea
+        onClick={() => movePage(`/concert/${item.id.value}`, null)}
+      >
         <CardMedia
           sx={{ width: '100%', borderRadius: 1 }}
           component="img"
