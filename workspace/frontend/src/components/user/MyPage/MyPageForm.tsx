@@ -2,6 +2,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+import './MyPage.scss';
 import React, { useState, useEffect } from 'react';
 import copyText from 'assets/CopyText.png';
 import NFTCard from 'components/common/NFTCard/NFTCard';
@@ -17,7 +18,7 @@ function MyPage() {
   // const { metadata, connectIPFS } = useMetaData()
   const { connectIPFS } = useMetaData();
   const [myAccount, setMyAccount] = useState('');
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState()
   const [userNickName, setUserNickName] = useState('닉네임');
   const [userName, setUserName] = useState('');
   const [myTicketData, setMyTicketData] = useState([]);
@@ -36,25 +37,23 @@ function MyPage() {
   };
 
   const getUserData = async () => {
-    const token = localStorage.getItem('accesstoken');
-
+    const token = localStorage.getItem('accesstoken')
+    
     if (token === null) {
-      movePage(`/login`, null);
+      movePage(`/login`, null)
     } else {
-      setUserId(JSON.parse(atob(token.split('.')[1])).sub);
+      setUserId(JSON.parse(atob(token.split('.')[1]))['sub'])
       try {
-        const userDataResponse = await instance.get(
-          `/api/users/${JSON.parse(atob(token.split('.')[1])).sub}`,
-        );
+        const userDataResponse = await instance.get(`/api/users/${JSON.parse(atob(token.split('.')[1]))['sub']}`)
         if (userDataResponse.status === 200) {
-          setUserNickName(userDataResponse.data.nickname);
-          setUserName(userDataResponse.data.username);
+          setUserNickName(userDataResponse.data.nickname)
+          setUserName(userDataResponse.data.username)
           if (userDataResponse.data.walletAddress) {
-            setMyAccount(userDataResponse.data.walletAddress);
+            setMyAccount(userDataResponse.data.walletAddress)
           }
         }
       } catch (error) {
-        console.log('유저 정보 호출 에러', error);
+        console.log('유저 정보 호출 에러', error)
       }
 
       try {
@@ -63,37 +62,36 @@ function MyPage() {
         if (response.status === 200) {
           setMyTicketData(response.data)
         } else {
-          alert('예매 목록을 불러오는데 실패했습니다');
+          alert('예매 목록을 불러오는데 실패했습니다')
         }
       } catch (error) {
-        console.log('예매 정보 호출 에러', error);
+        console.log('예매 정보 호출 에러', error)
       }
-    }
-  };
 
-  const personalSign = async () => {
+    }
+  }
+
+  const personal_sign = async () => {
     loginMetaMask();
-    if (account !== '') {
-      console.log(account);
+    if (account != '') {
+
+      console.log(account)
       const personalSignResult = await window.ethereum.request({
-        method: 'personal_sign',
-        params: [
+        "method": "personal_sign",
+        "params": [
           `I agree to register blockchain account "${account}" to Eticket account "${userName}".`,
-          account,
-        ],
+          account
+        ]
       });
       const personalSignData = {
-        personalSign: personalSignResult,
-        walletAddress: account,
-      };
-
-      const personalSignVerify = await instance.post(
-        `/api/users/${userId}/register-wallet`,
-        personalSignData,
-      );
-      setMyAccount(personalSignVerify.data.walletAddress);
+          "personalSign": personalSignResult, 
+          "walletAddress": account
+      }
+  
+      const personalSignVerify = await instance.post(`/api/users/${userId}/register-wallet`, personalSignData)
+      setMyAccount(personalSignVerify.data.walletAddress)
     }
-  };
+  }
 
   useEffect(() => {
     connectIPFS();
@@ -155,10 +153,12 @@ function MyPage() {
       <div className="my-info">
         <h3 className="nickName">{userNickName}</h3>
         {myAccount === '' ? (
-          <button className="edit-info" onClick={() => personalSign()}>
+          <button className="edit-info" onClick={() => personal_sign()}>
             <h3 className="edit-info-text">메타마스크 연결</h3>
           </button>
-        ) : null}
+        )
+        : <></>
+      }
       </div>
       {myAccount === '' ? (
         <div className="wallet">
