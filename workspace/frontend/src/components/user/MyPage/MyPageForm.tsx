@@ -56,6 +56,9 @@ function MyPage() {
         if (userDataResponse.status === 200) {
           setUserNickName(userDataResponse.data.nickname)
           setUserName(userDataResponse.data.username)
+          if (userDataResponse.data.walletAddress) {
+            setMyAccount(userDataResponse.data.walletAddress)
+          }
         }
       } catch (error) {
         console.log('유저 정보 호출 에러', error)
@@ -79,30 +82,30 @@ function MyPage() {
 
   const personal_sign = async () => {
     loginMetaMask();
-    const personalSignResult = await window.ethereum.request({
-      "method": "personal_sign",
-      "params": [
-        `I agree to register blockchain account "${account}" to Eticket account "${userName}".`,
-        account
-      ]
-    });
-    const personalSignData = {
-        "personalSign": personalSignResult, 
-        "walletAddress": account
-    }
+    if (account != '') {
 
-    const personalSignVerify = await instance.post(`/api/users/${userId}/register-wallet`, personalSignData)
-    console.log(personalSignVerify)
+      console.log(account)
+      const personalSignResult = await window.ethereum.request({
+        "method": "personal_sign",
+        "params": [
+          `I agree to register blockchain account "${account}" to Eticket account "${userName}".`,
+          account
+        ]
+      });
+      const personalSignData = {
+          "personalSign": personalSignResult, 
+          "walletAddress": account
+      }
+  
+      const personalSignVerify = await instance.post(`/api/users/${userId}/register-wallet`, personalSignData)
+      setMyAccount(personalSignVerify.data.walletAddress)
+    }
   }
 
   useEffect(() => {
     connectIPFS();
     getUserData();
   }, []);
-
-  useEffect(() => {
-    setMyAccount(account);
-  }, [account]);
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const MyTicket = () => {
@@ -154,9 +157,13 @@ function MyPage() {
     <div className="container">
       <div className="my-info">
         <h3 className="nickName">{userNickName}</h3>
-        <button className="edit-info" onClick={() => personal_sign()}>
-          <h3 className="edit-info-text">메타마스크 연결</h3>
-        </button>
+        {myAccount === '' ? (
+          <button className="edit-info" onClick={() => personal_sign()}>
+            <h3 className="edit-info-text">메타마스크 연결</h3>
+          </button>
+        )
+        : <></>
+      }
       </div>
       {myAccount === '' ? (
         <div className="wallet">
