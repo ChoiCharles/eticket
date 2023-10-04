@@ -6,14 +6,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.Section;
+import org.oao.eticket.application.port.in.CheckTicketingPermissionUseCase;
 import org.oao.eticket.application.port.in.GetSectionsUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
-import org.oao.eticket.exception.ConcertHallNotFoundException;
-import org.oao.eticket.exception.PerformanceNotFoundException;
-import org.oao.eticket.exception.SeatClassNotFoundException;
-import org.oao.eticket.exception.SectionNotFoundException;
+import org.oao.eticket.exception.*;
+import org.oao.eticket.infrastructure.security.EticketUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -27,6 +27,7 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
   record GetSectionsResponseBody(List<Section> sectionList) {}
 
   private final GetSectionsUseCase getSectionsUseCase;
+  private final CheckTicketingPermissionUseCase checkTicketingPermissionUseCase;
 
   @Operation(
       summary = "특정 공연 회차에 대한 공연장 구역 리스트 제공",
@@ -53,10 +54,19 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
   @GetMapping("/api/schedules/{performanceScheduleId}/sections")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<GetSectionsResponseBody> getSections(
-      @PathVariable("performanceScheduleId") Integer performancesScheduledId) {
+          @PathVariable("performanceScheduleId") Integer performancesScheduledId, final Authentication authentication) {
     try {
       // redis에 들러서 대기열에서 나온 유저인지 확인
+      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
+        throw ApiException.builder()
+                .withStatus(HttpStatus.UNAUTHORIZED)
+                .withMessage("Unknown credentials is used.")
+                .build();
+      }
 
+      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(userDetails.getId().getValue(), performancesScheduledId))) {
+        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
+      }
       // use case릁 통해 MySql에서 특정 공연의 상세 정보 가져 오기
       final var sections = getSectionsUseCase.getSections(performancesScheduledId);
 
@@ -79,6 +89,12 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
           .withCause(e)
           .withMessage(e.getMessage())
           .build();
+    } catch (UserNotFoundException e) { // Section에 SeatClass 등록을 안함
+      throw ApiException.builder()
+              .withStatus(HttpStatus.UNAUTHORIZED)
+              .withCause(e)
+              .withMessage(e.getMessage() + "이 유저는 대기열을 거치지 않았습니다.")
+              .build();
     } catch (Exception e) {
       e.printStackTrace();
       throw ApiException.builder()
