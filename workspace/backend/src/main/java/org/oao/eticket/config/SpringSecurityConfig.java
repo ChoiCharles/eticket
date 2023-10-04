@@ -145,7 +145,7 @@ class SpringSecurityConfig {
                         "/api/membership/join",
                         "/api/auth/signin",
                         "/api/performances/*",
-                        "/api/schedules/**")
+                        "/api/test")
                     .permitAll()
                     .requestMatchers("/**")
                     .authenticated()
