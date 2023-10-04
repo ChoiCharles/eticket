@@ -12,30 +12,24 @@ import org.oao.eticket.adapter.out.persistence.repository.SeatRepository;
 import org.oao.eticket.adapter.out.persistence.repository.SectionAndSeatClassRelationRepository;
 import org.oao.eticket.adapter.out.persistence.repository.SectionRepository;
 import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
-import org.oao.eticket.application.domain.model.Section;
 import org.oao.eticket.application.port.out.LoadPerformanceScheduleSeatTablePort;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.ConcertHallNotFoundException;
 import org.oao.eticket.exception.NoResultException;
-import org.oao.eticket.exception.SeatClassNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class SaveVacanciesToRedisPersistenceAdapter
+public class LoadPerformanceScheduleSeatTablePersistenceAdapter
     implements LoadPerformanceScheduleSeatTablePort {
   // repository
   private final PerformanceScheduleRepository performanceScheduleRepository;
   private final SectionRepository sectionRepository;
   private final SeatRepository seatRepository;
-  private final SectionAndSeatClassRelationRepository sectionAndSeatClassRelationRepository;
   // mapper
-  private final ConcertHallMapper concertHallMapper;
   private final SeatMapper seatMapper;
-  private final SectionMapper sectionMapper;
-  private final SeatClassMapper seatClassMapper;
 
   @Override
   public List<PerformanceScheduleSeatTable> loadSeatTable() { // 공연 예매가 오픈 되는 공연 스케줄의 좌석 테이블을 생성
@@ -69,10 +63,8 @@ public class SaveVacanciesToRedisPersistenceAdapter
           // PerformanceSchedule Seat Table
           PerformanceScheduleSeatTable performanceScheduleSeatTable =
               PerformanceScheduleSeatTable.builder()
-                  .performanceScheduleId(
-                      PerformanceScheduleSeatTable.PerformanceScheduleId.of(
-                          scheduleJpaEntity.getId()))
-                  .sectionId(PerformanceScheduleSeatTable.SectionId.of(sectionJpaEntity.getId()))
+                  .performanceScheduleId(scheduleJpaEntity.getId())
+                  .sectionId(sectionJpaEntity.getId())
                   .seats(seats)
                   .build();
           // 만든 하나의 구역을 리스트에 추가

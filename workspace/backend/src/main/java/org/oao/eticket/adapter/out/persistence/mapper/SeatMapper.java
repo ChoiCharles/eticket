@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.oao.eticket.adapter.out.persistence.entity.SeatJpaEntity;
 import org.oao.eticket.application.domain.model.Seat;
+import org.oao.eticket.application.domain.model.SeatStatus;
 
 import java.util.List;
 
