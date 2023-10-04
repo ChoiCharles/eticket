@@ -19,7 +19,7 @@ const useAccount = () => {
           method: 'wallet_addEthereumChain',
           params: [
             {
-              chainId: Web3.utils.toHex(parseInt(chainId)),
+              chainId: Web3.utils.toHex(parseInt(chainId, 10)),
               chainName: 'Awesome chain',
               rpcUrls: ['https://j9c203.p.ssafy.io/services/blockchain/rpc'],
               iconUrls: [

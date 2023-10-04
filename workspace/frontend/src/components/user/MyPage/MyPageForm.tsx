@@ -2,15 +2,16 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import './MyPage.scss';
 import React, { useState, useEffect } from 'react';
 import copyText from 'assets/CopyText.png';
-import dummyConcerts from 'dummys.ts';
 import NFTCard from 'components/common/NFTCard/NFTCard';
 import useAccount from 'hooks/useAccount';
-import { useMetaData } from 'hooks/useMetaData';
+import useMetaData from 'hooks/useMetaData';
 import instance from 'apis/utils/instance';
 import useMovePage from 'hooks/useMovePage';
+
+import dummyConcerts from 'dummys.ts';
+import './MyPage.scss';
 
 interface ConcertListItem {
   id: number;
@@ -50,10 +51,10 @@ function MyPage() {
     if (token === null) {
       movePage(`/login`, null);
     } else {
-      setUserId(JSON.parse(atob(token.split('.')[1]))['sub']);
+      setUserId(JSON.parse(atob(token.split('.')[1])).sub);
       try {
         const userDataResponse = await instance.get(
-          `/api/users/${JSON.parse(atob(token.split('.')[1]))['sub']}`,
+          `/api/users/${JSON.parse(atob(token.split('.')[1])).sub}`,
         );
         if (userDataResponse.status === 200) {
           setUserNickName(userDataResponse.data.nickname);
@@ -68,7 +69,7 @@ function MyPage() {
 
       try {
         const response = await instance.get(
-          `/api/reservations/${JSON.parse(atob(token.split('.')[1]))['sub']}`,
+          `/api/reservations/${JSON.parse(atob(token.split('.')[1])).sub}`,
         );
 
         if (response.status === 200) {
@@ -83,9 +84,9 @@ function MyPage() {
     }
   };
 
-  const personal_sign = async () => {
+  const personalSign = async () => {
     loginMetaMask();
-    if (account != '') {
+    if (account !== '') {
       console.log(account);
       const personalSignResult = await window.ethereum.request({
         method: 'personal_sign',
@@ -160,12 +161,10 @@ function MyPage() {
       <div className="my-info">
         <h3 className="nickName">{userNickName}</h3>
         {myAccount === '' ? (
-          <button className="edit-info" onClick={() => personal_sign()}>
+          <button className="edit-info" onClick={() => personalSign()}>
             <h3 className="edit-info-text">메타마스크 연결</h3>
           </button>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </div>
       {myAccount === '' ? (
         <div className="wallet">
