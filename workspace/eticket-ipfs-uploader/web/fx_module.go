@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"eticket.org/blockchain-ipfs-uploader/web/controller"
+	apiV0 "eticket.org/blockchain-ipfs-uploader/web/api/v0"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
 )
@@ -16,16 +16,11 @@ func NewGinEngine() *gin.Engine {
 	return ginEngine
 }
 
-func invoke(register interface{}) fx.Option {
-	return fx.Invoke(register)
-}
-
-func NewFxModule() fx.Option {
+func FxModule() fx.Option {
 	return fx.Module(
 		"web.fx",
 
 		fx.Provide(
-			NewClient,
 			NewGinEngine,
 
 			fx.Annotate(
@@ -50,8 +45,9 @@ func NewFxModule() fx.Option {
 			),
 		),
 
-		invoke(func(serv *http.Server) {}),
-		invoke(controller.RegisterZipUploadController),
-		invoke(controller.RegisterJsonUploadController),
+		fx.Invoke(func(serv *http.Server) {}),
+		fx.Invoke(apiV0.RegisterUploadJsonApi),
+		fx.Invoke(apiV0.RegisterUploadZipApi),
+		fx.Invoke(apiV0.RegisterUploadApi),
 	)
 }

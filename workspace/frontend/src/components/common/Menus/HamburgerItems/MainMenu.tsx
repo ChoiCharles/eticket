@@ -16,7 +16,7 @@ interface Props {
 const MainMenu = ({ handleToggleDrawer }: Props) => {
   const menus = [
     { name: '공연 랭킹', url: '/concert' },
-    { name: '💥예매 임박💥', url: '/soon' },
+    { name: '💥예매 임박💥', url: '/upcoming' },
   ];
 
   const { movePage } = useMovePage();
