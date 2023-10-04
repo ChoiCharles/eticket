@@ -1,21 +1,22 @@
 import React from 'react';
 import { Card, CardActionArea, CardMedia, Typography } from '@mui/material';
-
-type Item = {
-  id: number;
-  image: string;
-  title: string;
-  location: string;
-  date: string;
-  index: number;
-  total: number;
-};
+import useMovePage from 'hooks/useMovePage';
 
 interface Props {
-  item: Item;
+  item: {
+    id: { value: number };
+    performanceScheduleList: string[];
+    posterImagePath: string;
+    ticketingOpenDateTime: string;
+    title: string;
+    index: number;
+    length: number;
+  };
 }
 
 const CarouselItem = ({ item }: Props) => {
+  const { movePage } = useMovePage();
+
   return (
     <Card
       sx={{
@@ -45,12 +46,14 @@ const CarouselItem = ({ item }: Props) => {
           color: 'white',
           borderRadius: 5,
         }}
-      >{`${item.index + 1} / ${item.total}`}</Typography>
-      <CardActionArea>
+      >{`${item.index + 1} / ${item.length}`}</Typography>
+      <CardActionArea
+        onClick={() => movePage(`/concert/${item.id.value}`, null)}
+      >
         <CardMedia
           sx={{ borderRadius: 1 }}
           component="img"
-          image={item.image}
+          image={item.posterImagePath}
           alt="img"
         />
       </CardActionArea>
