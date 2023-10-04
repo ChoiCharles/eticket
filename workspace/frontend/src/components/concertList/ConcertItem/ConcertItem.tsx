@@ -42,7 +42,7 @@ function ConcertItem({ concertInfo }: { concertInfo: ConcertListItem }) {
           </div>
         </div>
         <div className="concert-right-box">
-          <div className="concert-tag">단독 공연</div>
+          {/* <div className="concert-tag">단독 공연</div> */}
           <div className="concert-title">{concertInfo.title}</div>
           <div className="concert-location-text">{concertInfo.location}</div>
           <div className="concert-date">{concertInfo.date}</div>

@@ -1,12 +1,12 @@
 .seat-container {
   width: 300px;
   position: absolute;
-  bottom: 0;
+  // bottom: 0;
   display: flex;
   flex-wrap: wrap;
   // margin-right: 13px;
   justify-content: center;
-  margin-bottom: 50px;
+  margin-top: 50px;
 }
 .seat-outer-box {
   display: flex;

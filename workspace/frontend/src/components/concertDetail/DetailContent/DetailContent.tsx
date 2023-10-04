@@ -36,9 +36,6 @@ export default function DetailContent({ info }: { info: string }) {
     setValue(newValue);
   };
 
-  // const defaultImg =
-  //   'https://ticketimage.interpark.com/Play/ITM/Data/Modify/2023/7/2023071116224408.jpg';
-
   return (
     <Box
       sx={{
