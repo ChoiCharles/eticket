@@ -34,6 +34,8 @@ public class PerformanceJpaEntity {
 
   @Column private String posterImagePath;
 
+  @Column private String detailImagePath;
+
   @Column private Integer runningTime;
 
   @Column @NotBlank private LocalDateTime ticketingOpenDateTime;
@@ -60,6 +62,7 @@ public class PerformanceJpaEntity {
       String cast,
       String description,
       String posterImagePath,
+      String detailImagePath,
       Integer runningTime,
       LocalDateTime ticketingOpenDateTime,
       ConcertHallJpaEntity concertHallJpaEntity,
@@ -72,6 +75,7 @@ public class PerformanceJpaEntity {
     this.cast = cast;
     this.description = description;
     this.posterImagePath = posterImagePath;
+    this.detailImagePath = detailImagePath;
     this.runningTime = runningTime;
     this.ticketingOpenDateTime = ticketingOpenDateTime;
     this.concertHallJpaEntity = concertHallJpaEntity;

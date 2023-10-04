@@ -15,6 +15,7 @@ public class Performance {
   String cast;
   String description;
   String posterImagePath;
+  String detailImagePath;
   Integer runningTime;
   LocalDateTime ticketingOpenDateTime;
   ConcertHall concertHall;
