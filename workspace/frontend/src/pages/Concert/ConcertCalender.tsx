@@ -11,15 +11,15 @@ import { useParams } from 'react-router-dom';
  * 4. 예정되어있는 해당 공연 날짜들 => Calender
  */
 function ConcertCalender() {
-  const { performanceScheduleId } = useParams();
-  // const ID = parseInt()
-  console.log(performanceScheduleId);
+  const { performanceScheduleId = 0 } = useParams();
+  const ID = parseInt(String(performanceScheduleId), 10) - 1;
+  console.log(ID);
   if (performanceScheduleId) {
     return (
       <div>
         <BackNavBar title="" />
-        <ConcertInfo idx={performanceScheduleId} />
-        <Calender />
+        <ConcertInfo idx={ID} />
+        <Calender idx={ID} />
       </div>
     );
   }
