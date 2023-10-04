@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './Calender.scss';
 import 'react-calendar/dist/Calendar.css';
+import './Calender.scss';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import { Button } from '@mui/material';
@@ -50,9 +50,10 @@ function Calender() {
           next2Label={null}
           prev2Label={null}
           calendarType="hebrew"
-          selectRange={false}
+          // selectRange={false}
           showNeighboringMonth={false}
           tileDisabled={isDateDisabled}
+          formatDay={(_locale, date) => moment(date).format('DD')}
         />
       </div>
       <div className="selected-date">

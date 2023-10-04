@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './ConcertInfo.scss';
 import dummyConcerts from 'dummys';
+import instance from 'apis/utils/instance';
 /**
  * @params 사진, 공연장, 시간,
  *
  */
 function ConcertInfo({ idx }: { idx: string }) {
+  useEffect(() => {
+    Promise.all([instance.get('/api/performances/hot')])
+      .then(([hotRes]) => {
+        console.log('Hot Performances:', hotRes);
+      })
+      .catch(error => console.error('Error:', error));
+  }, []);
   const index = parseInt(idx, 10);
   return (
     <div className="ConcertInfo-outer-box">
