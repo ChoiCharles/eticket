@@ -34,14 +34,10 @@ function Calender({ idx }: Props) {
   // console.log(data?.performanceScheduleList);
   const startDate = data?.performanceScheduleList[0];
   const endDate = data?.performanceScheduleList[1];
-  const startMoment = moment(startDate);
-  const endMoment = moment(endDate);
-  const dayList: string[] = [];
-  const currentMoment = startMoment.clone();
-  while (currentMoment.isSameOrBefore(endMoment)) {
-    dayList.push(currentMoment.format('YYYY-MM-DD'));
-    currentMoment.add(1, 'day');
-  }
+  // const startMoment = moment(startDate);
+  // const endMoment = moment(endDate);
+  const dayList = [startDate, endDate];
+
   const { movePage } = useMovePage();
   const { performanceScheduleId } = useParams();
   const [today, setToday] = useState(new Date());
