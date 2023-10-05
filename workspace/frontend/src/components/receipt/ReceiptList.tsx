@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
-import items from 'dummys';
 import instance from 'apis/utils/instance';
 import ReceiptListItem from './ReceiptListItem';
 
 const ReceiptList = () => {
+  const [mytickets, setMyTickets] = useState<any>([])
+
   const getMyTickets = async () => {
     try {
       const token = localStorage.getItem('accesstoken');
@@ -13,7 +14,7 @@ const ReceiptList = () => {
 
         const response = await instance.get(`/api/reservations/${userId}`);
         console.log(response);
-        // setMyTickets(response)
+        setMyTickets(response.data)
       }
     } catch (error) {
       console.error(error);
@@ -26,7 +27,7 @@ const ReceiptList = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', px: 1 }}>
-      {items.map(item => {
+      {mytickets.map((item: any) => {
         return <ReceiptListItem item={item} />;
       })}
     </Box>
