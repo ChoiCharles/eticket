@@ -5,10 +5,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.oao.eticket.application.domain.model.Vacancy;
+import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
+import org.oao.eticket.application.domain.model.Seat;
 import org.oao.eticket.application.port.in.dto.PreemptVacancyCommand;
 import org.oao.eticket.application.port.in.PreemptVacancyUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
+import org.oao.eticket.exception.PreemptVacancyFailureException;
+import org.oao.eticket.exception.UnexpectedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +21,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @WebAdapter
 @RequiredArgsConstructor
 public class PreemptVacancyController {
-  record PreemptVacancyResponseBody(Boolean isSuccess) {}
+  record PreemptVacancyResponseBody(Seat seat) {}
 
-  private PreemptVacancyUseCase preemptVacancyUseCase;
+  private final PreemptVacancyUseCase preemptVacancyUseCase;
 
   @Operation(
       summary = "특정 좌석을 클릭 하여 좌석에 대한 좌석 선점 요청",
@@ -44,16 +47,27 @@ public class PreemptVacancyController {
             description = "CONFLICT. (사용자가 선택한 좌석이 이미 다른 사용자에 의해 선점된 좌석 입니다.)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
-  @PostMapping("/api/schedules/{performanceScheduleId}/sections/{section}/seats/{seatId}")
+  @PostMapping("/api/schedules/{performanceScheduleId}/sections/{sectionId}/seats/{seatId}")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<PreemptVacancyResponseBody> preemptVacancy(
       @PathVariable Integer performanceScheduleId,
       @PathVariable Integer sectionId,
       @PathVariable Integer seatId) {
     try {
-      // 권한 체크
+      // TODO: redis에 들러서 대기열에서 나온 유저인지 확인
+//      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
+//        throw ApiException.builder()
+//            .withStatus(HttpStatus.UNAUTHORIZED)
+//            .withMessage("Unknown credentials is used.")
+//            .build();
+//      }
+//
+//      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
+//          userDetails.getId().getValue(), performancesScheduledId))) {
+//        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
+//      }
 
-      //
+      // 좌석 선점 요청
       final var preemptVacancyCommand =
           PreemptVacancyCommand.builder()
               .performanceScheduleId(performanceScheduleId)
@@ -61,7 +75,20 @@ public class PreemptVacancyController {
               .seatId(seatId)
               .build();
       final var result = preemptVacancyUseCase.preemptVacancy(preemptVacancyCommand);
+      System.out.println(result);
       return ResponseEntity.ok(new PreemptVacancyResponseBody(result));
+    } catch (PreemptVacancyFailureException e) { // performance Schedule ID나 Section ID 잘못 됨.
+      throw ApiException.builder()
+          .withStatus(HttpStatus.CONFLICT)
+          .withCause(e)
+          .withMessage(e.getMessage() + "번 좌석은 이미 선점된 좌석입니다.")
+          .build();
+    } catch (UnexpectedException e) { // performance Schedule ID나 Section ID 잘못 됨.
+      throw ApiException.builder()
+          .withStatus(HttpStatus.BAD_REQUEST)
+          .withCause(e)
+          .withMessage(e.getMessage())
+          .build();
     } catch (Exception e) {
       // 409
       throw e;

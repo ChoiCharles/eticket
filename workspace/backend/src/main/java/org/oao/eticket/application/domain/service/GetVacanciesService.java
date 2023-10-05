@@ -23,6 +23,6 @@ public class GetVacanciesService implements GetVacanciesUseCase {
             .performanceScheduleId(cmd.getPerformanceScheduleId())
             .sectionId(cmd.getSectionId())
             .build();
-    return loadVacanciesRedisPort.getSeatTable(loadVacanciesFromRedisCommand);
+    return loadVacanciesRedisPort.getSectionSeats(loadVacanciesFromRedisCommand);
   }
 }

@@ -4,5 +4,5 @@ import org.oao.eticket.application.domain.model.Reservation;
 import org.oao.eticket.application.port.in.dto.CancelMyReservationCommand;
 
 public interface CancelMyReservationPort {
-    Reservation cancelMyReservation(CancelMyReservationCommand command);
+  Reservation cancelMyReservation(CancelMyReservationCommand command);
 }

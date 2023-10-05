@@ -6,15 +6,12 @@ networks:
 
 services:
   eticket_backend_waiting:
+    env_file:
+      - ../env/eticket-dev-datasource.env
     build: ../../workspace/backend-waiting/Dockerfile/
     container_name: eticket_backend_waiting
     image: eticket/backend-waiting
     restart: on-failure
-    environment:
-      ETICKET.REDIS.WAITING.HOST: eticket_redis
-      ETICKET.REDIS.WAITING.PORT: 6379
-      ETICKET.REDIS.WAITING.DATABASE: 4
-      ETICKET.REDIS.TICKETING.DATABASE: 5
     networks:
       - eticket_net
     ports:

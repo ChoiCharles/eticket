@@ -20,7 +20,9 @@ public class LoadMyTicketsPersistenceAdapter implements LoadMyTicketsPort {
 
   @Override
   public List<Reservation> findMyTickets(Integer userId) {
-    return reservationRepository.findTicketByUserId(userId, LocalDateTime.now(), TicketStatus.SOLDOUT).stream()
+    return reservationRepository
+        .findTicketByUserId(userId, LocalDateTime.now(), TicketStatus.SOLDOUT)
+        .stream()
         .map(reservationMapper::mapToDomainEntity)
         .toList();
   }

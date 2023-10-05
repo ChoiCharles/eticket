@@ -15,7 +15,6 @@ import org.oao.eticket.application.port.out.LoadUserPort;
 import org.oao.eticket.application.port.out.dto.UpdateUserWalletAddressCommand;
 import org.oao.eticket.common.annotation.PersistenceAdapter;
 import org.oao.eticket.exception.*;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 import org.web3j.utils.Numeric;
 
@@ -42,7 +41,7 @@ class UserRepository implements CreateUserPort, LoadUserPort, UpdateUserWalletAd
   }
 
   @Override
-  public User loadById(final User.UserId id) {
+  public User loadById(final User.UserID id) {
     try {
       final var user =
           entityManager
@@ -121,7 +120,7 @@ class UserRepository implements CreateUserPort, LoadUserPort, UpdateUserWalletAd
                       UPDATE UserJpaEntity u
                          SET u.walletAddress=:address
                        WHERE u.id=:userId""")
-              .setParameter("userId", cmd.getTargetUserId().getValue())
+              .setParameter("userId", cmd.getTargetUserID().getValue())
               .setParameter("address", cmd.getNewBlockChainWallet().getAddress())
               .executeUpdate();
       return 0 < numAffectedRows;

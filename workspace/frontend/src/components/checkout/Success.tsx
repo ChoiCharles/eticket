@@ -3,19 +3,42 @@ import useMovePage from 'hooks/useMovePage';
 import { Box, Button, Typography } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import instance from 'apis/utils/instance';
+import useUserId from 'hooks/useUserId';
+import { useLocation, useParams } from 'react-router-dom';
 
 const Success = () => {
   const { movePage } = useMovePage();
+  const userId = useUserId();
+  const { successPerformanceScheduleId, selectedSeatId } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const paymentAmount = Number(searchParams.get('price'));
+
+  const deleteTicketing = async () => {
+    try {
+      await instance.delete('/api/ticketing', {
+        data: {
+          userId,
+          performanceScheduleId: successPerformanceScheduleId,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  console.log(successPerformanceScheduleId);
+  console.log(selectedSeatId);
 
   const handleReserveBtnClick = async () => {
-    const requestBody = {
-      performanceScheduleId: 2,
-      seatId: 1,
-      paymentAmount: 0,
-    };
     try {
-      const response = await instance.post('/api/reservations', requestBody);
-      console.log(response);
+      await instance
+        .post('/api/reservations', {
+          performanceScheduleId: successPerformanceScheduleId,
+          seatId: selectedSeatId,
+          paymentAmount,
+        })
+        .then(() => deleteTicketing())
+        .catch(error => console.error(error));
       movePage('/my', null);
     } catch (error) {
       console.error(error);

@@ -41,7 +41,7 @@ public class RegisterWalletService implements RegisterWalletUseCase {
     }
 
     final String message =
-            String.format(MESSAGE_TEMPLATE, cmd.getWalletAddress(), user.getUsername());
+        String.format(MESSAGE_TEMPLATE, cmd.getWalletAddress(), user.getUsername());
     final String messageInHex = Numeric.toHexString(message.getBytes(StandardCharsets.UTF_8));
 
     final String recoveredAddress =

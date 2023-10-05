@@ -25,8 +25,11 @@ public class LoadMyReservationsController {
     if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
       throw new RuntimeException("out");
     }
-    if (!(User.UserId.of(userId).equals(userDetails.getId()))) {
-      throw ApiException.builder().withStatus(HttpStatus.FORBIDDEN).withMessage("Invalid Permission").build();
+    if (!(User.UserID.of(userId).equals(userDetails.getId()))) {
+      throw ApiException.builder()
+          .withStatus(HttpStatus.FORBIDDEN)
+          .withMessage("Invalid Permission")
+          .build();
     }
 
     List<Reservation> reservations = loadMyReservationsUseCase.loadMyReservations(userId);

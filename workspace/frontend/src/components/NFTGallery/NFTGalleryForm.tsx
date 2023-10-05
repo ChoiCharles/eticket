@@ -10,6 +10,7 @@ import {
 import CancelIcon from '@mui/icons-material/Cancel';
 import SearchIcon from '@mui/icons-material/Search';
 import NFTCard from 'components/common/NFTCard/NFTCard';
+import NavBar from 'components/common/NavBar/NavBar'
 
 function NFTGalleryForm() {
   const [keyword, setKeyword] = useState('');
@@ -26,6 +27,7 @@ function NFTGalleryForm() {
 
   return (
     <div className="container">
+      <NavBar/>
       <h1>GALLERY</h1>
       <Toolbar>
         <Box

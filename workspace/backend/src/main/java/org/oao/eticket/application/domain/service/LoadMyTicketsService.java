@@ -12,10 +12,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoadMyTicketsService implements LoadMyTicketsUseCase {
 
-    private final LoadMyTicketsPort loadMyTicketsPort;
+  private final LoadMyTicketsPort loadMyTicketsPort;
 
-    @Override
-    public List<Reservation> loadMyTickets(Integer userId) {
-        return loadMyTicketsPort.findMyTickets(userId);
-    }
+  @Override
+  public List<Reservation> loadMyTickets(Integer userId) {
+    return loadMyTicketsPort.findMyTickets(userId);
+  }
 }

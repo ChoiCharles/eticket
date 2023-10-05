@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface LoadMyTicketsPort {
 
-    List<Reservation> findMyTickets(Integer userId);
+  List<Reservation> findMyTickets(Integer userId);
 }

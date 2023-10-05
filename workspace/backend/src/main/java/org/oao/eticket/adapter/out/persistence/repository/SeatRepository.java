@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface SeatRepository extends JpaRepository<SeatJpaEntity, Integer> {
-    Optional<List<SeatJpaEntity>> findAllBySectionJpaEntity(SectionJpaEntity sectionJpaEntity);
+  Optional<List<SeatJpaEntity>> findAllBySectionJpaEntity(SectionJpaEntity sectionJpaEntity);
 }

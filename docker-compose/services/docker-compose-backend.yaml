@@ -8,10 +8,6 @@ services:
   eticket_backend:
     env_file:
       - ../env/eticket-dev-datasource.env
-    environment:
-      ETICKET.REDIS.AUTH.HOST: eticket_redis
-      ETICKET.REDIS.AUTH.PORT: 6379
-      ETICKET.REDIS.AUTH.DATABASE: 1
     build: ../../workspace/backend/Dockerfile/
     container_name: eticket_backend
     image: eticket/backend

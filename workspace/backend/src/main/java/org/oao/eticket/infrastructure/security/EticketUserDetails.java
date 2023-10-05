@@ -32,7 +32,7 @@ public class EticketUserDetails implements UserDetails {
     return wrappedUser;
   }
 
-  public User.UserId getId() {
+  public User.UserID getId() {
     return wrappedUser.getId();
   }
 

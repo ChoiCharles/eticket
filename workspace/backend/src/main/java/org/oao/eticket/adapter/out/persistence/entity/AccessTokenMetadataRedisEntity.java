@@ -12,6 +12,6 @@ import org.oao.eticket.application.domain.model.User;
 @AllArgsConstructor
 public class AccessTokenMetadataRedisEntity {
 
-  private User.UserId ownerId;
+  private User.UserID ownerId;
   private String signature;
 }

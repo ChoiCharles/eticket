@@ -5,5 +5,5 @@ import org.oao.eticket.application.port.in.dto.UserDto;
 
 public interface GetUserDetailsUseCase {
 
-  UserDto getByUserId(final User.UserId userId);
+  UserDto getByUserId(final User.UserID userId);
 }

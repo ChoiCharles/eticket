@@ -20,7 +20,8 @@ public interface ReservationRepository extends JpaRepository<ReservationJpaEntit
       """
               select r from ReservationJpaEntity r
               where r.userJpaEntity.id = ?1 and r.performanceScheduleJpaEntity.startDateTime > ?2 and r.ticketStatus =?3""")
-  List<ReservationJpaEntity>
-      findTicketByUserId(
-          @NonNull Integer id, @NonNull LocalDateTime startDateTime, @NonNull TicketStatus ticketStatus);
+  List<ReservationJpaEntity> findTicketByUserId(
+      @NonNull Integer id,
+      @NonNull LocalDateTime startDateTime,
+      @NonNull TicketStatus ticketStatus);
 }

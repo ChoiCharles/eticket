@@ -4,11 +4,11 @@ import lombok.Value;
 
 @Value
 public class UserDto {
-    int id;
-    String username;
-    String nickname;
-    String password;
-    String email;
-    byte[] walletAddress;
-    String role;
+  int id;
+  String username;
+  String nickname;
+  String password;
+  String email;
+  byte[] walletAddress;
+  String role;
 }

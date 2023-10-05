@@ -24,7 +24,7 @@ public class JacksonConfig {
 
   private SimpleModule domainEntityDeserializers() {
     return new SimpleModule()
-        .addDeserializer(User.UserId.class, new UserIdDeserializer())
+        .addDeserializer(User.UserID.class, new UserIdDeserializer())
         .addDeserializer(AuthTokenId.class, new AuthTokenDeserializer());
   }
 

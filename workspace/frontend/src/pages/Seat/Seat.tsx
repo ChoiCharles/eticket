@@ -13,8 +13,8 @@ function Seat() {
   const [seatInfo, setSeatInfo] = useState([]);
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
-  const { seatId = 0 } = useParams();
-  const performanceId = parseInt(String(seatId), 10);
+  const { seatPerformanceId = 0 } = useParams();
+  const performanceId = parseInt(String(seatPerformanceId), 10);
 
   const getPerformances = async () => {
     try {
