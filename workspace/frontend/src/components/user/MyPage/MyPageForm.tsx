@@ -94,7 +94,7 @@ function MyPage() {
   }
 
   useEffect(() => {
-    connectIPFS();
+    connectIPFS(myAccount);
     getUserData();
   }, []);
 
