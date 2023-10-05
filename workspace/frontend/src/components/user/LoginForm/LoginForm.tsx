@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LoginForm.scss';
 import { Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ interface loginDataTyoe {
 }
 
 function LoginForm() {
-  const { goBack } = useMovePage();
+  const { movePage } = useMovePage();
   // 이동 로직
   const navigate = useNavigate();
   // 아이디 데이터 상태 선언
@@ -46,12 +46,18 @@ function LoginForm() {
       }); // POST 요청으로 변경
       if (response.status === 200) {
         localStorage.setItem('accesstoken', response.data.accessToken);
-        goBack();
+        movePage('/', null);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('accesstoken')) {
+      movePage('/', null)
+    }
+  }, [])
 
   return (
     <div className="login-box">

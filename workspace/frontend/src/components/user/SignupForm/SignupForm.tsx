@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SignupForm.scss';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -129,6 +129,12 @@ function SignupForm() {
       setUsernameError(true); // 아이디 유효성 오류 설정
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('accesstoken')) {
+      movePage('/', null)
+    }
+  }, [])
 
   return (
     // 회원가입 ERD
