@@ -15,8 +15,8 @@ type ReservationStatus string
 
 const (
 	ReservationStatusCANCEL  ReservationStatus = "CANCEL"
-	ReservationStatusSOLDOUT ReservationStatus = "SOLDOUT"
 	ReservationStatusMINTED  ReservationStatus = "MINTED"
+	ReservationStatusSOLDOUT ReservationStatus = "SOLDOUT"
 )
 
 func (e *ReservationStatus) Scan(src interface{}) error {
@@ -61,9 +61,31 @@ type BlockSyncLog struct {
 	SyncTime    time.Time
 }
 
+type ConcertHall struct {
+	ConcertHallID      int32
+	HallWholeViewImage sql.NullString
+	Name               string
+	SeatCount          int32
+	VenueID            sql.NullInt32
+}
+
 type NftTicket struct {
 	TokenID []byte
 	Owner   []byte
+}
+
+type Performance struct {
+	PerformanceID         int32
+	Cast                  sql.NullString
+	Description           sql.NullString
+	DetailImagePath       string
+	Genre                 string
+	PosterImagePath       sql.NullString
+	RunningTime           int32
+	TicketingOpenDateTime time.Time
+	Title                 string
+	ConcertHallID         int32
+	UserID                int32
 }
 
 type PerformanceSchedule struct {
@@ -74,21 +96,56 @@ type PerformanceSchedule struct {
 
 type Reservation struct {
 	ReservationID         int32
-	CancellationTime      time.Time
-	PaymentAmount         int32
-	ReservationTime       time.Time
-	Status                ReservationStatus
+	UserID                int32
 	PerformanceScheduleID int32
 	SeatID                int32
-	UserID                int32
+	PaymentAmount         int32
+	Status                ReservationStatus
+	ReservationTime       time.Time
+	CancellationTime      sql.NullTime
+}
+
+type Seat struct {
+	SeatID    int32
+	Number    string
+	SeatRow   sql.NullString
+	SectionID int32
+}
+
+type SeatClass struct {
+	SeatClassID   int32
+	PerformanceID int32
+	ClassName     string
+	Price         int32
+}
+
+type Section struct {
+	SectionID        int32
+	Name             string
+	SectionSeatCount int32
+	ConcertHallID    int32
+}
+
+type SectionAndSeatClassRelation struct {
+	SectionAndSeatClassRelationID int32
+	SeatClassID                   int32
+	SectionID                     int32
 }
 
 type User struct {
 	ID            int32
-	Email         string
+	Username      string
 	Nickname      string
 	Password      string
+	Email         string
 	Role          string
-	Username      string
 	WalletAddress sql.NullString
+}
+
+type Venue struct {
+	VenueID   int32
+	Address   string
+	Latitude  string
+	Longitude string
+	Name      string
 }

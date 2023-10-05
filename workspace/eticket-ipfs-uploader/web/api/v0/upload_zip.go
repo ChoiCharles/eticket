@@ -104,19 +104,19 @@ func RegisterUploadZipApi(e *gin.Engine, uploadZipService *service.UploadZipServ
 			return
 		}
 
-		var dirinfo map[string]any
+		var uploadInfo map[string]any
 		files := make([]map[string]any, 0, len(uploads)-1)
 
 		for _, upload := range uploads {
 			if upload["Name"].(string) == dirname {
-				dirinfo = upload
+				uploadInfo = upload
 			} else {
 				upload["Name"] = upload["Name"].(string)[len(dirname)+1:]
 				files = append(files, upload)
 			}
 		}
 
-		dirinfo["items"] = files
-		ctx.JSON(http.StatusCreated, map[string]any{"directory": dirinfo})
+		uploadInfo["Items"] = files
+		ctx.JSON(http.StatusCreated, uploadInfo)
 	})
 }

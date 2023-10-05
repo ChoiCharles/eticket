@@ -38,3 +38,31 @@ WHERE
 UPDATE `reservation`
 SET `status` = 'MINTED'
 WHERE `reservation_id` = ?;
+
+-- name: PerformanceSeats :many
+
+SELECT
+    `seat`.`seat_id`,
+    `seat_class`.`class_name` AS `seat_class`
+FROM
+    `performance_schedule` AS `ps`
+    JOIN `performance` AS `perf` ON `ps`.`performance_id` = `perf`.`performance_id`
+    JOIN `concert_hall` AS `hall` ON `perf`.`concert_hall_id` = `hall`.`concert_hall_id`
+    JOIN `section` AS `section` ON `hall`.`concert_hall_id` = `section`.`concert_hall_id`
+    JOIN `section_and_seat_class_relation` AS `ssr` ON `section`.`section_id` = `ssr`.`section_id`
+    JOIN `seat` AS `seat` ON `ssr`.`section_id` = `seat`.`section_id`
+    JOIN `seat_class` AS `seat_class` ON `ssr`.`seat_class_id` = `seat_class`.`seat_class_id`
+WHERE
+    `ps`.`performance_schedule_id` = ?;
+
+-- name: PerformanceScheduleDetails :one
+
+SELECT
+    `schedule`.`performance_schedule_id`,
+    `perf`.*,
+    `schedule`.`start_date_time`
+FROM
+    `performance_schedule` AS `schedule`
+    JOIN `performance` AS `perf` ON `schedule`.`performance_id` = `perf`.`performance_id`
+WHERE
+    `schedule`.`performance_schedule_id` = ?;

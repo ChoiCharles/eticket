@@ -24,7 +24,7 @@ type Minter struct {
 	queries       *persistence.Queries
 	taskQueue     chan any
 	taskPublisher *taskPublisher
-	mintHelper    *mintHelper
+	mintHelper    *MintHelper
 
 	ctx  context.Context
 	stop func()
@@ -51,23 +51,31 @@ func (m *Minter) startWorker() {
 	for {
 		select {
 		case task := <-m.taskQueue:
-			if mintTicketOpts, ok := task.(*MintTicketOpts); !ok {
+			opts, ok := task.([2]any)
+			if !ok {
 				m.logger.Warn("unknown task is queued. it'll be ignored.")
 				continue
-			} else {
-				newlyMinted, err := m.mintHelper.MintTicket(m.ctx, mintTicketOpts)
-				if err == nil {
-					err = m.queries.MarkAsMinted(m.ctx, mintTicketOpts.ReservationId)
-				}
+			}
 
-				if err == nil {
-					m.logger.Info("ticket minted.",
-						zap.Uint32("performanceScheduleId", mintTicketOpts.PerformanceScheduleId),
-						zap.Uint32("seatId", mintTicketOpts.SeatId),
-						zap.Bool("new", newlyMinted))
-				} else {
-					m.logger.Warn("failed to mint a ticket", zap.Error(err))
-				}
+			mintTicketOpts, mtOk := opts[0].(*MintTicketOpts)
+			schedulePerformanceOpts, spOk := opts[1].(*SchedulePerformanceOpts)
+			if !(mtOk && spOk) {
+				m.logger.Warn("unknown task is queued. it'll be ignored.")
+				continue
+			}
+
+			newlyMinted, err := m.mintHelper.MintTicket(m.ctx, mintTicketOpts, schedulePerformanceOpts)
+			if err == nil {
+				err = m.queries.MarkAsMinted(m.ctx, mintTicketOpts.ReservationId)
+			}
+
+			if err == nil {
+				m.logger.Info("ticket minted.",
+					zap.Uint32("performanceScheduleId", mintTicketOpts.PerformanceScheduleId),
+					zap.Uint32("seatId", mintTicketOpts.SeatId),
+					zap.Bool("new", newlyMinted))
+			} else {
+				m.logger.Warn("failed to mint a ticket", zap.Error(err))
 			}
 
 		case <-m.ctx.Done():
