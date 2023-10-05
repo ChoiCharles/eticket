@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useMovePage from 'hooks/useMovePage';
 import BackNavBar from 'components/common/BackNavBar/BackNavBar';
-import { Box, LinearProgress, Typography, Modal } from '@mui/material';
+import { Box, LinearProgress, Typography } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Client } from '@stomp/stompjs';
 
-import Captcha from 'components/common/Captcha/Captcha';
 import instance from 'apis/utils/instance';
 
 const protocol = /https$/.test(window.location.protocol) ? 'wss' : 'ws';
@@ -16,10 +15,11 @@ const Waiting = () => {
   const [order, setOrder] = useState<number | null>(null);
   const [connected, setConnected] = useState<boolean>(false);
   const [stompClient, setStompClient] = useState<Client | null>(null);
+  console.log(connected);
+  console.log(stompClient);
+
   const { waitingId, dateId } = useParams();
   const { movePage } = useMovePage();
-
-  const [openCaptcha, setOpenCaptcha] = useState<boolean>(true);
 
   const userId = 9;
 
@@ -50,62 +50,43 @@ const Waiting = () => {
   // };
 
   useEffect(() => {
-    if (openCaptcha === false) {
-      postWaiting();
-      const client = new Client({
-        brokerURL: URL,
-        reconnectDelay: 5000,
-        debug: str => console.log(str),
+    postWaiting();
+    const client = new Client({
+      brokerURL: URL,
+      reconnectDelay: 5000,
+      debug: str => console.log(str),
+    });
+
+    client.onConnect = () => {
+      setConnected(true);
+      setStompClient(client);
+
+      client.subscribe(`/sub/userId/${userId}`, response => {
+        const message = JSON.parse(response.body);
+        console.log(message);
+        setOrder(Number(message.order) + 1);
+
+        if (message.myTurn) {
+          movePage(`/seat/${waitingId}/${dateId}`, null);
+        }
       });
+    };
 
-      client.onConnect = () => {
-        setConnected(true);
-        setStompClient(client);
+    client.onDisconnect = () => {
+      setConnected(false);
+      setStompClient(null);
+    };
 
-        client.subscribe(`/sub/userId/${userId}`, response => {
-          const message = JSON.parse(response.body);
-          console.log(message);
-          setOrder(Number(message.order) + 1);
+    client.activate();
 
-          if (message.myTurn) {
-            movePage(`/seat/${waitingId}/${dateId}`, null);
-          }
-        });
-      };
-
-      client.onDisconnect = () => {
-        setConnected(false);
-        setStompClient(null);
-      };
-
-      client.activate();
-
-      return () => {
-        client.deactivate();
-      };
-    }
-  }, [openCaptcha]);
+    return () => {
+      client.deactivate();
+    };
+  }, []);
 
   return (
     <>
       <BackNavBar title="" />
-      <Modal open={openCaptcha}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            width: '70%',
-            transform: 'translate(-50%, -50%)',
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Captcha setOpenCaptcha={setOpenCaptcha} />
-        </Box>
-      </Modal>
       <Box
         sx={{
           mt: '150px',

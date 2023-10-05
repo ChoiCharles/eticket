@@ -21,7 +21,8 @@ const tabContentStyles = {
  *  좌석 레벨 and 좌석 가격
  *  + 상세정보 이미지
  */
-export default function DetailContent({ info }: { info: string }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function DetailContent({ info }: { info: any }) {
   // const { performanceId } = useParams();
   const [value, setValue] = React.useState(0);
   const [showAnswer, setShowAnswer] = useState(Array(4).fill(false)); // 각 질문마다 보이기 여부 배열
@@ -91,7 +92,7 @@ export default function DetailContent({ info }: { info: string }) {
         <div>
           <div className="notice-text">NOTICE</div>
           <div>
-            <ImgDetail descImgUrl={info} />
+            <ImgDetail descImgUrl={info.detailImagePath} />
             <PriceInfo />
           </div>
           {/* 여기에 공연정보 컨텐츠 내용을 추가 */}

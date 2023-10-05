@@ -36,7 +36,7 @@ describe('Eticket', function () {
       .schedulePerformance(scheduledPerformance.id, scheduledPerformance.getTicketExpirationTime(), '', 'special url/');
     await eticket
       .connect(owner)
-      .setTicketCoverUri(scheduledPerformance.id, 'default cover uri');
+      .setTicketDefaultContentBaseUrl(scheduledPerformance.id, 'DEFAULT CONTENT');
 
     await eticket.connect(owner).mintTicket(owner.address, scheduledPerformance.id, scheduledPerformance.seats.MINTED);
 
@@ -99,7 +99,7 @@ describe('Eticket', function () {
     it('Should revert when non-owner account try to change ticket cover uri', async function () {
       const { eticket, otherAccount, scheduledPerformance } = await deployFixture();
 
-      await expect(eticket.connect(otherAccount).setTicketCoverUri(scheduledPerformance.id, '')).to.be.revertedWith(
+      await expect(eticket.connect(otherAccount).setTicketDefaultContentBaseUrl(scheduledPerformance.id, '')).to.be.revertedWith(
         /^Ownable:.+/,
       );
     });
@@ -180,7 +180,7 @@ describe('Eticket', function () {
       it('Should revert when performance is not scheduled', async function () {
         const { eticket, owner, UNSCHEDULED_PERFORMANCE_ID } = await deployFixture();
 
-        await expect(eticket.connect(owner).setTicketCoverUri(UNSCHEDULED_PERFORMANCE_ID, '')).to.be.revertedWith(
+        await expect(eticket.connect(owner).setTicketDefaultContentBaseUrl(UNSCHEDULED_PERFORMANCE_ID, '')).to.be.revertedWith(
           MSG_PERFORMANCE_IS_NOT_SCHEDULED,
         );
       });
@@ -190,8 +190,8 @@ describe('Eticket', function () {
 
         const { eticket, owner, otherAccount, scheduledPerformance } = await deployFixture();
 
-        await eticket.connect(owner).setTicketCoverUri(scheduledPerformance.id, DUMMY_COVER_URI);
-        expect(await eticket.connect(otherAccount).getTicketCoverUri(scheduledPerformance.id)).equals(DUMMY_COVER_URI);
+        await eticket.connect(owner).setTicketDefaultContentBaseUrl(scheduledPerformance.id, DUMMY_COVER_URI);
+        expect(await eticket.connect(otherAccount).getTicketDefaultContentBaseUrl(scheduledPerformance.id)).equals(DUMMY_COVER_URI);
       });
     });
 
@@ -296,7 +296,7 @@ describe('Eticket', function () {
           .connect(otherAccount)
           .makeTokenId(scheduledPerformance.id, scheduledPerformance.seats.MINTED);
 
-        expect(await eticket.connect(otherAccount).tokenURI(tokenId)).equals('default cover uri');
+        expect(await eticket.connect(otherAccount).tokenURI(tokenId)).contains('DEFAULT CONTENT');
       });
 
       it('Should return default cover uri when ticket is not used even after expiration', async function () {
@@ -309,7 +309,7 @@ describe('Eticket', function () {
           .connect(otherAccount)
           .makeTokenId(scheduledPerformance.id, scheduledPerformance.seats.MINTED);
 
-        expect(await eticket.connect(otherAccount).tokenURI(tokenId)).equals('default cover uri');
+        expect(await eticket.connect(otherAccount).tokenURI(tokenId)).contains('DEFAULT CONTENT');
       });
 
       it('Should return special photo uri when ticket is used and expired', async function () {
