@@ -57,6 +57,17 @@ public class GetVacanciesController { // 특정 공연의 특정 구역의 빈 �
   ResponseEntity<GetPerformanceScheduleVacanciesResponseBody> GetPerformanceScheduleVacancies(
       @PathVariable Integer performanceScheduleId, @PathVariable Integer sectionId) {
     try {
+      //      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
+//        throw ApiException.builder()
+//                .withStatus(HttpStatus.UNAUTHORIZED)
+//                .withMessage("Unknown credentials is used.")
+//                .build();
+//      }
+//
+//      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(userDetails.getId().getValue(), performancesScheduledId))) {
+//        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
+//      }
+
       final var results =
           getVacanciesUseCase.getVacancies(
               GetVacanciesCommand.builder()

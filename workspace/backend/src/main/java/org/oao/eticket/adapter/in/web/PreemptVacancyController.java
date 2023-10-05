@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
-import org.oao.eticket.application.domain.model.Vacancy;
 import org.oao.eticket.application.port.in.dto.PreemptVacancyCommand;
 import org.oao.eticket.application.port.in.PreemptVacancyUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
@@ -55,6 +54,18 @@ public class PreemptVacancyController {
       @PathVariable Integer seatId) {
     try {
       // 권한 체크
+      //      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
+      //        throw ApiException.builder()
+      //                .withStatus(HttpStatus.UNAUTHORIZED)
+      //                .withMessage("Unknown credentials is used.")
+      //                .build();
+      //      }
+      //
+      //      if
+      // (!(checkTicketingPermissionUseCase.checkTicketingPermission(userDetails.getId().getValue(),
+      // performancesScheduledId))) {
+      //        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
+      //      }
 
       //
       final var preemptVacancyCommand =
@@ -70,7 +81,7 @@ public class PreemptVacancyController {
       throw ApiException.builder()
           .withStatus(HttpStatus.CONFLICT)
           .withCause(e)
-          .withMessage(e.getMessage()+"번 좌석은 이미 선점된 좌석입니다.")
+          .withMessage(e.getMessage() + "번 좌석은 이미 선점된 좌석입니다.")
           .build();
     } catch (UnexpectedException e) { // performance Schedule ID나 Section ID 잘못 됨.
       throw ApiException.builder()
