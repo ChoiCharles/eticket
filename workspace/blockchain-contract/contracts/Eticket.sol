@@ -15,7 +15,7 @@ contract Eticket is Ownable, ERC721Enumerable {
         mapping(uint32 => uint) ticketIndices;
         Ticket[] tickets;
         uint ticketExpirationTime;
-        string ticketCoverUri;
+        string ticketDefaultContentBaseUrl;
         string ticketSpecialContentBaseUrl;
         bool isScheduled;
     }
@@ -52,7 +52,7 @@ contract Eticket is Ownable, ERC721Enumerable {
     function schedulePerformance(
         uint32 performanceScheduleId,
         uint ticketExpirationTime,
-        string memory ticketCoverUri,
+        string memory ticketDefaultContentUrl,
         string memory ticketSpecialContentBaseUrl
     ) external onlyOwner {
         PerformanceSchedule storage schedule = _performanceSchedules[performanceScheduleId];
@@ -60,7 +60,7 @@ contract Eticket is Ownable, ERC721Enumerable {
 
         schedule.isScheduled = true;
         schedule.ticketExpirationTime = ticketExpirationTime;
-        schedule.ticketCoverUri = ticketCoverUri;
+        schedule.ticketDefaultContentBaseUrl = ticketDefaultContentUrl;
         schedule.ticketSpecialContentBaseUrl = ticketSpecialContentBaseUrl;
     }
 
@@ -141,31 +141,44 @@ contract Eticket is Ownable, ERC721Enumerable {
         _mintTicket(receipent, performanceScheduleId, seatId);
     }
 
-    function _unsafe_ticketCoverUriOf(uint32 performanceScheduleId) private view returns (string memory) {
-        return _performanceSchedules[performanceScheduleId].ticketCoverUri;
+    function _unsafe_ticketDefaultContentUriOf(
+        uint32 performanceScheduleId,
+        uint32 seatId
+    ) private view returns (string memory) {
+        string memory ticketDefaultContentBaseUrl = _unsafe_ticketDefaultContentBaseUrlOf(performanceScheduleId);
+        if (bytes(ticketDefaultContentBaseUrl).length == 0) {
+            return "";
+        }
+        return string(abi.encodePacked(ticketDefaultContentBaseUrl, Strings.toString(seatId), '.json'));
+    }
+
+    function _unsafe_ticketDefaultContentBaseUrlOf(uint32 performanceScheduleId) private view returns (string memory) {
+        return _performanceSchedules[performanceScheduleId].ticketDefaultContentBaseUrl;
     }
 
     function _unsafe_ticketSpecialContentBaseUrlOf(uint32 performanceScheduleId) private view returns (string memory) {
         return _performanceSchedules[performanceScheduleId].ticketSpecialContentBaseUrl;
     }
 
-    function getTicketCoverUriWithTokenId(uint tokenId) external view returns (string memory) {
-        uint32 performanceScheduleId = obtainPerformanceScheduleId(tokenId);
+    function getTicketDefaultContentBaseUrl(uint32 performanceScheduleId) external view returns (string memory) {
         _requireScheduled(performanceScheduleId);
 
-        return _unsafe_ticketCoverUriOf(performanceScheduleId);
+        return _unsafe_ticketDefaultContentBaseUrlOf(performanceScheduleId);
     }
 
-    function getTicketCoverUri(uint32 performanceScheduleId) external view returns (string memory) {
+    function getTicketSpecialContentBaseUrl(uint32 performanceScheduleId) external view returns (string memory) {
         _requireScheduled(performanceScheduleId);
 
-        return _unsafe_ticketCoverUriOf(performanceScheduleId);
+        return _unsafe_ticketSpecialContentBaseUrlOf(performanceScheduleId);
     }
 
-    function setTicketCoverUri(uint32 performanceScheduleId, string memory newTicketCoverUri) external onlyOwner {
+    function setTicketDefaultContentBaseUrl(
+        uint32 performanceScheduleId,
+        string memory newTicketDeafultContentBaseUrl
+    ) external onlyOwner {
         _requireScheduled(performanceScheduleId);
 
-        _performanceSchedules[performanceScheduleId].ticketCoverUri = newTicketCoverUri;
+        _performanceSchedules[performanceScheduleId].ticketDefaultContentBaseUrl = newTicketDeafultContentBaseUrl;
     }
 
     function setTicketSpecialContentBaseUrl(
@@ -185,12 +198,12 @@ contract Eticket is Ownable, ERC721Enumerable {
 
         Ticket storage ticket = _unsafe_ticketRef(performanceScheduleId, seatId);
         if (!_unsafe_isTicketExpired(tokenId) || !ticket.isUsed) {
-            return _unsafe_ticketCoverUriOf(performanceScheduleId);
+            return _unsafe_ticketDefaultContentUriOf(performanceScheduleId, seatId);
         }
 
         string memory ticketSpecialContentBaseUrl = _unsafe_ticketSpecialContentBaseUrlOf(performanceScheduleId);
         if (bytes(ticketSpecialContentBaseUrl).length == 0) {
-            return _unsafe_ticketCoverUriOf(performanceScheduleId);
+            return _unsafe_ticketDefaultContentUriOf(performanceScheduleId, seatId);
         }
 
         return string(abi.encodePacked(ticketSpecialContentBaseUrl, Strings.toString(seatId), '.json'));
