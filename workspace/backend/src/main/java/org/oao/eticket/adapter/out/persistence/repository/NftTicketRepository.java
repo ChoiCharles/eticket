@@ -26,7 +26,7 @@ public class NftTicketRepository implements LoadOwnedNftTicketsPort {
                   """
                           SELECT u
                             FROM UserJpaEntity u
-                            LEFT JOIN FETCH u.nftTickets
+                            JOIN FETCH u.nftTickets
                            WHERE u.id=:ownerID
                            """,
                   UserJpaEntity.class)
