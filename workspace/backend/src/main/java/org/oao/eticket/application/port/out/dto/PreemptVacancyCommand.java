@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class FindVacancyCommand {
+public class PreemptVacancyCommand {
   Integer performanceScheduleId;
   Integer sectionId;
   Integer seatId;
