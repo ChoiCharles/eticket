@@ -1,30 +1,35 @@
 import './NFTCard.scss';
-import React from 'react';
-import testimage from 'assets/test.jfif';
+import React, { useState } from 'react';
 import useMovePage from 'hooks/useMovePage';
-// import useMetaData from 'hooks/useMetaData';
 
-function NFTCard() {
+function NFTCard(props:any) {
+  const tokenURI = props.uri
   const { movePage } = useMovePage();
+  const [nftImage, setNFTImage] = useState('')
+  const [nftName, setNFTName] = useState('')
 
-  // const { metadata } = useMetaData()
-  // const NFTImage = metadata?.image
-  // const NFTName = metadata?.name
+  fetch(tokenURI)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("네트워크 에러: " + response.status);
+    }
+    return response.json();
+  })
+  .then(data => {
+    setNFTImage(data.image)
+    setNFTName(data.name)
+  })
+  .catch(error => {
+    console.error("데이터 가져오기 실패:", error);
+  });
 
   return (
     <div className="NFTContainer">
       <div className="NFTCard" onClick={() => movePage('/nftdetail', null)}>
-
-        {/* <img src={NFTImage} alt="your NFT" />
+        <img src={nftImage} alt="your NFT" />
         <div className="NFTInfo">
-          <h4>{NFTName}</h4>
-        </div> */}
-
-        <img src={testimage} alt="your NFT" />
-        <div className="NFTInfo">
-          <h4>내 NFT</h4>
+          <h4>{nftName}</h4>
         </div>
-
       </div>
     </div>
   );
