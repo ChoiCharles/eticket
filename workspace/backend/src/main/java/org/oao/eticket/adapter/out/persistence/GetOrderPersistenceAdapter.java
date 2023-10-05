@@ -13,6 +13,9 @@ public class GetOrderPersistenceAdapter implements GetOrderPort {
 
   @Override
   public Long getOrder(String key, Integer userId) {
+    if(ticketingRepository.zRank(key, userId) == null) {
+      return (long) -1;
+    }
     return ticketingRepository.zRank(key, userId);
   }
 }
