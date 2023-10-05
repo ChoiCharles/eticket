@@ -66,10 +66,10 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
             .build();
       }
 
-      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
-          userDetails.getId().getValue(), performanceScheduleId))) {
-        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
-      }
+//      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
+//          userDetails.getId().getValue(), performanceScheduleId))) {
+//        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
+//      }
       // use case릁 통해 MySql에서 특정 공연의 상세 정보 가져 오기
       final var sections = getSectionsUseCase.getSections(performanceScheduleId);
 

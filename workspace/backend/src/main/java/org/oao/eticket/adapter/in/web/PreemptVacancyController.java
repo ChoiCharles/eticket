@@ -68,10 +68,10 @@ public class PreemptVacancyController {
             .build();
       }
 
-      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
-          userDetails.getId().getValue(), performanceScheduleId))) {
-        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
-      }
+//      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
+//          userDetails.getId().getValue(), performanceScheduleId))) {
+//        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
+//      }
 
       // 좌석 선점 요청
       final var preemptVacancyCommand =

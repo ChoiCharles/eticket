@@ -12,10 +12,8 @@ public class GetOrderPersistenceAdapter implements GetOrderPort {
   private final TicketingRepository ticketingRepository;
 
   @Override
-  public Long getOrder(String key, Integer userId) {
-    if(ticketingRepository.zRank(key, userId) == null) {
-      return (long) -1;
-    }
-    return ticketingRepository.zRank(key, userId);
+  public boolean getOrder(String key, Integer userId) {
+    System.out.println(ticketingRepository.zRank(key, userId));
+    return ticketingRepository.zRank(key, userId) != null;
   }
 }
