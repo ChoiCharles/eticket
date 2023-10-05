@@ -31,16 +31,20 @@ func (p *taskPublisher) publish(ctx context.Context) {
 
 		year, month, day := reservation.StartTime.Date()
 		nextDay := time.Date(year, month, day+1, 0, 0, 0, 0, reservation.StartTime.Location())
-		p.taskQueue <- &MintTicketOpts{
-			SchedulePerformanceOpts: SchedulePerformanceOpts{
-				PerformanceScheduleId: uint32(reservation.PerformanceScheduleID),
-				TicketExpirationTime:  nextDay,
-			},
-			ReservationId: reservation.ReservationID,
-			Recipient:     common.BytesToAddress([]byte(reservation.WalletAddress.String)),
-			SeatId:        uint32(reservation.SeatID),
+		schedulePerformanceOpts := &SchedulePerformanceOpts{
+			PerformanceScheduleId:       uint32(reservation.PerformanceScheduleID),
+			TicketExpirationTime:        nextDay,
+			TicketDefaultContentBaseUrl: "",
+			TicketSpecialContentBaseUrl: "",
+		}
+		mintTicketOpts := &MintTicketOpts{
+			ReservationId:         reservation.ReservationID,
+			PerformanceScheduleId: uint32(reservation.PerformanceScheduleID),
+			Recipient:             common.BytesToAddress([]byte(reservation.WalletAddress.String)),
+			SeatId:                uint32(reservation.SeatID),
 		}
 
+		p.taskQueue <- [2]any{mintTicketOpts, schedulePerformanceOpts}
 		numEnqueuedTasks++
 	}
 

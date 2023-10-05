@@ -1,7 +1,7 @@
 version: '2'
 sql:
 - engine: mysql
-  schema: ../../sqls/schema.sql
+  schema: ../../docker-compose/services/data/mysql/initdb.d/0-schema.sql
   queries:
   - sqlqueries/
   gen:

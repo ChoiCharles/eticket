@@ -114,3 +114,98 @@ func (q *Queries) MarkAsMinted(ctx context.Context, reservationID int32) error {
 	_, err := q.db.ExecContext(ctx, markAsMinted, reservationID)
 	return err
 }
+
+const performanceScheduleDetails = `-- name: PerformanceScheduleDetails :one
+
+SELECT
+    ` + "`" + `schedule` + "`" + `.` + "`" + `performance_schedule_id` + "`" + `,
+    perf.performance_id, perf.cast, perf.description, perf.detail_image_path, perf.genre, perf.poster_image_path, perf.running_time, perf.ticketing_open_date_time, perf.title, perf.concert_hall_id, perf.user_id,
+    ` + "`" + `schedule` + "`" + `.` + "`" + `start_date_time` + "`" + `
+FROM
+    ` + "`" + `performance_schedule` + "`" + ` AS ` + "`" + `schedule` + "`" + `
+    JOIN ` + "`" + `performance` + "`" + ` AS ` + "`" + `perf` + "`" + ` ON ` + "`" + `schedule` + "`" + `.` + "`" + `performance_id` + "`" + ` = ` + "`" + `perf` + "`" + `.` + "`" + `performance_id` + "`" + `
+WHERE
+    ` + "`" + `schedule` + "`" + `.` + "`" + `performance_schedule_id` + "`" + ` = ?
+`
+
+type PerformanceScheduleDetailsRow struct {
+	PerformanceScheduleID int32
+	PerformanceID         int32
+	Cast                  sql.NullString
+	Description           sql.NullString
+	DetailImagePath       string
+	Genre                 string
+	PosterImagePath       sql.NullString
+	RunningTime           int32
+	TicketingOpenDateTime time.Time
+	Title                 string
+	ConcertHallID         int32
+	UserID                int32
+	StartDateTime         time.Time
+}
+
+func (q *Queries) PerformanceScheduleDetails(ctx context.Context, performanceScheduleID int32) (PerformanceScheduleDetailsRow, error) {
+	row := q.db.QueryRowContext(ctx, performanceScheduleDetails, performanceScheduleID)
+	var i PerformanceScheduleDetailsRow
+	err := row.Scan(
+		&i.PerformanceScheduleID,
+		&i.PerformanceID,
+		&i.Cast,
+		&i.Description,
+		&i.DetailImagePath,
+		&i.Genre,
+		&i.PosterImagePath,
+		&i.RunningTime,
+		&i.TicketingOpenDateTime,
+		&i.Title,
+		&i.ConcertHallID,
+		&i.UserID,
+		&i.StartDateTime,
+	)
+	return i, err
+}
+
+const performanceSeats = `-- name: PerformanceSeats :many
+
+SELECT
+    ` + "`" + `seat` + "`" + `.` + "`" + `seat_id` + "`" + `,
+    ` + "`" + `seat_class` + "`" + `.` + "`" + `class_name` + "`" + ` AS ` + "`" + `seat_class` + "`" + `
+FROM
+    ` + "`" + `performance_schedule` + "`" + ` AS ` + "`" + `ps` + "`" + `
+    JOIN ` + "`" + `performance` + "`" + ` AS ` + "`" + `perf` + "`" + ` ON ` + "`" + `ps` + "`" + `.` + "`" + `performance_id` + "`" + ` = ` + "`" + `perf` + "`" + `.` + "`" + `performance_id` + "`" + `
+    JOIN ` + "`" + `concert_hall` + "`" + ` AS ` + "`" + `hall` + "`" + ` ON ` + "`" + `perf` + "`" + `.` + "`" + `concert_hall_id` + "`" + ` = ` + "`" + `hall` + "`" + `.` + "`" + `concert_hall_id` + "`" + `
+    JOIN ` + "`" + `section` + "`" + ` AS ` + "`" + `section` + "`" + ` ON ` + "`" + `hall` + "`" + `.` + "`" + `concert_hall_id` + "`" + ` = ` + "`" + `section` + "`" + `.` + "`" + `concert_hall_id` + "`" + `
+    JOIN ` + "`" + `section_and_seat_class_relation` + "`" + ` AS ` + "`" + `ssr` + "`" + ` ON ` + "`" + `section` + "`" + `.` + "`" + `section_id` + "`" + ` = ` + "`" + `ssr` + "`" + `.` + "`" + `section_id` + "`" + `
+    JOIN ` + "`" + `seat` + "`" + ` AS ` + "`" + `seat` + "`" + ` ON ` + "`" + `ssr` + "`" + `.` + "`" + `section_id` + "`" + ` = ` + "`" + `seat` + "`" + `.` + "`" + `section_id` + "`" + `
+    JOIN ` + "`" + `seat_class` + "`" + ` AS ` + "`" + `seat_class` + "`" + ` ON ` + "`" + `ssr` + "`" + `.` + "`" + `seat_class_id` + "`" + ` = ` + "`" + `seat_class` + "`" + `.` + "`" + `seat_class_id` + "`" + `
+WHERE
+    ` + "`" + `ps` + "`" + `.` + "`" + `performance_schedule_id` + "`" + ` = ?
+`
+
+type PerformanceSeatsRow struct {
+	SeatID    int32
+	SeatClass string
+}
+
+func (q *Queries) PerformanceSeats(ctx context.Context, performanceScheduleID int32) ([]PerformanceSeatsRow, error) {
+	rows, err := q.db.QueryContext(ctx, performanceSeats, performanceScheduleID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []PerformanceSeatsRow
+	for rows.Next() {
+		var i PerformanceSeatsRow
+		if err := rows.Scan(&i.SeatID, &i.SeatClass); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

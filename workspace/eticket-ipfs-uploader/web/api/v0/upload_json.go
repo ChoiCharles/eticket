@@ -24,7 +24,7 @@ func RegisterUploadJsonApi(e *gin.Engine, uploadJsonService *service.UploadJsonS
 			return
 		}
 
-		uploadInfos, err := uploadJsonService.Upload(context.Background(), payload.Dirname, payload.Jsons)
+		uploads, err := uploadJsonService.Upload(context.Background(), payload.Dirname, payload.Jsons)
 		if err != nil {
 			log.Fatalln(err)
 			ctx.AbortWithStatusJSON(http.StatusInternalServerError, map[string]any{
@@ -33,19 +33,19 @@ func RegisterUploadJsonApi(e *gin.Engine, uploadJsonService *service.UploadJsonS
 			return
 		}
 
-		var dirinfo map[string]any
-		files := make([]map[string]any, 0, len(uploadInfos)-1)
+		var dirUpload map[string]any
+		items := make([]map[string]any, 0, len(uploads)-1)
 
-		for _, upload := range uploadInfos {
+		for _, upload := range uploads {
 			if upload["Name"].(string) == payload.Dirname {
-				dirinfo = upload
+				dirUpload = upload
 			} else {
-				upload["Name"] = upload["Name"].(string)[len(uploadInfos)+1:]
-				files = append(files, upload)
+				upload["Name"] = upload["Name"].(string)[len(payload.Dirname)+1:]
+				items = append(items, upload)
 			}
 		}
 
-		dirinfo["items"] = files
-		ctx.JSON(http.StatusCreated, map[string]any{"directory": dirinfo})
+		dirUpload["Items"] = items
+		ctx.JSON(http.StatusCreated, dirUpload)
 	})
 }
