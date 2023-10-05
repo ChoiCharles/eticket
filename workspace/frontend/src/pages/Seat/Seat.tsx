@@ -9,29 +9,32 @@ import { useParams } from 'react-router-dom';
 
 function Seat() {
   const [performanceInfo, setPerformanceInfo] = useState([]);
-  const [seatInfo, setSeatInfo] = useState([]);
-  const { seatPerformanceId = 0 } = useParams();
-  const performanceId = parseInt(String(seatPerformanceId), 10) + 1;
   const [openCaptcha, setOpenCaptcha] = useState<boolean>(true);
-  console.log(seatPerformanceId);
+  const [seatInfo, setSeatInfo] = useState([]);
+  const [title, setTitle] = useState('');
+  const [location, setLocation] = useState('');
+  const { seatPerformanceId = 0 } = useParams();
+  const performanceId = parseInt(String(seatPerformanceId), 10);
 
   const getPerformances = async () => {
     try {
       const [seatRes, perRes] = await Promise.all([
-        instance.get(`/api/schedules/${performanceId}/sections`),
+        instance.get(`/api/schedules/1/sections`),
         instance.get(`/api/performances/${performanceId}`),
       ]);
-      console.log('좌석 :', seatRes.data);
-      console.log('포퍼먼스 :', perRes.data);
 
-      setPerformanceInfo(perRes.data);
+      setPerformanceInfo(perRes.data.performance);
       setSeatInfo(seatRes.data.sectionList);
+      setLocation(perRes.data.performance.concertHall.name);
+      setTitle(perRes.data.performance.title);
     } catch (error) {
       console.log(error);
     }
   };
   console.log(performanceInfo);
   console.log(seatInfo.length);
+  console.log(title);
+  console.log(location);
   const seatSections = seatInfo;
 
   useEffect(() => {
@@ -69,7 +72,7 @@ function Seat() {
           <Captcha setOpenCaptcha={setOpenCaptcha} />
         </Box>
       </Modal>
-      <SeatStage />
+      <SeatStage title={title} location={location} />
       <div className="seat-outer-box">
         <div className="seat-container">
           {seatSections.map((info, index) => (

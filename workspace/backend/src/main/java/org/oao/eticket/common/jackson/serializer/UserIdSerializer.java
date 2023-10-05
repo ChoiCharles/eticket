@@ -7,11 +7,11 @@ import org.oao.eticket.application.domain.model.User;
 
 import java.io.IOException;
 
-public class UserIdSerializer extends JsonSerializer<User.UserId> {
+public class UserIdSerializer extends JsonSerializer<User.UserID> {
 
   @Override
   public void serialize(
-      final User.UserId value, final JsonGenerator gen, final SerializerProvider serializers)
+          final User.UserID value, final JsonGenerator gen, final SerializerProvider serializers)
       throws IOException {
 
     if (value == null) {
@@ -22,7 +22,7 @@ public class UserIdSerializer extends JsonSerializer<User.UserId> {
   }
 
   @Override
-  public Class<User.UserId> handledType() {
-    return User.UserId.class;
+  public Class<User.UserID> handledType() {
+    return User.UserID.class;
   }
 }

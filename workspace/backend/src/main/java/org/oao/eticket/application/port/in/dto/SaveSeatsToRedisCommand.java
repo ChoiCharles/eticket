@@ -9,6 +9,6 @@ import java.util.List;
 @Value
 @Builder
 public class SaveSeatsToRedisCommand {
-    Integer performanceScheduleId;
-    List<Vacancy> vacancyList;
+  Integer performanceScheduleId;
+  List<Vacancy> vacancyList;
 }

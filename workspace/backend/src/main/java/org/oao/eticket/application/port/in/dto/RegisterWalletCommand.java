@@ -5,7 +5,7 @@ import org.oao.eticket.application.domain.model.User;
 
 @Value
 public class RegisterWalletCommand {
-  User.UserId userId;
+  User.UserID userId;
   String personalSign;
   String walletAddress;
 }

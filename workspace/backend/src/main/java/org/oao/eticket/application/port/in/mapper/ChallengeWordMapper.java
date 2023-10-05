@@ -9,7 +9,7 @@ import org.oao.eticket.application.port.out.dto.SaveChallengeWordCommand;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ChallengeWordMapper {
 
-    @Mapping(target = "challengeWordId", expression = "java(challengeWord.getId().toString())")
-    @Mapping(target = "challengeWord", source="word")
-    SaveChallengeWordCommand mapToSaveCommand(ChallengeWord challengeWord);
+  @Mapping(target = "challengeWordId", expression = "java(challengeWord.getId().toString())")
+  @Mapping(target = "challengeWord", source = "word")
+  SaveChallengeWordCommand mapToSaveCommand(ChallengeWord challengeWord);
 }

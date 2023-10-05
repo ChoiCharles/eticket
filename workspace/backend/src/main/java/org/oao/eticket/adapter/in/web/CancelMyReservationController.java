@@ -22,18 +22,24 @@ public class CancelMyReservationController {
 
   @PutMapping(path = "/api/reservations/{id}")
   ResponseEntity<Reservation> cancelMyReservation(
-          @PathVariable Integer id, Authentication authentication) {
+      @PathVariable Integer id, Authentication authentication) {
 
     Reservation reservation = cancelMyReservationUseCase.cancelMyReservation(id);
     if (reservation == null) {
-      throw ApiException.builder().withStatus(HttpStatus.FORBIDDEN).withMessage("Already Cancelled").build();
+      throw ApiException.builder()
+          .withStatus(HttpStatus.FORBIDDEN)
+          .withMessage("Already Cancelled")
+          .build();
     }
 
     if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
       throw new RuntimeException("out");
     }
     if (!(reservation.getUser().getId().equals(userDetails.getId()))) {
-      throw ApiException.builder().withStatus(HttpStatus.FORBIDDEN).withMessage("Invalid Permission").build();
+      throw ApiException.builder()
+          .withStatus(HttpStatus.FORBIDDEN)
+          .withMessage("Invalid Permission")
+          .build();
     }
 
     return ResponseEntity.status(200).body(reservation);

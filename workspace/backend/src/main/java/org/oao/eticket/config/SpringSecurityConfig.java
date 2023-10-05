@@ -140,16 +140,15 @@ class SpringSecurityConfig {
             httpRequests ->
                 httpRequests
                     .requestMatchers(
-                        "/swagger-ui/*",
-                        "/v3/**",
-			"/api/auth/challenge",
+                        "/api/nfts",
+                        "/api/nfts/*",
+                        "/api/auth/challenge",
                         "/api/auth/signin",
                         "/api/membership/join",
                         "/api/performances/*",
-                        "/api/test",
                         "/api/schedules/**")
                     .permitAll()
-                    .requestMatchers("/**")
+                    .requestMatchers("/api/*")
                     .authenticated()
                     .anyRequest()
                     .permitAll())

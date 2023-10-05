@@ -57,6 +57,18 @@ public class GetVacanciesController { // 특정 공연의 특정 구역의 빈 �
   ResponseEntity<GetPerformanceScheduleVacanciesResponseBody> GetPerformanceScheduleVacancies(
       @PathVariable Integer performanceScheduleId, @PathVariable Integer sectionId) {
     try {
+      // TODO: redis에 들러서 대기열에서 나온 유저인지 확인
+//      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
+//        throw ApiException.builder()
+//            .withStatus(HttpStatus.UNAUTHORIZED)
+//            .withMessage("Unknown credentials is used.")
+//            .build();
+//      }
+//
+//      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
+//          userDetails.getId().getValue(), performancesScheduledId))) {
+//        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
+//      }
       final var results =
           getVacanciesUseCase.getVacancies(
               GetVacanciesCommand.builder()
@@ -66,10 +78,10 @@ public class GetVacanciesController { // 특정 공연의 특정 구역의 빈 �
       return ResponseEntity.ok(new GetPerformanceScheduleVacanciesResponseBody(results));
     } catch (UnexpectedException e) { // performance Schedule ID나 Section ID 잘못 됨.
       throw ApiException.builder()
-              .withStatus(HttpStatus.BAD_REQUEST)
-              .withCause(e)
-              .withMessage(e.getMessage())
-              .build();
+          .withStatus(HttpStatus.BAD_REQUEST)
+          .withCause(e)
+          .withMessage(e.getMessage())
+          .build();
     } catch (Exception e) {
       // TODO(yoo): exception handling
       // AUTHORIZED (대기열에 등록돼있던 사용자 아님)

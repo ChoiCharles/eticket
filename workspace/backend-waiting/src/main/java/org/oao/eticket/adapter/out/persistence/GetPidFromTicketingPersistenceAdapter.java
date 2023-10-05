@@ -10,11 +10,11 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class GetPidFromTicketingPersistenceAdapter implements GetPidFromTicketingPort {
 
-  private final TicketingRepository ticketingRepository;
+  private final WaitingRepository waitingRepository;
 
   @Override
   public Set<String> getPidFromTicketing() {
-    String pattern = "Ticketing::*";
-    return ticketingRepository.getKeys(pattern);
+    String pattern = "Waiting::*";
+    return waitingRepository.getKeys(pattern);
   }
 }
