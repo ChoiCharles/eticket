@@ -34,8 +34,6 @@ function Calender({ idx }: Props) {
   // console.log(data?.performanceScheduleList);
   const startDate = data?.performanceScheduleList[0];
   const endDate = data?.performanceScheduleList[1];
-  // const startMoment = moment(startDate);
-  // const endMoment = moment(endDate);
   const dayList = [startDate, endDate];
 
   const { movePage } = useMovePage();

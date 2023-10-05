@@ -6,18 +6,15 @@ import Captcha from 'components/common/Captcha/Captcha';
 import { Box, Modal } from '@mui/material';
 import instance from 'apis/utils/instance';
 import { useParams } from 'react-router-dom';
-// import seatClassDummy from 'seatClassDummy';
-// import seatClassRelation from 'seatClassRelation';
 
 function Seat() {
-  const [performanceInfo, setPerformanceInfo] = useState([]);
+  const [, setPerformanceInfo] = useState([]);
   const [openCaptcha, setOpenCaptcha] = useState<boolean>(true);
   const [seatInfo, setSeatInfo] = useState([]);
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const { seatId = 0 } = useParams();
   const performanceId = parseInt(String(seatId), 10);
-  console.log(seatId);
 
   const getPerformances = async () => {
     try {
@@ -34,15 +31,13 @@ function Seat() {
       console.log(error);
     }
   };
-  console.log(performanceInfo);
-  console.log(seatInfo.length);
-  console.log(title);
-  console.log(location);
+
   const seatSections = seatInfo;
 
   useEffect(() => {
     getPerformances();
   }, []);
+
   // temp-controller로 보내기
   // useEffect(() => {
   //   instance
@@ -54,7 +49,7 @@ function Seat() {
   //       // const concertListData = hotRes;
   //     })
   //     .catch(error => console.error('Error:', error));
-  // }, []);  const [openCaptcha, setOpenCaptcha] = useState<boolean>(true);
+  // }, []);
 
   return (
     <div>
