@@ -140,6 +140,7 @@ class SpringSecurityConfig {
             httpRequests ->
                 httpRequests
                     .requestMatchers(
+                        "/api/test",
                         "/api/nfts",
                         "/api/nfts/*",
                         "/api/auth/challenge",
