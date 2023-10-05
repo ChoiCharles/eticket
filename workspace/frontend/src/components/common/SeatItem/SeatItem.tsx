@@ -4,9 +4,9 @@ import SeatBox from 'components/seat/SeatBox/SeatBox';
 import { useRecoilValue } from 'recoil';
 import SelectSeatState from 'atoms/SelectSeatState';
 import useMovePage from 'hooks/useMovePage';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import instance from 'apis/utils/instance';
-import { useParams } from 'react-router-dom';
 
 interface sectionInfoType {
   id: {

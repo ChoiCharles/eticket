@@ -39,17 +39,17 @@ function Seat() {
   }, []);
 
   // temp-controller로 보내기
-  // useEffect(() => {
-  //   instance
-  //     .get(`/api/test`)
-  //     .then(response => {
-  //       console.log(response);
-  //       // console.log(response.data.performance);
-  //       // setData(response.data.performance);
-  //       // const concertListData = hotRes;
-  //     })
-  //     .catch(error => console.error('Error:', error));
-  // }, []);
+  useEffect(() => {
+    instance
+      .get(`/api/test`)
+      .then(response => {
+        console.log(response);
+        // console.log(response.data.performance);
+        // setData(response.data.performance);
+        // const concertListData = hotRes;
+      })
+      .catch(error => console.error('Error:', error));
+  }, []);
 
   return (
     <div>
