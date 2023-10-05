@@ -1,9 +1,18 @@
 import React from 'react';
 import MuiCarousel from 'react-material-ui-carousel';
 import CarouselItem from './CarouselItem';
-import items from '../../../dummys';
 
-const Carousel = () => {
+interface Props {
+  items: {
+    id: { value: number };
+    performanceScheduleList: string[];
+    posterImagePath: string;
+    ticketingOpenDateTime: string;
+    title: string;
+  }[];
+}
+
+const Carousel = ({ items }: Props) => {
   return (
     <MuiCarousel
       autoPlay
@@ -14,8 +23,8 @@ const Carousel = () => {
       fullHeightHover
     >
       {items.map((item, index) => {
-        const orderedItem = { ...item, index, total: items.length };
-        return <CarouselItem key={item.id} item={orderedItem} />;
+        const orderedItem = { ...item, index, length: items.length };
+        return <CarouselItem key={item.id.value} item={orderedItem} />;
       })}
     </MuiCarousel>
   );
