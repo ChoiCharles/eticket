@@ -185,7 +185,7 @@ function MyPage() {
         <div className="my-ticket">
           <div className="upper-text">
             <h3 className="my-ticket-text">내 티켓</h3>
-            <h3 className="my-ticket-more">구매 내역 {'>'}</h3>
+            <h3 className="my-ticket-more" onClick={() => movePage('/receipt', null)}>구매 내역 {'>'}</h3>
           </div>
           <div className="my-ticket-list">
             <MyTicket />
