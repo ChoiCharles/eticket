@@ -12,6 +12,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface WebAdapter {
 
-    @AliasFor(annotation = Component.class)
-    String value() default "";
+  @AliasFor(annotation = Component.class)
+  String value() default "";
 }

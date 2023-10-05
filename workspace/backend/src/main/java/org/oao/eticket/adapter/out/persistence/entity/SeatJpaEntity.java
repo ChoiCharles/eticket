@@ -25,11 +25,7 @@ public class SeatJpaEntity {
   private String number;
 
   @Builder
-  public SeatJpaEntity(
-      Integer id,
-      SectionJpaEntity sectionJpaEntity,
-      String row,
-      String number) {
+  public SeatJpaEntity(Integer id, SectionJpaEntity sectionJpaEntity, String row, String number) {
     this.id = id;
     this.sectionJpaEntity = sectionJpaEntity;
     this.row = row;

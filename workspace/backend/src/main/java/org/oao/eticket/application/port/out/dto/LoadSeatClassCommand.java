@@ -6,6 +6,6 @@ import lombok.Value;
 @Value
 @Builder
 public class LoadSeatClassCommand {
-    Integer performanceScheduleId;
-    Integer sectionId;
+  Integer performanceScheduleId;
+  Integer sectionId;
 }

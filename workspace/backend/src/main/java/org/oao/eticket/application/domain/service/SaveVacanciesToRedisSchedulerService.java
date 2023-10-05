@@ -23,7 +23,7 @@ public class SaveVacanciesToRedisSchedulerService implements SaveVacanciesToRedi
     // 2. 레디스에 저장. (List<PerformanceScheduleSeatTable>)     schedule Id랑 section Id 조합해서 키로, List?
     for (PerformanceScheduleSeatTable seatTable : seatTables) {
       System.out.println(seatTable.getPerformanceScheduleId() + " " + seatTable.getSectionId());
-      saveVacanciesRedisPort.saveTable(seatTable);
+      saveVacanciesRedisPort.saveSeatTable(seatTable);
     }
     return seatTables;
   }

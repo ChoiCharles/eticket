@@ -9,10 +9,10 @@ import org.oao.eticket.common.annotation.PersistenceAdapter;
 @RequiredArgsConstructor
 public class GetOrderPersistenceAdapter implements GetOrderPort {
 
-    private final TicketingRepository ticketingRepository;
+  private final TicketingRepository ticketingRepository;
 
-    @Override
-    public Long getOrder(String key, Integer userId) {
-        return ticketingRepository.zRank(key, userId);
-    }
+  @Override
+  public Long getOrder(String key, Integer userId) {
+    return ticketingRepository.zRank(key, userId);
+  }
 }

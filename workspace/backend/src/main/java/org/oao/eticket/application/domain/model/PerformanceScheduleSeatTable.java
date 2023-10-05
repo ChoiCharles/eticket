@@ -16,9 +16,9 @@ public class PerformanceScheduleSeatTable {
 
   @JsonCreator
   public PerformanceScheduleSeatTable(
-          @JsonProperty("performanceScheduleId") Integer performanceScheduleId,
-          @JsonProperty("sectionId") Integer sectionId,
-          @JsonProperty("seats") List<Seat> seats) {
+      @JsonProperty("performanceScheduleId") Integer performanceScheduleId,
+      @JsonProperty("sectionId") Integer sectionId,
+      @JsonProperty("seats") List<Seat> seats) {
     this.performanceScheduleId = performanceScheduleId;
     this.sectionId = sectionId;
     this.seats = seats;

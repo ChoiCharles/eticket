@@ -7,5 +7,5 @@ import org.oao.eticket.application.port.out.dto.LoadVacanciesRedisCommand;
 import java.util.List;
 
 public interface LoadVacanciesRedisPort {
-    List<Seat> getSeatTable(LoadVacanciesRedisCommand cmd);
+  List<Seat> getSectionSeats(LoadVacanciesRedisCommand cmd);
 }

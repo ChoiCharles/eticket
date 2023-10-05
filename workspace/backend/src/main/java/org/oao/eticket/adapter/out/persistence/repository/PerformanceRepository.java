@@ -119,5 +119,4 @@ public class PerformanceRepository
         .getPerformanceScheduleJpaEntityList()
         .sort(Comparator.comparing(PerformanceScheduleJpaEntity::getStartDateTime));
   }
-
 }
