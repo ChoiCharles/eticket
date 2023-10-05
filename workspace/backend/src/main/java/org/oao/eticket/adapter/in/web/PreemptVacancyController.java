@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @WebAdapter
 @RequiredArgsConstructor
 public class PreemptVacancyController {
-  record PreemptVacancyResponseBody(Vacancy vacancy) {}
+  record PreemptVacancyResponseBody(Boolean isSuccess) {}
 
   private PreemptVacancyUseCase preemptVacancyUseCase;
 
@@ -51,14 +51,17 @@ public class PreemptVacancyController {
       @PathVariable Integer sectionId,
       @PathVariable Integer seatId) {
     try {
+      // 권한 체크
+
+      //
       final var preemptVacancyCommand =
           PreemptVacancyCommand.builder()
               .performanceScheduleId(performanceScheduleId)
               .sectionId(sectionId)
               .seatId(seatId)
               .build();
-      final var vacancy = preemptVacancyUseCase.preemptVacancy(preemptVacancyCommand);
-      return ResponseEntity.ok(new PreemptVacancyResponseBody(vacancy));
+      final var result = preemptVacancyUseCase.preemptVacancy(preemptVacancyCommand);
+      return ResponseEntity.ok(new PreemptVacancyResponseBody(result));
     } catch (Exception e) {
       // 409
       throw e;

@@ -1,19 +1,10 @@
 import React from 'react';
 import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 
-type Item = {
-  id: number;
-  image: string;
-  title: string;
-  location: string;
-  date: string;
-};
+const ReceiptListItem = ({ item }: any) => {
+  const reserveDate = item.reservationTime.split('T')
+  const reserveTime = reserveDate[1].split([':'])
 
-interface Props {
-  item: Item;
-}
-
-const ReceiptListItem = ({ item }: Props) => {
   return (
     <Card
       sx={{
@@ -26,10 +17,15 @@ const ReceiptListItem = ({ item }: Props) => {
     >
       <CardContent>
         <Typography variant="body1" noWrap>
-          {item.title}
+          {item.performanceSchedule.performance.title}
         </Typography>
         <Typography variant="body2" noWrap>
-          {item.date}
+          <div style={{display: 'flex', marginTop: '5px'}}>
+            <p style={{margin: '0 10px 0 0'}}>결재일</p>
+            <p style={{margin: '0 10px 0 0'}}>{reserveDate[0]}</p>
+            <p style={{margin: '0 5px 0 0'}}>{reserveTime[0]}시</p>
+            <p style={{margin: '0'}}>{reserveTime[1]}분</p>
+          </div>
         </Typography>
       </CardContent>
       <Box display="flex">
