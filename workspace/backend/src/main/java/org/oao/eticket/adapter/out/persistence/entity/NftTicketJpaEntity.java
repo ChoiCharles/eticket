@@ -15,6 +15,6 @@ public class NftTicketJpaEntity {
   byte[] tokenID;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "owner")
+  @JoinColumn(name = "owner", columnDefinition = "binary(20)",referencedColumnName = "wallet_address")
   UserJpaEntity owner;
 }

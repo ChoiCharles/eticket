@@ -46,7 +46,7 @@ public class UserJpaEntity {
   @NotNull
   private UserRole role;
 
-  @Column(unique = true)
+  @Column(name = "wallet_address", columnDefinition = "binary(20)", unique = true)
   private byte[] walletAddress;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
