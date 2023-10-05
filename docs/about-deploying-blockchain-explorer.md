@@ -8,7 +8,7 @@
 
 앞으로 작업 디렉토리는 BlockScout repository의 최상위 디렉토리로 가정한다.  
 
-### Update Enviroment Variables  
+### Update Environment Variables  
 
 `./docker-compose/envs/common-blockscout.yml` 파일에서 아래의 값들을 알맞은 값으로 변경한다.  
 
