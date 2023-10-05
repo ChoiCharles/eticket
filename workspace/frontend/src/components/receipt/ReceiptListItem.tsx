@@ -21,7 +21,7 @@ const ReceiptListItem = ({ item }: any) => {
         </Typography>
         <Typography variant="body2" noWrap>
           <div style={{display: 'flex', marginTop: '5px'}}>
-            <p style={{margin: '0 10px 0 0'}}>결재일</p>
+            <p style={{margin: '0 10px 0 0'}}>결제일</p>
             <p style={{margin: '0 10px 0 0'}}>{reserveDate[0]}</p>
             <p style={{margin: '0 5px 0 0'}}>{reserveTime[0]}시</p>
             <p style={{margin: '0'}}>{reserveTime[1]}분</p>
