@@ -17,7 +17,7 @@ import java.util.List;
 public class TempController {
     // 스케줄러로 만든 서비스 API 테스트 해보려고 만든 애 (오늘 예매 오픈 하는 공연이 redis에 저장 됨)
     private final SaveVacanciesToRedisUseCase saveVacanciesToRedisUseCase;
-    private final
+
     @GetMapping("api/test")
     List<PerformanceScheduleSeatTable> test() {
         try {
@@ -29,6 +29,5 @@ public class TempController {
                     .withMessage(e.getMessage())
                     .build();
         }
-
     }
 }

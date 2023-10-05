@@ -1,7 +1,7 @@
 package org.oao.eticket.adapter.out.persistence.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.oao.eticket.adapter.out.persistence.entity.VacancyRedisEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
 import org.oao.eticket.application.domain.model.Seat;
 import org.oao.eticket.application.domain.model.SeatStatus;
@@ -19,10 +19,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
 
+@Slf4j
 @PersistenceAdapter
 @RequiredArgsConstructor
 public class VacanciesRedisRepository
     implements SaveVacanciesRedisPort, LoadVacanciesRedisPort, PreemptVacancyPort {
+
   private final RedisTemplate<String, Object> redisTemplate;
   private final HashOperations<String, String, PerformanceScheduleSeatTable> hashOperations;
   private static final String TABLE_KEY = "SeatTable";
@@ -54,9 +56,10 @@ public class VacanciesRedisRepository
 
   // 특정 좌석의 status 업데이트
   @Override
-  public Boolean preemptVacancy(PreemptVacancyCommand cmd) {
+  public PerformanceScheduleSeatTable preemptVacancy(PreemptVacancyCommand cmd) {
     PerformanceScheduleSeatTable table =
         getTable(cmd.getPerformanceScheduleId(), cmd.getSectionId());
+    System.out.println(cmd.getSectionId());
     if (table != null) {
       List<Seat> seats = table.getSeats();
       for (Seat seat : seats) {
@@ -65,12 +68,14 @@ public class VacanciesRedisRepository
             throw new PreemptVacancyFailureException(cmd.getSeatId().toString());
           }
           seat.setSeatStatus(SeatStatus.PREEMPTED);
-          saveTable(table);
-          return true;
+          table.setSeats(seats);
+          hashOperations.put(TABLE_KEY, getKey(table), table);
+          System.out.println("hello");
+          return table;
         }
       }
     }
-    return false;
+    throw new UnexpectedException("id가 잘못 됨. 일치하는 좌석 없음.");
   }
 
   // PerformanceScheduleSeatTable 객체 조회
