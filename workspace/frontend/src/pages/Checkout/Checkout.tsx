@@ -4,6 +4,7 @@ import {
   loadPaymentWidget,
 } from '@tosspayments/payment-widget-sdk';
 import { Box, Button, Paper, Typography } from '@mui/material';
+import { useLocation, useParams } from 'react-router-dom';
 
 const selector = '#payment-widget';
 const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
@@ -14,7 +15,10 @@ const Checkout = () => {
   const paymentMethodsWidgetRef = useRef<ReturnType<
     PaymentWidgetInstance['renderPaymentMethods']
   > | null>(null);
-  const price = 50_000;
+  const { checkoutPerformanceScheduleId, selectedSeats } = useParams();
+  const { state } = useLocation();
+  const { price } = state;
+  console.log(price);
 
   useEffect(() => {
     (async () => {
@@ -35,11 +39,11 @@ const Checkout = () => {
 
     try {
       await paymentWidget?.requestPayment({
-        orderId: 'asdfasd',
-        orderName: '토스 티셔츠 외 2건',
-        customerName: '김토스',
+        orderId: '0',
+        orderName: '티켓',
+        customerName: '203',
         customerEmail: 'customer123@gmail.com',
-        successUrl: `${window.location.origin}/success`,
+        successUrl: `${window.location.origin}/success/${checkoutPerformanceScheduleId}/${selectedSeats}?price=${price}`,
         failUrl: `${window.location.origin}/fail`,
       });
     } catch (error) {

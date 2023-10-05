@@ -1,9 +1,10 @@
 import React from 'react';
 import './SeatItem.scss';
 import SeatBox from 'components/seat/SeatBox/SeatBox';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import SelectSeatState from 'atoms/SelectSeatState';
 import useMovePage from 'hooks/useMovePage';
+import { useParams } from 'react-router-dom';
 
 interface sectionInfoType {
   id: {
@@ -23,13 +24,16 @@ function SeatItem({ object }: { object: sectionInfoType }) {
   console.log('객체 :', object);
   // console.log('세부좌석', index);
   // console.log(seatList);
+  const { price } = object.seatClass;
 
   const { movePage } = useMovePage();
+  const selectedSeats = useRecoilValue(SelectSeatState);
+  const { seatPerformanceScheduleId } = useParams();
   const clickBuyBtn = () => {
-    movePage('/checkout', null);
+    movePage(`/checkout/${seatPerformanceScheduleId}/${selectedSeats}`, {
+      price,
+    });
   };
-
-  const [selectedSeats] = useRecoilState(SelectSeatState);
 
   // eslint-disable-next-line consistent-return
   const turnAlpha = (idx: number) => {

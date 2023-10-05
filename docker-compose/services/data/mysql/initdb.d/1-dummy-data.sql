@@ -69,7 +69,7 @@ VALUES (
         "CONCERT",
         "https://tickets.interpark.com/contents/_next/image?url=https%3A%2F%2Fticketimage.interpark.com%2FPlay%2Fimage%2Flarge%2F23%2F23013154_p.gif&w=750&q=75",
         120,
-        '2023-10-1 00:00:00',
+        '2023-10-8 00:00:00',
         1,
         1,
         "https://ticketimage.interpark.com/Play/image/etc/23/23013590-01.jpg"
@@ -81,7 +81,7 @@ VALUES (
         "CONCERT",
         "https://tickets.interpark.com/contents/_next/image?url=https%3A%2F%2Fticketimage.interpark.com%2FPlay%2Fimage%2Flarge%2F23%2F23011055_p.gif&w=750&q=75",
         120,
-        '2023-10-1 00:00:00',
+        '2023-10-8 00:00:00',
         1,
         1,
         "https://ticketimage.interpark.com/Play/image/etc/23/23011055-06.jpg"
@@ -93,7 +93,7 @@ VALUES (
         "CONCERT",
         "https://tickets.interpark.com/contents/_next/image?url=https%3A%2F%2Fticketimage.interpark.com%2FPlay%2Fimage%2Flarge%2F23%2F23013039_p.gif&w=750&q=75",
         120,
-        '2023-10-1 00:00:00',
+        '2023-10-8 00:00:00',
         1,
         1,
         "https://ticketimage.interpark.com/Play/image/etc/23/23013039-09.jpg"
@@ -105,7 +105,7 @@ VALUES (
         "CONCERT",
         "https://tickets.interpark.com/contents/_next/image?url=https%3A%2F%2Fticketimage.interpark.com%2FPlay%2Fimage%2Flarge%2F23%2F23011967_p.gif&w=750&q=75",
         120,
-        '2023-10-1 00:00:00',
+        '2023-10-8 00:00:00',
         1,
         1,
         "https://ticketimage.interpark.com/Play/image/etc/23/23011967-05.jpg"
@@ -117,7 +117,7 @@ VALUES (
         "CONCERT",
         "https://tickets.interpark.com/contents/_next/image?url=https%3A%2F%2Fticketimage.interpark.com%2FPlay%2Fimage%2Flarge%2FP0%2FP0003604_p.gif&w=750&q=75",
         120,
-        '2023-10-1 00:00:00',
+        '2023-10-8 00:00:00',
         1,
         1,
         "https://ticketimage.interpark.com/Play/image/etc/23/P0003604-02.jpg"
