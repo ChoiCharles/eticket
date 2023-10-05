@@ -18,6 +18,8 @@ import NFTGallery from 'pages/Etc/NFTGallery';
 import Error from 'pages/Etc/Error';
 import Upcoming from 'pages/Upcoming/Upcoming';
 import Receipt from 'pages/Receipt/Receipt';
+import NFTDetail from 'components/user/MyPage/MyNFT/NFTDetail';
+
 
 function AppRouter() {
   return (
@@ -44,6 +46,7 @@ function AppRouter() {
         <Route path="/my" element={<MyPage />} />
         <Route path="/myticket/:idx" element={<MyTicketDetail />} />
         <Route path="/gallery" element={<NFTGallery />} />
+        <Route path="/nftdetail" element={<NFTDetail />} />
         <Route path="/*" element={<Navigate replace to="/error" />} />
         <Route path="/error" element={<Error />} />
       </Routes>
