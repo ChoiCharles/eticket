@@ -7,13 +7,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
 import org.oao.eticket.application.domain.model.Seat;
+import org.oao.eticket.application.port.in.CheckTicketingPermissionUseCase;
 import org.oao.eticket.application.port.in.dto.PreemptVacancyCommand;
 import org.oao.eticket.application.port.in.PreemptVacancyUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
 import org.oao.eticket.exception.PreemptVacancyFailureException;
 import org.oao.eticket.exception.UnexpectedException;
+import org.oao.eticket.exception.UserNotFoundException;
+import org.oao.eticket.infrastructure.security.EticketUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -24,6 +28,7 @@ public class PreemptVacancyController {
   record PreemptVacancyResponseBody(Seat seat) {}
 
   private final PreemptVacancyUseCase preemptVacancyUseCase;
+  private final CheckTicketingPermissionUseCase checkTicketingPermissionUseCase;
 
   @Operation(
       summary = "특정 좌석을 클릭 하여 좌석에 대한 좌석 선점 요청",
@@ -52,20 +57,21 @@ public class PreemptVacancyController {
   ResponseEntity<PreemptVacancyResponseBody> preemptVacancy(
       @PathVariable Integer performanceScheduleId,
       @PathVariable Integer sectionId,
-      @PathVariable Integer seatId) {
+      @PathVariable Integer seatId,
+      final Authentication authentication) {
     try {
-      // TODO: redis에 들러서 대기열에서 나온 유저인지 확인
-//      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
-//        throw ApiException.builder()
-//            .withStatus(HttpStatus.UNAUTHORIZED)
-//            .withMessage("Unknown credentials is used.")
-//            .build();
-//      }
-//
-//      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
-//          userDetails.getId().getValue(), performancesScheduledId))) {
-//        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
-//      }
+      // redis에 들러서 대기열에서 나온 유저인지 확인
+      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
+        throw ApiException.builder()
+            .withStatus(HttpStatus.UNAUTHORIZED)
+            .withMessage("Unknown credentials is used.")
+            .build();
+      }
+
+      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
+          userDetails.getId().getValue(), performanceScheduleId))) {
+        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
+      }
 
       // 좌석 선점 요청
       final var preemptVacancyCommand =
@@ -88,6 +94,12 @@ public class PreemptVacancyController {
           .withStatus(HttpStatus.BAD_REQUEST)
           .withCause(e)
           .withMessage(e.getMessage())
+          .build();
+    } catch (UserNotFoundException e) { // Section에 SeatClass 등록을 안함
+      throw ApiException.builder()
+          .withStatus(HttpStatus.UNAUTHORIZED)
+          .withCause(e)
+          .withMessage(e.getMessage() + "이 유저는 대기열을 거치지 않았습니다.")
           .build();
     } catch (Exception e) {
       // 409

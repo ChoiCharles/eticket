@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Web3 from 'web3';
-import axios from 'axios';
 import EticketJSON from '../contracts/Eticket.json';
 
 const useMetaData = () => {

@@ -3,6 +3,7 @@ import {
   PaymentWidgetInstance,
   loadPaymentWidget,
 } from '@tosspayments/payment-widget-sdk';
+import { nanoid } from 'nanoid';
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { useLocation, useParams } from 'react-router-dom';
 
@@ -18,7 +19,6 @@ const Checkout = () => {
   const { checkoutPerformanceScheduleId, selectedSeats } = useParams();
   const { state } = useLocation();
   const { price } = state;
-  console.log(price);
 
   useEffect(() => {
     (async () => {
@@ -39,7 +39,7 @@ const Checkout = () => {
 
     try {
       await paymentWidget?.requestPayment({
-        orderId: '0',
+        orderId: nanoid(),
         orderName: '티켓',
         customerName: '203',
         customerEmail: 'customer123@gmail.com',

@@ -61,6 +61,7 @@ function MyPage() {
         
         if (response.status === 200) {
           setMyTicketData(response.data)
+          console.log(response.data)
         } else {
           alert('예매 목록을 불러오는데 실패했습니다')
         }
@@ -149,7 +150,7 @@ function MyPage() {
   };
 
   return (
-    <div className="container">
+    <div className="mypage-container">
       <div className="my-info">
         <h3 className="nickName">{userNickName}</h3>
         {myAccount === '' ? (
