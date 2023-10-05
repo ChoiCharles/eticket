@@ -13,8 +13,8 @@ import { Client } from '@stomp/stompjs';
 import instance from 'apis/utils/instance';
 import useUserId from 'hooks/useUserId';
 
-const protocol = /https$/.test(window.location.protocol) ? 'wss' : 'ws';
-const URL = `${protocol}://${window.location.origin.split('//')[1]}/ws`;
+// const protocol = /https$/.test(window.location.protocol) ? 'wss' : 'ws';
+const URL = `wss://${window.location.origin.split('//')[1]}/ws`;
 
 const Waiting = () => {
   const [order, setOrder] = useState<number | null>(null);
