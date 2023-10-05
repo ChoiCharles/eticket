@@ -7,7 +7,7 @@ import org.oao.eticket.application.domain.model.User;
 @Value
 @Builder
 public class ReserveTicketCommand {
-  User.UserId userId;
+  User.UserID userId;
   Integer performanceScheduleId;
   Integer seatId;
   Integer paymentAmount;

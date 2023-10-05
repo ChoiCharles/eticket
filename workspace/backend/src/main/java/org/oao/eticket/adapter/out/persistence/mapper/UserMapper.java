@@ -10,7 +10,7 @@ import org.oao.eticket.application.port.out.dto.CreateUserCommand;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 
-  @Mapping(target = "id", expression = "java(User.UserId.of(jpaEntity.getId()))")
+  @Mapping(target = "id", expression = "java(User.UserID.of(jpaEntity.getId()))")
   @Mapping(
       target = "blockChainWallet",
       expression = "java(BlockChainWallet.of(jpaEntity.getWalletAddress()))")

@@ -47,7 +47,7 @@ public class EticketAuthorizationHeaderFilter extends OncePerRequestFilter {
     if (containsToken(request)) {
       final var token = obtainTokenFromRequest(request);
 
-      final Pair<User.UserId, List<UserRole>> tokenPayload;
+      final Pair<User.UserID, List<UserRole>> tokenPayload;
       try {
         tokenPayload = verifyAccessTokenUseCase.verify(token);
       } catch (TokenVerificationException e) {

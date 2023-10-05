@@ -16,7 +16,7 @@ public class GetUserDetailsService implements GetUserDetailsUseCase {
   private final UserMapper userMapper;
 
   @Override
-  public UserDto getByUserId(final User.UserId userId) {
+  public UserDto getByUserId(final User.UserID userId) {
     return userMapper.mapToUserDto(loadUserPort.loadById(userId));
   }
 }

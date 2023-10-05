@@ -22,7 +22,7 @@ class CreateAuthTokenServiceTests {
 
   private static final User DUMMY_USER =
       new User(
-          User.UserId.of(0), null, null, null, null, BlockChainWallet.NULL_WALLET, UserRole.GUEST);
+          User.UserID.of(0), null, null, null, null, BlockChainWallet.NULL_WALLET, UserRole.GUEST);
 
   @Autowired private CreateAuthTokenService createAuthTokenService;
 

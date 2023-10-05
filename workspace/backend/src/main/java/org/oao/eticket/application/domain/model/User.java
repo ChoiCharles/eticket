@@ -5,7 +5,7 @@ import lombok.*;
 @Value
 public class User {
 
-  UserId id;
+  UserID id;
   String username;
   String password;
   String nickname;
@@ -15,20 +15,20 @@ public class User {
 
   @Getter
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class UserId {
+  public static class UserID {
     private final int value;
 
-    public static UserId of(final int value) {
-      return new UserId(value);
+    public static UserID of(final int value) {
+      return new UserID(value);
     }
 
-    public static UserId of(final String value) {
-      return new UserId(Integer.parseInt(value));
+    public static UserID of(final String value) {
+      return new UserID(Integer.parseInt(value));
     }
 
     @Override
     public boolean equals(final Object other) {
-      return other instanceof UserId && ((UserId) other).value == value;
+      return other instanceof UserID && ((UserID) other).value == value;
     }
 
     @Override

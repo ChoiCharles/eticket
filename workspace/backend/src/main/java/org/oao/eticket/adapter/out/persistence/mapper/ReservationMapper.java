@@ -44,7 +44,7 @@ public interface ReservationMapper {
   @Mapping(target = "performanceScheduleJpaEntity", source = "performanceSchedule")
   ReservationJpaEntity mapToJpaEntity(CancelMyReservationCommand cancelMyReservationCommand);
 
-  default UserJpaEntity mapToUserJpaEntity(final User.UserId userId) {
+  default UserJpaEntity mapToUserJpaEntity(final User.UserID userId) {
     final var userJpaEntity = new UserJpaEntity();
     userJpaEntity.setId(userId.getValue());
     return userJpaEntity;

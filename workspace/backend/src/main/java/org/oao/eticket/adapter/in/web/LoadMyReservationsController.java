@@ -20,13 +20,12 @@ public class LoadMyReservationsController {
   private final LoadMyReservationsUseCase loadMyReservationsUseCase;
 
   @GetMapping(path = "/api/reservations/{userId}")
-  ResponseEntity<List<Reservation>> loadMyReservations(
-      @PathVariable Integer userId, Authentication authentication) {
+  ResponseEntity<List<Reservation>> loadMyReservations(@PathVariable Integer userId, Authentication authentication) {
 
     if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
       throw new RuntimeException("out");
     }
-    if (!(User.UserId.of(userId).equals(userDetails.getId()))) {
+    if (!(User.UserID.of(userId).equals(userDetails.getId()))) {
       throw ApiException.builder()
           .withStatus(HttpStatus.FORBIDDEN)
           .withMessage("Invalid Permission")

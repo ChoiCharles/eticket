@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Value
 @Builder
 public class CreateReservationCommand {
-  User.UserId buyerId;
+  User.UserID buyerId;
   int performanceScheduleId;
   int seatId;
   int paymentAmount;
