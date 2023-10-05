@@ -2,18 +2,25 @@ import React from 'react';
 import './ConcertItem.scss';
 import useMovePage from 'hooks/useMovePage.ts';
 
-// interface ConcertListItem {
-//   id: number;
-//   image: string;
-//   title: string;
-//   location: string;
-//   date: string;
-// }
+type Item = {
+  id: { value: number };
+  performanceScheduleList: string[];
+  posterImagePath: string;
+  ticketingOpenDateTime: string;
+  title: string;
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function ConcertItem({ concertInfo }: { concertInfo: any }) {
-  console.log(concertInfo);
+function ConcertItem({ concertInfo }: { concertInfo: Item }) {
+  console.log(concertInfo.performanceScheduleList);
+  const startDate = concertInfo.performanceScheduleList[0];
+  const datePart = startDate.split('T')[0];
+  const endDate =
+    concertInfo.performanceScheduleList[
+      concertInfo.performanceScheduleList.length - 1
+    ];
 
+  const endDatePart = endDate.split('T')[0];
   const { movePage } = useMovePage();
 
   const handleConcertClick = () => {
@@ -49,7 +56,7 @@ function ConcertItem({ concertInfo }: { concertInfo: any }) {
           <div className="concert-title">{concertInfo.title}</div>
           {/* <div className="concert-location-text">{concertInfo.location}</div> */}
           <div className="concert-date">
-            {concertInfo.ticketingOpenDateTime}
+            {datePart} ~ {endDatePart}
           </div>
         </div>
       </div>

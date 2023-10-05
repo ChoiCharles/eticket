@@ -53,7 +53,9 @@ function DetailPoster({ info }: { info: any }) {
           </div>
           <div className="poster-right-box">
             <div className="concert-title-text">{info.title}</div>
-            <div className="concert-time">총:{info.runningTime}분</div>
+            <div className="concert-time">
+              Running Time: {info.runningTime}분
+            </div>
             <div className="concert-period-box">
               <CalendarMonthIcon sx={{ color: 'gray' }} />
 

@@ -3,13 +3,25 @@ import './SeatSection.scss';
 import SeatItem from 'components/common/SeatItem/SeatItem';
 import { useRecoilState } from 'recoil';
 import SelectSeatState from 'atoms/SelectSeatState';
-import seatClassRelation from 'seatClassRelation';
 
-function SeatSection({ index }: { index: number }) {
-  const sectionId = index;
-  console.log('index', index);
-  const sectionClass = seatClassRelation[sectionId];
-  console.log(sectionClass);
+interface sectionInfoType {
+  id: {
+    value: number;
+  };
+  name: string;
+  seatClass: {
+    className: string;
+    id: {
+      value: number;
+    };
+    price: number;
+  };
+  sectionSeatCount: number;
+}
+
+function SeatSection({ info }: { info: sectionInfoType }) {
+  // const sectionIndex = info.id.value;
+  const sectionClass = info.seatClass.className;
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [, setSelectedSeats] = useRecoilState(SelectSeatState);
@@ -43,7 +55,7 @@ function SeatSection({ index }: { index: number }) {
 
   return (
     <div>
-      {sectionClass.seat_class_id === 1 ? (
+      {sectionClass === 'S' ? (
         <div className="seat-section">
           <div onClick={selectSeat} className="seat-section-box" aria-hidden>
             VIP
@@ -53,7 +65,7 @@ function SeatSection({ index }: { index: number }) {
           {isModalOpen && (
             <div className="modal">
               <div className="modal-content">
-                <SeatItem index={sectionId} classNum={1} />
+                <SeatItem object={info} />
                 <button type="button" onClick={closeModal}>
                   닫기
                 </button>
@@ -71,7 +83,7 @@ function SeatSection({ index }: { index: number }) {
           {isModalOpen && (
             <div className="modal">
               <div className="modal-content">
-                <SeatItem index={sectionId} classNum={2} />
+                <SeatItem object={info} />
                 <button type="button" onClick={closeModal}>
                   닫기
                 </button>

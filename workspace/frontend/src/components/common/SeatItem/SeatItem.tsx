@@ -1,15 +1,27 @@
 import React from 'react';
 import './SeatItem.scss';
-import SeatDummy from 'seatDummy';
-import seatClassDummy from 'seatClassDummy';
 import SeatBox from 'components/seat/SeatBox/SeatBox';
 import { useRecoilState } from 'recoil';
 import SelectSeatState from 'atoms/SelectSeatState';
 import useMovePage from 'hooks/useMovePage';
 
-function SeatItem({ index, classNum }: { index: number; classNum: number }) {
+interface sectionInfoType {
+  id: {
+    value: number;
+  };
+  name: string;
+  seatClass: {
+    className: string;
+    id: {
+      value: number;
+    };
+    price: number;
+  };
+  sectionSeatCount: number;
+}
+function SeatItem({ object }: { object: sectionInfoType }) {
+  console.log('객체 :', object);
   // console.log('세부좌석', index);
-  const seatList = SeatDummy[index];
   // console.log(seatList);
 
   const { movePage } = useMovePage();
@@ -30,10 +42,10 @@ function SeatItem({ index, classNum }: { index: number; classNum: number }) {
 
   return (
     <div>
-      <div className="section-number-box">SECTION {seatList.name}</div>
+      <div className="section-number-box">SECTION {object.name}</div>
       <div className="seat-outer-box">
         <div className="seat-item-container2">
-          {Array(seatList.section_seat_count)
+          {Array(object.sectionSeatCount)
             .fill(null)
             .map((_, idx) => (
               // eslint-disable-next-line react/no-array-index-key
@@ -61,9 +73,7 @@ function SeatItem({ index, classNum }: { index: number; classNum: number }) {
                     {turnAlpha(seat)}열 {(seat % 5) + 1}번 좌석
                   </div>
                 </div>
-                <div>
-                  가격: {seatClassDummy[classNum - 1].price.toLocaleString()}원
-                </div>
+                <div>가격: {object.seatClass.price.toLocaleString()}원</div>
               </div>
             ))}
           </div>
@@ -75,9 +85,7 @@ function SeatItem({ index, classNum }: { index: number; classNum: number }) {
           <div>
             <div className="total-price">
               합계:{' '}
-              {(
-                selectedSeats.length * seatClassDummy[classNum - 1].price
-              ).toLocaleString()}
+              {(selectedSeats.length * object.seatClass.price).toLocaleString()}
               원
             </div>
             <div className="click-buy-button" onClick={clickBuyBtn} aria-hidden>
