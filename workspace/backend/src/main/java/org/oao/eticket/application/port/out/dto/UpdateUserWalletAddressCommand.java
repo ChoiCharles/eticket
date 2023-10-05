@@ -7,6 +7,6 @@ import org.oao.eticket.application.domain.model.User;
 @Value
 public class UpdateUserWalletAddressCommand {
 
-  User.UserId targetUserId;
+  User.UserID targetUserID;
   BlockChainWallet newBlockChainWallet;
 }

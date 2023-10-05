@@ -38,7 +38,7 @@ public class VerifyAccessTokenService implements VerifyAccessTokenUseCase {
   }
 
   @Override
-  public Pair<User.UserId, List<UserRole>> verify(final String accessJwt)
+  public Pair<User.UserID, List<UserRole>> verify(final String accessJwt)
       throws TokenVerificationException {
 
     DecodedJWT decodedJwt;
@@ -48,7 +48,7 @@ public class VerifyAccessTokenService implements VerifyAccessTokenUseCase {
       throw new TokenVerificationException("JWT verification failure: ", e);
     }
 
-    final var userId = User.UserId.of(decodedJwt.getSubject());
+    final var userId = User.UserID.of(decodedJwt.getSubject());
     final var tokenId = AuthTokenId.of(decodedJwt.getClaim("tid").asString());
 
     AccessTokenMetadata accessTokenMetadata;

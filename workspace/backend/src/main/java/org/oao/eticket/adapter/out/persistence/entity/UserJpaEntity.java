@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.oao.eticket.application.domain.model.UserRole;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -46,4 +48,7 @@ public class UserJpaEntity {
 
   @Column(unique = true)
   private byte[] walletAddress;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+  private List<NftTicketJpaEntity> nftTickets;
 }

@@ -26,7 +26,7 @@ class LoadAccessTokenMetadataPortTests {
 
   private static final User DUMMY_USER =
       new User(
-          User.UserId.of(0), null, null, null, null, BlockChainWallet.NULL_WALLET, UserRole.GUEST);
+          User.UserID.of(0), null, null, null, null, BlockChainWallet.NULL_WALLET, UserRole.GUEST);
 
   @Autowired private CreateAuthTokenUseCase createAuthTokenUseCase;
   @Autowired private LoadAccessTokenMetadataPort loadAccessTokenMetadataPort;
@@ -62,7 +62,7 @@ class LoadAccessTokenMetadataPortTests {
         () -> {
           final var cmd =
               new LoadAccessTokenMetadataCommand(
-                  User.UserId.of(-1), AuthTokenId.of(UUID.randomUUID()));
+                  User.UserID.of(-1), AuthTokenId.of(UUID.randomUUID()));
           loadAccessTokenMetadataPort.load(cmd);
         });
   }

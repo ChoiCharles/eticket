@@ -8,11 +8,11 @@ import org.oao.eticket.application.domain.model.User;
 
 import java.io.IOException;
 
-public class UserIdDeserializer extends JsonDeserializer<User.UserId> {
+public class UserIdDeserializer extends JsonDeserializer<User.UserID> {
   @Override
-  public User.UserId deserialize(final JsonParser jsonParser, final DeserializationContext context)
+  public User.UserID deserialize(final JsonParser jsonParser, final DeserializationContext context)
       throws IOException {
     final var value = jsonParser.readValueAs(Integer.class);
-    return User.UserId.of(value);
+    return User.UserID.of(value);
   }
 }

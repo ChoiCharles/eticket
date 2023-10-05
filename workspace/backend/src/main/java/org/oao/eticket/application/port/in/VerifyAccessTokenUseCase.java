@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface VerifyAccessTokenUseCase {
 
-  Pair<User.UserId, List<UserRole>> verify(String accessJwt) throws TokenVerificationException;
+  Pair<User.UserID, List<UserRole>> verify(String accessJwt) throws TokenVerificationException;
 }
