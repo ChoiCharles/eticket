@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 
 const SeatId = atom<number | null>({
-  key: 'SelectSeatState',
+  key: 'SelectSeatId',
   default: null,
 });
 

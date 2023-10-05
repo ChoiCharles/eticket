@@ -32,6 +32,7 @@ function SeatBox({ index, state }: { index: number; state: stateType }) {
       }
     }
   };
+
   // 넘겨줘야하는 id
   console.log(selectSeatId);
   // console.log(SeatId);
