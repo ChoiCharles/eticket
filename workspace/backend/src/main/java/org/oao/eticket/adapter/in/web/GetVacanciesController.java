@@ -72,10 +72,10 @@ public class GetVacanciesController { // 특정 공연의 특정 구역의 빈 �
             .build();
       }
 
-      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
-          userDetails.getId().getValue(), performanceScheduleId))) {
-        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
-      }
+//      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
+//          userDetails.getId().getValue(), performanceScheduleId))) {
+//        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
+//      }
       final var results =
           getVacanciesUseCase.getVacancies(
               GetVacanciesCommand.builder()
