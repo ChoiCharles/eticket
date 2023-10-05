@@ -14,6 +14,7 @@ public class GetTicketingService implements CheckTicketingPermissionUseCase {
   @Override
   public boolean checkTicketingPermission(Integer userId, Integer performanceScheduleId) {
     long order = getOrderPort.getOrder(getKey(performanceScheduleId), userId);
+    System.out.println(order);
     return order != -1;
   }
 
