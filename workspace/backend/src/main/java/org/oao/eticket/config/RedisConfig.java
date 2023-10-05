@@ -38,12 +38,6 @@ public class RedisConfig {
     return redisTemplate;
   }
 
-  @Bean
-  public HashOperations<String, String, PerformanceScheduleSeatTable> hashOperations(
-      RedisTemplate<String, Object> redisTemplate) {
-    return redisTemplate.opsForHash();
-  }
-
   @Bean("eticketAuthRedisConnectionFactory")
   RedisConnectionFactory eticketAuthRedisConnectionFactory(
       @Value("${eticket.redis.auth.host}") final String host,
