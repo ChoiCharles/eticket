@@ -12,10 +12,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoadMyReservationsService implements LoadMyReservationsUseCase {
 
-    private final LoadMyReservationsPort loadMyReservationsPort;
+  private final LoadMyReservationsPort loadMyReservationsPort;
 
-    @Override
-    public List<Reservation> loadMyReservations(Integer userId) {
-        return loadMyReservationsPort.findMyReservations(userId);
-    }
+  @Override
+  public List<Reservation> loadMyReservations(Integer userId) {
+    return loadMyReservationsPort.findMyReservations(userId);
+  }
 }

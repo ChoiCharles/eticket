@@ -16,9 +16,7 @@ public class AuthTokenIdSerializer extends JsonSerializer<AuthTokenId> {
 
   @Override
   public void serialize(
-      final AuthTokenId value,
-      final JsonGenerator gen,
-      final SerializerProvider serializers)
+      final AuthTokenId value, final JsonGenerator gen, final SerializerProvider serializers)
       throws IOException {
     if (value == null) {
       gen.writeNull();

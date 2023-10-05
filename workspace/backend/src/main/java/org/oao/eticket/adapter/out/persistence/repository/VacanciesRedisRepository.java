@@ -1,6 +1,5 @@
 package org.oao.eticket.adapter.out.persistence.repository;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
 import org.oao.eticket.application.domain.model.Seat;
@@ -35,7 +34,7 @@ public class VacanciesRedisRepository
 
   // PerformanceScheduleSeatTable 객체 저장
   @Override
-  public void saveTable(PerformanceScheduleSeatTable table) {
+  public void saveSeatTable(PerformanceScheduleSeatTable table) {
     String key = getKey(table);
     if (hashOperations.hasKey(TABLE_KEY, key)) {
       System.out.println(TABLE_KEY + "에 " + key + "는 이미 들어 있다.");
@@ -48,9 +47,9 @@ public class VacanciesRedisRepository
 
   // 좌석 정보 조회
   @Override
-  public List<Seat> getSeatTable(LoadVacanciesRedisCommand cmd) {
+  public List<Seat> getSectionSeats(LoadVacanciesRedisCommand cmd) {
     PerformanceScheduleSeatTable table =
-        getTable(cmd.getPerformanceScheduleId(), cmd.getSectionId());
+        getData(cmd.getPerformanceScheduleId(), cmd.getSectionId());
     if (table != null) {
       return table.getSeats();
     } else {
@@ -60,22 +59,20 @@ public class VacanciesRedisRepository
 
   // 특정 좌석의 status 업데이트
   @Override
-  public PerformanceScheduleSeatTable preemptVacancy(PreemptVacancyCommand cmd) {
-    PerformanceScheduleSeatTable table =
-        getTable(cmd.getPerformanceScheduleId(), cmd.getSectionId());
-    System.out.println(cmd.getSectionId());
-    if (table != null) {
-      List<Seat> seats = table.getSeats();
+  public Seat preemptVacancy(PreemptVacancyCommand cmd) {
+    PerformanceScheduleSeatTable seatTable =
+        getData(cmd.getPerformanceScheduleId(), cmd.getSectionId()); // section seats
+    if (seatTable != null) {
+      List<Seat> seats = seatTable.getSeats();
       for (Seat seat : seats) {
         if (seat.getId().equals(cmd.getSeatId())) {
           if (seat.getSeatStatus() != SeatStatus.ONSALE) {
             throw new PreemptVacancyFailureException(cmd.getSeatId().toString());
           }
           seat.setSeatStatus(SeatStatus.PREEMPTED);
-          table.setSeats(seats);
-          hashOperations.put(TABLE_KEY, getKey(table), table);
-          System.out.println("hello");
-          return table;
+          seatTable.setSeats(seats);
+          hashOperations.put(TABLE_KEY, getKey(seatTable), seatTable);
+          return seat;
         }
       }
     }
@@ -83,7 +80,7 @@ public class VacanciesRedisRepository
   }
 
   // PerformanceScheduleSeatTable 객체 조회
-  public PerformanceScheduleSeatTable getTable(Integer performanceScheduleId, Integer sectionId) {
+  public PerformanceScheduleSeatTable getData(Integer performanceScheduleId, Integer sectionId) {
     String key = getKey(performanceScheduleId, sectionId);
 
     if (hashOperations.hasKey(TABLE_KEY, key)) {

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.oao.eticket.application.domain.model.PerformanceScheduleSeatTable;
+import org.oao.eticket.application.domain.model.Seat;
 import org.oao.eticket.application.port.in.dto.PreemptVacancyCommand;
 import org.oao.eticket.application.port.in.PreemptVacancyUseCase;
 import org.oao.eticket.common.annotation.WebAdapter;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @WebAdapter
 @RequiredArgsConstructor
 public class PreemptVacancyController {
-  record PreemptVacancyResponseBody(PerformanceScheduleSeatTable seatTable) {}
+  record PreemptVacancyResponseBody(Seat seat) {}
 
   private final PreemptVacancyUseCase preemptVacancyUseCase;
 
@@ -53,21 +54,20 @@ public class PreemptVacancyController {
       @PathVariable Integer sectionId,
       @PathVariable Integer seatId) {
     try {
-      // 권한 체크
-      //      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
-      //        throw ApiException.builder()
-      //                .withStatus(HttpStatus.UNAUTHORIZED)
-      //                .withMessage("Unknown credentials is used.")
-      //                .build();
-      //      }
-      //
-      //      if
-      // (!(checkTicketingPermissionUseCase.checkTicketingPermission(userDetails.getId().getValue(),
-      // performancesScheduledId))) {
-      //        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
-      //      }
+      // TODO: redis에 들러서 대기열에서 나온 유저인지 확인
+//      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
+//        throw ApiException.builder()
+//            .withStatus(HttpStatus.UNAUTHORIZED)
+//            .withMessage("Unknown credentials is used.")
+//            .build();
+//      }
+//
+//      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
+//          userDetails.getId().getValue(), performancesScheduledId))) {
+//        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
+//      }
 
-      //
+      // 좌석 선점 요청
       final var preemptVacancyCommand =
           PreemptVacancyCommand.builder()
               .performanceScheduleId(performanceScheduleId)

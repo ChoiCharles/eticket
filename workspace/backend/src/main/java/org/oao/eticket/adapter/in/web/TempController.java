@@ -15,19 +15,19 @@ import java.util.List;
 @WebAdapter
 @RequiredArgsConstructor
 public class TempController {
-    // 스케줄러로 만든 서비스 API 테스트 해보려고 만든 애 (오늘 예매 오픈 하는 공연이 redis에 저장 됨)
-    private final SaveVacanciesToRedisUseCase saveVacanciesToRedisUseCase;
+  // 스케줄러로 만든 서비스 API 테스트 해보려고 만든 애 (오늘 예매 오픈 하는 공연이 redis에 저장 됨)
+  private final SaveVacanciesToRedisUseCase saveVacanciesToRedisUseCase;
 
-    @GetMapping("api/test")
-    List<PerformanceScheduleSeatTable> test() {
-        try {
-            return saveVacanciesToRedisUseCase.saveVacanciesToRedis();
-        } catch (SeatTableDuplicatedException e) {
-            throw ApiException.builder()
-                    .withStatus(HttpStatus.BAD_REQUEST)
-                    .withCause(e)
-                    .withMessage(e.getMessage())
-                    .build();
-        }
+  @GetMapping("api/test")
+  List<PerformanceScheduleSeatTable> test() {
+    try {
+      return saveVacanciesToRedisUseCase.saveVacanciesToRedis();
+    } catch (SeatTableDuplicatedException e) {
+      throw ApiException.builder()
+          .withStatus(HttpStatus.BAD_REQUEST)
+          .withCause(e)
+          .withMessage(e.getMessage())
+          .build();
     }
+  }
 }

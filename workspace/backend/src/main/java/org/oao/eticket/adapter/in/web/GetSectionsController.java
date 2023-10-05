@@ -48,23 +48,26 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
         @ApiResponse(
             responseCode = "403",
-            description = "NOT FOUND. (해당 공연이 개최 되는 콘서트 홀에 section 정보가 없거나 각 section에 좌석 등급이 할당 되지 않았습니다.)",
+            description =
+                "NOT FOUND. (해당 공연이 개최 되는 콘서트 홀에 section 정보가 없거나 각 section에 좌석 등급이 할당 되지 않았습니다.)",
             content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
       })
   @GetMapping("/api/schedules/{performanceScheduleId}/sections")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<GetSectionsResponseBody> getSections(
-          @PathVariable("performanceScheduleId") Integer performancesScheduledId, final Authentication authentication) {
+      @PathVariable("performanceScheduleId") Integer performancesScheduledId,
+      final Authentication authentication) {
     try {
       // TODO: redis에 들러서 대기열에서 나온 유저인지 확인
 //      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
 //        throw ApiException.builder()
-//                .withStatus(HttpStatus.UNAUTHORIZED)
-//                .withMessage("Unknown credentials is used.")
-//                .build();
+//            .withStatus(HttpStatus.UNAUTHORIZED)
+//            .withMessage("Unknown credentials is used.")
+//            .build();
 //      }
 //
-//      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(userDetails.getId().getValue(), performancesScheduledId))) {
+//      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
+//          userDetails.getId().getValue(), performancesScheduledId))) {
 //        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
 //      }
       // use case릁 통해 MySql에서 특정 공연의 상세 정보 가져 오기
@@ -91,10 +94,10 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
           .build();
     } catch (UserNotFoundException e) { // Section에 SeatClass 등록을 안함
       throw ApiException.builder()
-              .withStatus(HttpStatus.UNAUTHORIZED)
-              .withCause(e)
-              .withMessage(e.getMessage() + "이 유저는 대기열을 거치지 않았습니다.")
-              .build();
+          .withStatus(HttpStatus.UNAUTHORIZED)
+          .withCause(e)
+          .withMessage(e.getMessage() + "이 유저는 대기열을 거치지 않았습니다.")
+          .build();
     } catch (Exception e) {
       e.printStackTrace();
       throw ApiException.builder()

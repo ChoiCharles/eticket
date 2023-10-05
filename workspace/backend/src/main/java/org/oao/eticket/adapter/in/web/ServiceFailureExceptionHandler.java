@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class ServiceFailureExceptionHandler {
 
-    @ExceptionHandler(ServiceFailureException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ApiErrorResponse handleException(final ServiceFailureException e) {
-        log.info("ServiceFailureException raised.", e);
-        return ApiErrorResponse.builder()
-                .withMessage(e.getMessage())
-                .build();
-    }
+  @ExceptionHandler(ServiceFailureException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  ApiErrorResponse handleException(final ServiceFailureException e) {
+    log.info("ServiceFailureException raised.", e);
+    return ApiErrorResponse.builder().withMessage(e.getMessage()).build();
+  }
 }

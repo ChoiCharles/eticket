@@ -11,9 +11,6 @@ public class ApiExceptionHandler {
   ResponseEntity<ApiErrorResponse> catchApiException(final ApiException e) {
     return ResponseEntity.status(e.getStatus())
         .contentType(MediaType.APPLICATION_JSON)
-        .body(
-            ApiErrorResponse.builder()
-                .withMessage(e.getMessage())
-                .build());
+        .body(ApiErrorResponse.builder().withMessage(e.getMessage()).build());
   }
 }
