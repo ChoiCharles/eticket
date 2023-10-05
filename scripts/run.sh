@@ -4,9 +4,9 @@ if [[ $(pwd) =~ /scripts$ ]]; then
     cd ..
 fi
 
-PROJECT_DIR="$(pwd)"
-WORKSPACE_DIR="$PROJECT_DIR/workspace"
-DOCKER_COMPOSE_DIR="$PROJECT_DIR/docker-compose"
+MAIN_DIR="$(realpath "$(dirname "$0")"/..)"
+WORKSPACE_DIR="$MAIN_DIR/workspace"
+DOCKER_COMPOSE_DIR="$MAIN_DIR/docker-compose"
 
 if [[ $* == *--stop* ]]; then
     docker-compose -f "$DOCKER_COMPOSE_DIR/docker-compose.yaml" down
@@ -14,6 +14,12 @@ if [[ $* == *--stop* ]]; then
 fi
 
 if [[ $* != *--no-build* ]]; then
+    if [[ $* == *--bundle* ]]; then
+        if ! /bin/bash "$MAIN_DIR/scripts/bundle.sh"; then
+            exit 1
+        fi
+    fi
+
     BUILD_SCRIPTS="backend-waiting/build.sh blockchain-tracker/build.sh eticket-minter/scripts/build.sh"
     if [[ $* != *--without-backend* ]]; then
         BUILD_SCRIPTS="backend/build.sh $BUILD_SCRIPTS"
@@ -33,7 +39,7 @@ if [[ $* != *--no-build* ]]; then
     done
 
     IFS=$OIFS
-    cd "$PROJECT_DIR" || exit 1
+    cd "$MAIN_DIR" || exit 1
 fi
 
 if [[ "$(docker network ls --format "{{.Name}}" | grep -c --regex "^eticket_net$")" == 0 ]]; then
