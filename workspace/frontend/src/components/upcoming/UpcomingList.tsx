@@ -1,13 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
-import items from 'dummys';
+import instance from 'apis/utils/instance';
 import UpcomingListItem from './UpcomingListItem';
 
+type Item = {
+  id: { value: number };
+  performanceScheduleList: string[];
+  posterImagePath: string;
+  ticketingOpenDateTime: string;
+  title: string;
+}[];
+
 const UpcomingList = () => {
+  const [upcoming, setUpcoming] = useState<Item | []>([]);
+
+  const getUpcoming = async () => {
+    try {
+      const upcomingRes = await instance.get('/api/performances/upcoming');
+      setUpcoming(upcomingRes.data.upcomingPerformanceList);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUpcoming();
+  }, []);
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', px: 1 }}>
-      {items.map(item => {
-        return <UpcomingListItem item={item} />;
+      {upcoming.map(item => {
+        return <UpcomingListItem key={item.id.value} item={item} />;
       })}
     </Box>
   );
