@@ -8,14 +8,24 @@ import instance from 'apis/utils/instance';
 import { useParams } from 'react-router-dom';
 
 function Seat() {
-  const [performanceInfo, setPerformanceInfo] = useState([]);
+  const [, setPerformanceInfo] = useState([]);
   const [openCaptcha, setOpenCaptcha] = useState<boolean>(true);
   const [seatInfo, setSeatInfo] = useState([]);
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const { seatPerformanceId = 0 } = useParams();
   const performanceId = parseInt(String(seatPerformanceId), 10);
-
+  useEffect(() => {
+    instance
+      .get(`/api/test`)
+      .then(response => {
+        console.log(response);
+        // console.log(response.data.performance);
+        // setData(response.data.performance);
+        // const concertListData = hotRes;
+      })
+      .catch(error => console.error('Error:', error));
+  }, []);
   const getPerformances = async () => {
     try {
       const [seatRes, perRes] = await Promise.all([
@@ -31,27 +41,14 @@ function Seat() {
       console.log(error);
     }
   };
-  console.log(performanceInfo);
-  console.log(seatInfo.length);
-  console.log(title);
-  console.log(location);
+
   const seatSections = seatInfo;
 
   useEffect(() => {
     getPerformances();
   }, []);
+
   // temp-controller로 보내기
-  // useEffect(() => {
-  //   instance
-  //     .get(`/api/test`)
-  //     .then(response => {
-  //       console.log(response);
-  //       // console.log(response.data.performance);
-  //       // setData(response.data.performance);
-  //       // const concertListData = hotRes;
-  //     })
-  //     .catch(error => console.error('Error:', error));
-  // }, []);  const [openCaptcha, setOpenCaptcha] = useState<boolean>(true);
 
   return (
     <div>

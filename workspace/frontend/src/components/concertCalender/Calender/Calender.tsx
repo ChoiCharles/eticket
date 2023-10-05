@@ -8,45 +8,72 @@ import useMovePage from 'hooks/useMovePage';
 import { useParams } from 'react-router-dom';
 import instance from 'apis/utils/instance';
 
-type Item = {
-  id: { value: number };
-  performanceScheduleList: string[];
-  posterImagePath: string;
-  ticketingOpenDateTime: string;
-  title: string;
-};
+// type Item = {
+//   id: { value: number };
+//   performanceScheduleList: string[];
+//   posterImagePath: string;
+//   ticketingOpenDateTime: string;
+//   title: string;
+// };
 interface Props {
   idx: number;
 }
 function Calender({ idx }: Props) {
-  console.log(idx);
-  const [data, setData] = useState<Item | null>(null);
+  const [data, setData] = useState(null);
+  const [startData, setStartData] = useState('');
+  const [endData, setEndData] = useState('');
+  const [dateId1, setDateId1] = useState('');
+  const [dateId2, setDateId2] = useState('');
+  // const [realDateId, setRealDateId] = useState('');
+  const index = idx - 1;
+
   useEffect(() => {
     instance
-      .get('/api/performances/hot')
-      .then(hotRes => {
-        console.log('Hot Performances:', hotRes.data.hotPerformanceList[idx]);
-        const reList = hotRes.data.hotPerformanceList.reverse();
-        setData(reList[idx]);
+      .get(`/api/performances/${index}`)
+      .then(res => {
+        setData(res.data.performance);
+        setStartData(
+          res.data.performance.performanceScheduleList[0].startDateTime,
+        );
+        setEndData(
+          res.data.performance.performanceScheduleList[1].startDateTime,
+        );
+        setDateId1(res.data.performance.performanceScheduleList[0].id);
+        setDateId2(res.data.performance.performanceScheduleList[1].id);
       })
       .catch(error => console.error('Error:', error));
   }, []);
   // console.log(data?.performanceScheduleList);
-  const startDate = data?.performanceScheduleList[0];
-  const endDate = data?.performanceScheduleList[1];
-  // const startMoment = moment(startDate);
-  // const endMoment = moment(endDate);
-  const dayList = [startDate, endDate];
+  console.log('data :', data);
+  console.log(dateId1);
+  console.log(dateId2);
+
+  const datePart = startData.split('T')[0];
+  const endDatePart = endData.split('T')[0];
+
+  // const startDate = data?.performanceScheduleList[0].startDateTime;
+  // const endDate = data?.performanceScheduleList[1];
+  const dayList = [datePart, endDatePart];
 
   const { movePage } = useMovePage();
   const { performanceScheduleId } = useParams();
   const [today, setToday] = useState(new Date());
-  const [selectedDayIndex, setSelectedDayIndex] = useState(-1);
+  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   // console.log(dayList);
-
+  console.log(selectedDayIndex);
+  if (selectedDayIndex === 0) {
+    const realDateId = dateId1;
+    console.log(realDateId);
+  } else {
+    const realDateId = dateId2;
+    console.log(realDateId);
+  }
+  // 선택 버튼 눌럿을 때
   const clickSelect = () => {
-    if (selectedDayIndex !== -1) {
-      movePage(`/waiting/${performanceScheduleId}/${selectedDayIndex}`, null);
+    if (selectedDayIndex === 0) {
+      movePage(`/waiting/${performanceScheduleId}/${dateId1}`, null);
+    } else {
+      movePage(`/waiting/${performanceScheduleId}/${dateId2}`, null);
     }
   };
 
@@ -54,6 +81,8 @@ function Calender({ idx }: Props) {
   const onCalendarChange = (date: any) => {
     if (Array.isArray(date)) {
       setToday(date[0]);
+      // console.log('click');
+
       const formattedDate = moment(date[0]).format('YYYY-MM-DD');
       setSelectedDayIndex(dayList.indexOf(formattedDate));
     } else {
@@ -63,6 +92,7 @@ function Calender({ idx }: Props) {
     }
   };
 
+  // 사용할 수 없는 날
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isDateDisabled = ({ date }: { date: any }) => {
     const formattedDate = moment(date).format('YYYY-MM-DD');

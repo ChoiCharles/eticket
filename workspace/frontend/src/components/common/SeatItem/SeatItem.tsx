@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './SeatItem.scss';
 import SeatBox from 'components/seat/SeatBox/SeatBox';
 import { useRecoilValue } from 'recoil';
 import SelectSeatState from 'atoms/SelectSeatState';
 import useMovePage from 'hooks/useMovePage';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
+import instance from 'apis/utils/instance';
 
 interface sectionInfoType {
   id: {
@@ -21,9 +23,21 @@ interface sectionInfoType {
   sectionSeatCount: number;
 }
 function SeatItem({ object }: { object: sectionInfoType }) {
+  const [seatData, setSeatData] = useState([]);
+  const urlValue = useLocation().pathname;
+  const peformanceId = urlValue.split('/')[2];
+  const section = object.id.value;
+
+  useEffect(() => {
+    instance
+      .get(`/api/schedules/${peformanceId}/sections/${section}/vacancies`)
+      .then(response => {
+        setSeatData(response.data.vacancies);
+      })
+      .catch(error => console.error('Error:', error));
+  }, []);
+  console.log(seatData);
   console.log('객체 :', object);
-  // console.log('세부좌석', index);
-  // console.log(seatList);
   const { price } = object.seatClass;
 
   const { movePage } = useMovePage();
@@ -54,7 +68,9 @@ function SeatItem({ object }: { object: sectionInfoType }) {
             .map((_, idx) => (
               // eslint-disable-next-line react/no-array-index-key
               <div key={_} className="seat-section-wrapper">
-                <SeatBox index={idx} state={0} />
+                {seatData.length > 0 && (
+                  <SeatBox index={idx} state={seatData[idx]} />
+                )}
               </div>
             ))}
 
@@ -65,7 +81,7 @@ function SeatItem({ object }: { object: sectionInfoType }) {
       </div>
       <div className="select-seat-total-area">
         <div className="section-title">좌석 선택</div>
-        {selectedSeats.length > 0 ? (
+        {selectedSeats ? (
           <div>
             {selectedSeats.map((seat, i) => (
               // eslint-disable-next-line react/no-array-index-key
@@ -85,7 +101,7 @@ function SeatItem({ object }: { object: sectionInfoType }) {
           <div className="no-selected-seats">선택한 좌석이 없습니다.</div>
         )}
 
-        {selectedSeats.length > 0 && (
+        {selectedSeats && (
           <div>
             <div className="total-price">
               합계:{' '}
