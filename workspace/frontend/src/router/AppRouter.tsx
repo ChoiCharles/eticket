@@ -30,17 +30,29 @@ function AppRouter() {
         <Route path="/search" element={<Search />} />
         <Route path="/concert" element={<ConcertList />} />
         <Route path="/concert/:performanceId" element={<ConcertDetail />} />
-        <Route path="/waiting/:waitingId/:dateId" element={<Waiting />} />
         <Route
           path="/concertCalender/:performanceScheduleId"
           element={<ConcertCalender />}
         />
-        <Route path="/seat/:seatId/:dateId" element={<Seat />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route
+          path="/waiting/:waitingPerformanceId/:waitingPerformanceScheduleId"
+          element={<Waiting />}
+        />
+        <Route
+          path="/seat/:seatPerformanceId/:seatPerformanceScheduleId"
+          element={<Seat />}
+        />
+        <Route
+          path="/checkout/:checkoutPerformanceScheduleId/:selectedSeatId"
+          element={<Checkout />}
+        />
+        <Route
+          path="/success/:successPerformanceScheduleId/:selectedSeatId"
+          element={<Success />}
+        />
         <Route path="/upcoming" element={<Upcoming />} />
         <Route path="/receipt" element={<Receipt />} />
         <Route path="/fail" element={<Navigate replace to="/checkout" />} />
-        <Route path="/success" element={<Success />} />
         <Route path="/my" element={<MyPage />} />
         <Route path="/myticket/:idx" element={<MyTicketDetail />} />
         <Route path="/gallery" element={<NFTGallery />} />

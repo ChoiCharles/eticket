@@ -6,15 +6,14 @@ import Captcha from 'components/common/Captcha/Captcha';
 import { Box, Modal } from '@mui/material';
 import instance from 'apis/utils/instance';
 import { useParams } from 'react-router-dom';
-// import seatClassDummy from 'seatClassDummy';
-// import seatClassRelation from 'seatClassRelation';
 
 function Seat() {
   const [performanceInfo, setPerformanceInfo] = useState([]);
   const [seatInfo, setSeatInfo] = useState([]);
-  const { seatId = 0 } = useParams();
-  const performanceId = parseInt(String(seatId), 10) + 1;
-  console.log(seatId);
+  const { seatPerformanceId = 0 } = useParams();
+  const performanceId = parseInt(String(seatPerformanceId), 10) + 1;
+  const [openCaptcha, setOpenCaptcha] = useState<boolean>(true);
+  console.log(seatPerformanceId);
 
   const getPerformances = async () => {
     try {
