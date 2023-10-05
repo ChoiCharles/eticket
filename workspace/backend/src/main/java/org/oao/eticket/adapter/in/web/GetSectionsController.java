@@ -55,23 +55,23 @@ public class GetSectionsController { // 예매 대기열이 끝난 후, 특정 �
   @GetMapping("/api/schedules/{performanceScheduleId}/sections")
   @ResponseStatus(HttpStatus.OK)
   ResponseEntity<GetSectionsResponseBody> getSections(
-      @PathVariable("performanceScheduleId") Integer performancesScheduledId,
+      @PathVariable("performanceScheduleId") Integer performanceScheduleId,
       final Authentication authentication) {
     try {
-      // TODO: redis에 들러서 대기열에서 나온 유저인지 확인
-//      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
-//        throw ApiException.builder()
-//            .withStatus(HttpStatus.UNAUTHORIZED)
-//            .withMessage("Unknown credentials is used.")
-//            .build();
-//      }
-//
-//      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
-//          userDetails.getId().getValue(), performancesScheduledId))) {
-//        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
-//      }
+      //  redis에 들러서 대기열에서 나온 유저인지 확인
+      if (!(authentication.getPrincipal() instanceof EticketUserDetails userDetails)) {
+        throw ApiException.builder()
+            .withStatus(HttpStatus.UNAUTHORIZED)
+            .withMessage("Unknown credentials is used.")
+            .build();
+      }
+
+      if (!(checkTicketingPermissionUseCase.checkTicketingPermission(
+          userDetails.getId().getValue(), performanceScheduleId))) {
+        throw new UserNotFoundException(String.valueOf(userDetails.getId().getValue()));
+      }
       // use case릁 통해 MySql에서 특정 공연의 상세 정보 가져 오기
-      final var sections = getSectionsUseCase.getSections(performancesScheduledId);
+      final var sections = getSectionsUseCase.getSections(performanceScheduleId);
 
       return ResponseEntity.ok(new GetSectionsResponseBody(sections));
     } catch (ConcertHallNotFoundException e) { // DB에 공연에 해당 하는 콘서트 홀 연결 안함
