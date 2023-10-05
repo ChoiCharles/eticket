@@ -20,12 +20,17 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.util.List;
 
 @PersistenceAdapter
-@RequiredArgsConstructor
 public class VacanciesRedisRepository
     implements SaveVacanciesRedisPort, LoadVacanciesRedisPort, PreemptVacancyPort {
-  private final RedisTemplate<String, Object> redisTemplate;
+  
+  private final RedisTemplate<String, Object> eticketReservationRedisTemplate;
   private final HashOperations<String, String, PerformanceScheduleSeatTable> hashOperations;
   private static final String TABLE_KEY = "SeatTable";
+  
+  VacanciesRedisRepository(final RedisTemplate<String, Object> eticketReservationRedisTemplate) {
+    this.eticketReservationRedisTemplate = eticketReservationRedisTemplate;
+    this.hashOperations = eticketReservationRedisTemplate.opsForHash();
+  }
 
   // PerformanceScheduleSeatTable 객체 저장
   @Override
