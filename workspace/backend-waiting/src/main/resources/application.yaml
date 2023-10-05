@@ -24,11 +24,11 @@ eticket:
     waiting:
       host: localhost
       port: 36379
-      database: 3
+      database: 4
     ticketing:
       host: localhost
       port: 36379
-      database: 4
+      database: 3
 
   auth:
     jwt:
