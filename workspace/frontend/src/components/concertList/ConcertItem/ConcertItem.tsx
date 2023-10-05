@@ -2,19 +2,29 @@ import React from 'react';
 import './ConcertItem.scss';
 import useMovePage from 'hooks/useMovePage.ts';
 
-interface ConcertListItem {
-  id: number;
-  image: string;
+type Item = {
+  id: { value: number };
+  performanceScheduleList: string[];
+  posterImagePath: string;
+  ticketingOpenDateTime: string;
   title: string;
-  location: string;
-  date: string;
-}
+};
 
-function ConcertItem({ concertInfo }: { concertInfo: ConcertListItem }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ConcertItem({ concertInfo }: { concertInfo: Item }) {
+  console.log(concertInfo.performanceScheduleList);
+  const startDate = concertInfo.performanceScheduleList[0];
+  const datePart = startDate.split('T')[0];
+  const endDate =
+    concertInfo.performanceScheduleList[
+      concertInfo.performanceScheduleList.length - 1
+    ];
+
+  const endDatePart = endDate.split('T')[0];
   const { movePage } = useMovePage();
 
   const handleConcertClick = () => {
-    movePage(`/concert/${concertInfo.id}`, concertInfo);
+    movePage(`/concert/${concertInfo.id.value}`, null);
   };
 
   return (
@@ -30,12 +40,12 @@ function ConcertItem({ concertInfo }: { concertInfo: ConcertListItem }) {
             src="https://tickets.interpark.com/contents/_next/static/media/ranking_badge_purple.ea646533.svg"
             alt="1"
           />
-          <span className="concert-number">{concertInfo.id + 1}</span>
+          <span className="concert-number">{concertInfo.id.value}</span>
         </div>
         <div className="concert-center-box">
           <div className="concert-context">
             <img
-              src={concertInfo.image}
+              src={concertInfo.posterImagePath}
               alt="사진"
               style={{ width: '90px', height: '120px' }}
             />
@@ -44,8 +54,10 @@ function ConcertItem({ concertInfo }: { concertInfo: ConcertListItem }) {
         <div className="concert-right-box">
           {/* <div className="concert-tag">단독 공연</div> */}
           <div className="concert-title">{concertInfo.title}</div>
-          <div className="concert-location-text">{concertInfo.location}</div>
-          <div className="concert-date">{concertInfo.date}</div>
+          {/* <div className="concert-location-text">{concertInfo.location}</div> */}
+          <div className="concert-date">
+            {datePart} ~ {endDatePart}
+          </div>
         </div>
       </div>
       <div className="base2-line" style={{ marginTop: '20px' }} />

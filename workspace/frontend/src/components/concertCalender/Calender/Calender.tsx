@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import './Calender.scss';
 import Calendar from 'react-calendar';
@@ -6,13 +6,47 @@ import moment from 'moment';
 import { Button } from '@mui/material';
 import useMovePage from 'hooks/useMovePage';
 import { useParams } from 'react-router-dom';
+import instance from 'apis/utils/instance';
 
-function Calender() {
+type Item = {
+  id: { value: number };
+  performanceScheduleList: string[];
+  posterImagePath: string;
+  ticketingOpenDateTime: string;
+  title: string;
+};
+interface Props {
+  idx: number;
+}
+function Calender({ idx }: Props) {
+  console.log(idx);
+  const [data, setData] = useState<Item | null>(null);
+  useEffect(() => {
+    instance
+      .get('/api/performances/hot')
+      .then(hotRes => {
+        console.log('Hot Performances:', hotRes.data.hotPerformanceList[idx]);
+        const reList = hotRes.data.hotPerformanceList.reverse();
+        setData(reList[idx]);
+      })
+      .catch(error => console.error('Error:', error));
+  }, []);
+  // console.log(data?.performanceScheduleList);
+  const startDate = data?.performanceScheduleList[0];
+  const endDate = data?.performanceScheduleList[1];
+  const startMoment = moment(startDate);
+  const endMoment = moment(endDate);
+  const dayList: string[] = [];
+  const currentMoment = startMoment.clone();
+  while (currentMoment.isSameOrBefore(endMoment)) {
+    dayList.push(currentMoment.format('YYYY-MM-DD'));
+    currentMoment.add(1, 'day');
+  }
   const { movePage } = useMovePage();
   const { performanceScheduleId } = useParams();
-  const dayList = ['2023-10-12', '2023-10-17'];
   const [today, setToday] = useState(new Date());
   const [selectedDayIndex, setSelectedDayIndex] = useState(-1);
+  // console.log(dayList);
 
   const clickSelect = () => {
     if (selectedDayIndex !== -1) {
@@ -76,8 +110,13 @@ function Calender() {
       <div className="base2-line" style={{ marginTop: '20px' }} />
       <div className="date-reservation-info">
         <div className="day-ticket-info">
-          <div>1일권</div>
-          <div>120,000원</div>
+          <div>VIP</div>
+          <div>150,000원</div>
+        </div>
+        <div className="base2-line" style={{ color: 'white' }} />
+        <div className="day-ticket-info">
+          <div>BASIC</div>
+          <div>80,000원</div>
         </div>
         <div className="base2-line" style={{ color: 'white' }} />
       </div>

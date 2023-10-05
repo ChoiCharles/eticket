@@ -15,6 +15,9 @@ const Waiting = () => {
   const [order, setOrder] = useState<number | null>(null);
   const [connected, setConnected] = useState<boolean>(false);
   const [stompClient, setStompClient] = useState<Client | null>(null);
+  console.log(connected);
+  console.log(stompClient);
+
   const { waitingId, dateId } = useParams();
   const { movePage } = useMovePage();
 

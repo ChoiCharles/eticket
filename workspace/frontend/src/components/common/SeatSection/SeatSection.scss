@@ -1,11 +1,29 @@
+.seat-section-box2 {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  margin: 20px;
+  border-radius: 6px;
+  background-color: #007acc; /* 티켓팅 서비스와 유사한 파란색 */
+  border: 2px solid #00508f; /* 테두리 색상 */
+  color: #fff; /* 글자색상 */
+  text-align: center;
+  line-height: 60px; /* 세로 가운데 정렬 */
+  font-weight: bold;
+//   cursor: pointer;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s,
+    color 0.3s; /* 부드러운 애니메이션 효과 추가 */
+}
 .seat-section-box {
   display: inline-block;
   width: 60px;
   height: 60px;
-  margin: 5px;
+  margin: 20px;
   border-radius: 6px;
-  background-color: #007acc; /* 티켓팅 서비스와 유사한 파란색 */
-  border: 2px solid #00508f; /* 테두리 색상 */
+  background-color: #db4f4f; /* 티켓팅 서비스와 유사한 파란색 */
+  border: 2px solid #b80d0d; /* 테두리 색상 */
   color: #fff; /* 글자색상 */
   text-align: center;
   line-height: 60px; /* 세로 가운데 정렬 */

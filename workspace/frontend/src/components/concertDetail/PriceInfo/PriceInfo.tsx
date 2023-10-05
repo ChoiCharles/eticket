@@ -14,14 +14,6 @@ function PriceInfo() {
           <div className="seat-type">BASIC석</div>
           <div className="price-value">80,000원</div>
         </div>
-        {/* <div className="price-item">
-          <div className="seat-type">S석</div>
-          <div className="price-value">80,000원</div>
-        </div>
-        <div className="price-item">
-          <div className="seat-type">A석</div>
-          <div className="price-value">65,000원</div>
-        </div> */}
       </div>
     </div>
   );
