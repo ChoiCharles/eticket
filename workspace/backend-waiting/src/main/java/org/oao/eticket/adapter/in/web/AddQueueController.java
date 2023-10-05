@@ -20,7 +20,7 @@ public class AddQueueController {
     @NotNull Integer performanceScheduleId;
   }
 
-  @PostMapping(path = "/waiting")
+  @PostMapping(path = "/api/waiting")
   public void addQueue(@RequestBody WaitingDetail waitingDetail) {
     addQueueUseCase.addQueue(waitingDetail.getUserId(), waitingDetail.getPerformanceScheduleId());
   }

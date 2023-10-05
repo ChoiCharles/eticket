@@ -20,7 +20,7 @@ public class RemoveTicketingController {
     @NotNull Integer performanceScheduleId;
   }
 
-  @DeleteMapping(path = "/ticketing")
+  @DeleteMapping(path = "/api/ticketing")
   public void removeTicketing(@RequestBody TicketingDetail ticketingDetail) {
     removeTicketingUseCase.removeTicketing(ticketingDetail.getUserId(), ticketingDetail.getPerformanceScheduleId());
   }
