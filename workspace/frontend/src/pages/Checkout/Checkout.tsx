@@ -16,7 +16,7 @@ const Checkout = () => {
   const paymentMethodsWidgetRef = useRef<ReturnType<
     PaymentWidgetInstance['renderPaymentMethods']
   > | null>(null);
-  const { checkoutPerformanceScheduleId, selectedSeats } = useParams();
+  const { checkoutPerformanceScheduleId, selectedSeatId } = useParams();
   const { state } = useLocation();
   const { price } = state;
 
@@ -43,7 +43,7 @@ const Checkout = () => {
         orderName: '티켓',
         customerName: '203',
         customerEmail: 'customer123@gmail.com',
-        successUrl: `${window.location.origin}/success/${checkoutPerformanceScheduleId}/${selectedSeats}?price=${price}`,
+        successUrl: `${window.location.origin}/success/${checkoutPerformanceScheduleId}/${selectedSeatId}?price=${price}`,
         failUrl: `${window.location.origin}/fail`,
       });
     } catch (error) {
