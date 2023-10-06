@@ -3,9 +3,9 @@ import './SeatItem.scss';
 import SeatBox from 'components/seat/SeatBox/SeatBox';
 import { useRecoilValue } from 'recoil';
 import SelectSeatState from 'atoms/SelectSeatState';
+import SeatId from 'atoms/SeatId';
 import useMovePage from 'hooks/useMovePage';
-import { useLocation, useParams } from 'react-router-dom';
-// import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import instance from 'apis/utils/instance';
 
 interface sectionInfoType {
@@ -22,32 +22,39 @@ interface sectionInfoType {
   };
   sectionSeatCount: number;
 }
+
 function SeatItem({ object }: { object: sectionInfoType }) {
   const [seatData, setSeatData] = useState([]);
-  const urlValue = useLocation().pathname;
-  const peformanceId = urlValue.split('/')[2];
-  const section = object.id.value;
+  const sectionId = object.id.value;
+  const { price } = object.seatClass;
+  const { movePage } = useMovePage();
+  const selectedSeats = useRecoilValue(SelectSeatState);
+  const { seatPerformanceScheduleId } = useParams();
+  const selectedSeatId = useRecoilValue(SeatId);
+
+  const preemptVacancy = async () => {
+    await instance.post(
+      `/api/schedules/${seatPerformanceScheduleId}/sections/${sectionId}/seats/${selectedSeatId}`,
+    );
+  };
+
+  const clickBuyBtn = () => {
+    movePage(`/checkout/${seatPerformanceScheduleId}/${selectedSeatId}`, {
+      price,
+    });
+    preemptVacancy();
+  };
 
   useEffect(() => {
     instance
-      .get(`/api/schedules/${peformanceId}/sections/${section}/vacancies`)
+      .get(
+        `/api/schedules/${seatPerformanceScheduleId}/sections/${sectionId}/vacancies`,
+      )
       .then(response => {
         setSeatData(response.data.vacancies);
       })
       .catch(error => console.error('Error:', error));
   }, []);
-  console.log(seatData);
-  console.log('객체 :', object);
-  const { price } = object.seatClass;
-
-  const { movePage } = useMovePage();
-  const selectedSeats = useRecoilValue(SelectSeatState);
-  const { seatPerformanceScheduleId } = useParams();
-  const clickBuyBtn = () => {
-    movePage(`/checkout/${seatPerformanceScheduleId}/${selectedSeats}`, {
-      price,
-    });
-  };
 
   // eslint-disable-next-line consistent-return
   const turnAlpha = (idx: number) => {
@@ -73,10 +80,6 @@ function SeatItem({ object }: { object: sectionInfoType }) {
                 )}
               </div>
             ))}
-
-          {/* {data.map((_, idx) => (
-            // eslint-disable-next-line react/no-array-index-key
-          ))} */}
         </div>
       </div>
       <div className="select-seat-total-area">
@@ -87,8 +90,6 @@ function SeatItem({ object }: { object: sectionInfoType }) {
               // eslint-disable-next-line react/no-array-index-key
               <div key={i} className="select-seat-price-box">
                 <div className="selected-seat">
-                  {/* <div>{index}섹션</div> */}
-                  {/* <div>turnAlpha{seat + 1}번 좌석</div> */}
                   <div>
                     {turnAlpha(seat)}열 {(seat % 5) + 1}번 좌석
                   </div>

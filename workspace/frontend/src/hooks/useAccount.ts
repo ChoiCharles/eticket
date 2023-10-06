@@ -46,7 +46,7 @@ const useAccount = () => {
           setAccount(accounts[0]);
         }
       } catch (err: any) {
-        console.log('err', err.code);
+        console.error('err', err.code);
       }
     }
   };

@@ -8,24 +8,23 @@ import useMovePage from 'hooks/useMovePage';
 import { useParams } from 'react-router-dom';
 import instance from 'apis/utils/instance';
 
-// type Item = {
-//   id: { value: number };
-//   performanceScheduleList: string[];
-//   posterImagePath: string;
-//   ticketingOpenDateTime: string;
-//   title: string;
-// };
 interface Props {
   idx: number;
 }
 function Calender({ idx }: Props) {
-  const [data, setData] = useState(null);
+  const [, setData] = useState(null);
   const [startData, setStartData] = useState('');
   const [endData, setEndData] = useState('');
   const [dateId1, setDateId1] = useState('');
   const [dateId2, setDateId2] = useState('');
-  // const [realDateId, setRealDateId] = useState('');
   const index = idx - 1;
+  const datePart = startData.split('T')[0];
+  const endDatePart = endData.split('T')[0];
+  const dayList = [datePart, endDatePart];
+  const { movePage } = useMovePage();
+  const { performanceScheduleId } = useParams();
+  const [today, setToday] = useState(new Date());
+  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
 
   useEffect(() => {
     instance
@@ -43,31 +42,7 @@ function Calender({ idx }: Props) {
       })
       .catch(error => console.error('Error:', error));
   }, []);
-  // console.log(data?.performanceScheduleList);
-  console.log('data :', data);
-  console.log(dateId1);
-  console.log(dateId2);
 
-  const datePart = startData.split('T')[0];
-  const endDatePart = endData.split('T')[0];
-
-  // const startDate = data?.performanceScheduleList[0].startDateTime;
-  // const endDate = data?.performanceScheduleList[1];
-  const dayList = [datePart, endDatePart];
-
-  const { movePage } = useMovePage();
-  const { performanceScheduleId } = useParams();
-  const [today, setToday] = useState(new Date());
-  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
-  // console.log(dayList);
-  console.log(selectedDayIndex);
-  if (selectedDayIndex === 0) {
-    const realDateId = dateId1;
-    console.log(realDateId);
-  } else {
-    const realDateId = dateId2;
-    console.log(realDateId);
-  }
   // 선택 버튼 눌럿을 때
   const clickSelect = () => {
     if (selectedDayIndex === 0) {
@@ -81,7 +56,6 @@ function Calender({ idx }: Props) {
   const onCalendarChange = (date: any) => {
     if (Array.isArray(date)) {
       setToday(date[0]);
-      // console.log('click');
 
       const formattedDate = moment(date[0]).format('YYYY-MM-DD');
       setSelectedDayIndex(dayList.indexOf(formattedDate));
@@ -110,7 +84,6 @@ function Calender({ idx }: Props) {
           next2Label={null}
           prev2Label={null}
           calendarType="hebrew"
-          // selectRange={false}
           showNeighboringMonth={false}
           tileDisabled={isDateDisabled}
           formatDay={(_locale, date) => moment(date).format('DD')}

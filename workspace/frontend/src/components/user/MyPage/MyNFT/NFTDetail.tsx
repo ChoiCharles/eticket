@@ -1,30 +1,30 @@
 import './NFTDetail.scss';
 import React from 'react';
-import testimage from 'assets/test.jfif';
-import NavBar from 'components/common/NavBar/NavBar'
-// import useMetaData from 'hooks/useMetaData';
+import BackNavBar from 'components/common/BackNavBar/BackNavBar';
+import { useLocation } from 'react-router-dom';
 
 function NFTDetail() {
-  // const { metadata } = useMetaData()
-  // const NFTImage = metadata?.image
-  // const NFTName = metadata?.name
-  // const NFTAttributes = metadata?.attributes
+  const { state } = useLocation();
 
   return (
     <div>
-      <NavBar/>
+      <BackNavBar title="" />
       <div className="NFTContainer-detail">
         <div className="NFTCard-detail">
           <div className="NFTCardImg-detail">
-            <img src={testimage} alt="NFT Image" style={{width: '100%', height: '100%'}}/>
-            {/* <img src={NFTImage} alt="NFT Image" style={{width: '100%', height: '100%'}}/> */}
+            <img
+              src={state.image}
+              alt="img"
+              style={{ width: '100%', height: '100%' }}
+            />
           </div>
         </div>
         <div className="NFTInfo-detail">
-          <h3>이름 : 내 NFT</h3>
-          <h3>좌석 : s석 1번</h3>
-          {/* <h3>이름 : {NFTName}</h3>
-          <h3>좌석 : {NFTAttributes[1].value} {NFTAttributes[0].value}</h3> */}
+          <h3>이름 : {state.name}</h3>
+          <h3>
+            좌석 :{' '}
+            {`${state.attributes[1].value}석 ${state.attributes[0].value}번`}
+          </h3>
         </div>
       </div>
     </div>

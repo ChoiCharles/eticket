@@ -15,17 +15,7 @@ function Seat() {
   const [location, setLocation] = useState('');
   const { seatPerformanceId = 0 } = useParams();
   const performanceId = parseInt(String(seatPerformanceId), 10);
-  useEffect(() => {
-    instance
-      .get(`/api/test`)
-      .then(response => {
-        console.log(response);
-        // console.log(response.data.performance);
-        // setData(response.data.performance);
-        // const concertListData = hotRes;
-      })
-      .catch(error => console.error('Error:', error));
-  }, []);
+
   const getPerformances = async () => {
     try {
       const [seatRes, perRes] = await Promise.all([
@@ -38,7 +28,7 @@ function Seat() {
       setLocation(perRes.data.performance.concertHall.name);
       setTitle(perRes.data.performance.title);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -46,6 +36,7 @@ function Seat() {
 
   useEffect(() => {
     getPerformances();
+    instance.get('/api/test');
   }, []);
 
   // temp-controller로 보내기

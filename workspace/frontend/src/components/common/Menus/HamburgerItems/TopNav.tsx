@@ -33,7 +33,7 @@ const TopNav = ({ handleToggleDrawer }: Props) => {
           setUserNickName(userDataResponse.data.nickname);
         }
       } catch (error) {
-        console.log('유저 정보 호출 에러', error);
+        console.error('유저 정보 호출 에러', error);
       }
     }
   };

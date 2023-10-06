@@ -19,7 +19,7 @@ const UpcomingList = () => {
       const upcomingRes = await instance.get('/api/performances/upcoming');
       setUpcoming(upcomingRes.data.upcomingPerformanceList);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

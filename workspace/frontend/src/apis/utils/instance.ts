@@ -21,12 +21,11 @@ instance.interceptors.request.use(req => {
 instance.interceptors.response.use(
   response => response,
   (error: AxiosError) => {
-    console.log(error);
-    // if (error.response?.status === 401) {
-    //   // 401 에러 처리 로직
-    //   window.location.href = '/login';
-    //   LocalStorage.removeItem('accesstoken');
-    // }
+    if (error.response?.status === 401) {
+      // 401 에러 처리 로직
+      window.location.href = '/login';
+      LocalStorage.removeItem('accesstoken');
+    }
     return Promise.reject(error);
   },
 );

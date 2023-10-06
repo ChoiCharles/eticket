@@ -20,7 +20,7 @@ const Home = () => {
       setUpcoming(upcomingRes.data.upcomingPerformanceList);
       setTopFive(hotRes.data.hotPerformanceList.slice(0, 5));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

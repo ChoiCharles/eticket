@@ -8,7 +8,6 @@ import SearchResult from './SearchItems/SearchResult';
 const Search = () => {
   const [keyword, setKeyword] = useState<string>('');
   const location = useLocation();
-  console.log(location);
 
   useEffect(() => {
     const searchKeyword = new URLSearchParams(location.search).get('keyword');
