@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import SelectSeatState from 'atoms/SelectSeatState';
 import SeatId from 'atoms/SeatId';
 import useMovePage from 'hooks/useMovePage';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import instance from 'apis/utils/instance';
 
 interface sectionInfoType {
@@ -25,9 +25,7 @@ interface sectionInfoType {
 
 function SeatItem({ object }: { object: sectionInfoType }) {
   const [seatData, setSeatData] = useState([]);
-  const urlValue = useLocation().pathname;
-  const peformanceId = urlValue.split('/')[2];
-  const section = object.id.value;
+  const sectionId = object.id.value;
   const { price } = object.seatClass;
   const { movePage } = useMovePage();
   const selectedSeats = useRecoilValue(SelectSeatState);
@@ -36,7 +34,7 @@ function SeatItem({ object }: { object: sectionInfoType }) {
 
   const preemptVacancy = async () => {
     await instance.post(
-      `/api/schedules/${seatPerformanceScheduleId}/sections/${section}/seats/${selectedSeatId}`,
+      `/api/schedules/${seatPerformanceScheduleId}/sections/${sectionId}/seats/${selectedSeatId}`,
     );
   };
 
@@ -49,7 +47,9 @@ function SeatItem({ object }: { object: sectionInfoType }) {
 
   useEffect(() => {
     instance
-      .get(`/api/schedules/${peformanceId}/sections/${section}/vacancies`)
+      .get(
+        `/api/schedules/${seatPerformanceScheduleId}/sections/${sectionId}/vacancies`,
+      )
       .then(response => {
         setSeatData(response.data.vacancies);
       })

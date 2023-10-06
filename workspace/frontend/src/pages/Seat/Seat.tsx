@@ -36,6 +36,7 @@ function Seat() {
 
   useEffect(() => {
     getPerformances();
+    instance.get('/api/test');
   }, []);
 
   // temp-controller로 보내기
