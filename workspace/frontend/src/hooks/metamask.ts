@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-
 interface MetaMaskInpageProvider {
   request(options: { method: string }): Promise<string[]>;
   isMetaMask: boolean;
@@ -20,12 +19,14 @@ const useMetaMask = () => {
 
   const requestAccounts = async () => {
     try {
-      const accounts = await provider?.request({ method: 'eth_requestAccounts' });
+      const accounts = await provider?.request({
+        method: 'eth_requestAccounts',
+      });
       if (accounts) {
         setAccounts([...accounts]);
       }
-    } catch {
-      console.log('err')
+    } catch (error) {
+      console.error('err', error);
     }
   };
 
@@ -34,6 +35,6 @@ const useMetaMask = () => {
   }, []);
 
   return { provider, accounts, detectMetaMask, requestAccounts };
-}
+};
 
 export default useMetaMask;

@@ -41,7 +41,7 @@ function MyPage() {
     try {
       const contract = new web3.eth.Contract(
         eticketJSON.abi,
-        "0xcf80f524400dd51e5875c151f61fd81beba770ed",
+        '0xcf80f524400dd51e5875c151f61fd81beba770ed',
       );
       const NFTlist: any = await instance.get(`/api/nfts?owner=${userId}`);
 
@@ -54,11 +54,10 @@ function MyPage() {
           setMetaData(jsonUris);
         })
         .catch(reason => {
-          console.error('failed to fetch token data: ' + reason);
+          console.error('failed to fetch token data:', reason);
         });
-
     } catch (error) {
-      console.log('nfterr', error);
+      console.error('nfterr', error);
     }
   };
 
@@ -82,7 +81,7 @@ function MyPage() {
           }
         }
       } catch (error) {
-        console.log('유저 정보 호출 에러', error);
+        console.error('유저 정보 호출 에러', error);
       }
 
       try {
@@ -96,14 +95,14 @@ function MyPage() {
           alert('예매 목록을 불러오는데 실패했습니다');
         }
       } catch (error) {
-        console.log('예매 정보 호출 에러', error);
+        console.error('예매 정보 호출 에러', error);
       }
     }
   };
 
-  const personal_sign = async () => {
+  const personalSign = async () => {
     loginMetaMask();
-    if (account != '') {
+    if (account !== '') {
       const personalSignResult = await window.ethereum.request({
         method: 'personal_sign',
         params: [
@@ -135,9 +134,7 @@ function MyPage() {
           myTicketData.map((info: any, index: number) => {
             return (
               <div className="concert-container">
-                {info.ticketStatus == 'CANCEL' ? (
-                  <></>
-                ) : (
+                {info.ticketStatus === 'CANCEL' ? null : (
                   <div>
                     <hr />
                     <div
@@ -188,12 +185,10 @@ function MyPage() {
       <div className="my-info">
         <h3 className="nickName">{userNickName}</h3>
         {myAccount === '' ? (
-          <button className="edit-info" onClick={() => personal_sign()}>
+          <button className="edit-info" onClick={() => personalSign()}>
             <h3 className="edit-info-text">메타마스크 연결</h3>
           </button>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </div>
       {myAccount === '' ? (
         <div className="wallet">
@@ -214,16 +209,12 @@ function MyPage() {
           </div>
           <hr />
           <div className="NFT-list">
-            {
-              metadata.map((uri:any, index:number) => {
-                if (index > 1) {
-                  return
-                }
-                return (
-                  <NFTCard uri={uri} key={index}/>
-                )
-              })
-            }
+            {metadata.map((uri: any, index: number) => {
+              if (index > 1) {
+                return;
+              }
+              return <NFTCard uri={uri} key={index} />;
+            })}
           </div>
         </div>
         <div className="my-ticket">

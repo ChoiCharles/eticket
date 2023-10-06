@@ -13,7 +13,6 @@ import { useParams } from 'react-router-dom';
 function ConcertCalender() {
   const { performanceScheduleId = 0 } = useParams();
   const ID = parseInt(String(performanceScheduleId), 10) + 1;
-  console.log(ID);
   if (performanceScheduleId) {
     return (
       <div>

@@ -26,8 +26,6 @@ const Success = () => {
       console.error(error);
     }
   };
-  console.log(successPerformanceScheduleId);
-  console.log(selectedSeatId);
 
   const handleReserveBtnClick = async () => {
     try {

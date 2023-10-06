@@ -8,27 +8,15 @@ import instance from 'apis/utils/instance';
 function ConcertList() {
   const dateData = new Date();
   const [data, setData] = useState([]);
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await instance.get('/api/performances/hot');
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // console.log(fetchData);
 
   useEffect(() => {
     Promise.all([instance.get('/api/performances/hot')])
       .then(([hotRes]) => {
-        console.log('Hot Performances:', hotRes);
         const reList = hotRes.data.hotPerformanceList.reverse();
         setData(reList);
-        // const concertListData = hotRes;
       })
       .catch(error => console.error('Error:', error));
   }, []);
-  console.log(data);
 
   return (
     <div>

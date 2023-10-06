@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import './SeatBox.scss';
 import SelectSeatState from 'atoms/SelectSeatState';
-// import SeatIds from 'atoms/SeatId';
+import SeatId from 'atoms/SeatId';
 
 interface stateType {
   id: number;
@@ -15,7 +15,7 @@ function SeatBox({ index, state }: { index: number; state: stateType }) {
   const [isSelected, setIsSelected] = useState(false);
   const [, setSelectedSeats] = useRecoilState(SelectSeatState);
   // const [SeatId, setSeatId] = useRecoilState(SeatIds);
-  const [selectSeatId, setSelectSeatId] = useState<number>();
+  const [, setSelectSeatId] = useRecoilState<number | null>(SeatId);
   const handleClick = () => {
     // 인덱스 값이 0일 때만 클릭 가능하도록
     if (state.seatStatus === 'ONSALE') {
@@ -32,10 +32,6 @@ function SeatBox({ index, state }: { index: number; state: stateType }) {
       }
     }
   };
-
-  // 넘겨줘야하는 id
-  console.log(selectSeatId);
-  // console.log(SeatId);
 
   // 인덱스 값에 따라 색상 지정
   const boxStyle = {

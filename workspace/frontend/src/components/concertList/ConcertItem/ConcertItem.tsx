@@ -12,7 +12,6 @@ type Item = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function ConcertItem({ concertInfo }: { concertInfo: Item }) {
-  console.log(concertInfo.performanceScheduleList);
   const startDate = concertInfo.performanceScheduleList[0];
   const datePart = startDate.split('T')[0];
   const endDate =
@@ -52,9 +51,7 @@ function ConcertItem({ concertInfo }: { concertInfo: Item }) {
           </div>
         </div>
         <div className="concert-right-box">
-          {/* <div className="concert-tag">단독 공연</div> */}
           <div className="concert-title">{concertInfo.title}</div>
-          {/* <div className="concert-location-text">{concertInfo.location}</div> */}
           <div className="concert-date">
             {datePart} ~ {endDatePart}
           </div>

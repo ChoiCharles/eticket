@@ -4,7 +4,7 @@ import instance from 'apis/utils/instance';
 import ReceiptListItem from './ReceiptListItem';
 
 const ReceiptList = () => {
-  const [mytickets, setMyTickets] = useState<any>([])
+  const [mytickets, setMyTickets] = useState<any>([]);
 
   const getMyTickets = async () => {
     try {
@@ -13,8 +13,7 @@ const ReceiptList = () => {
         const userId = JSON.parse(atob(token.split('.')[1])).sub;
 
         const response = await instance.get(`/api/reservations/${userId}`);
-        console.log(response);
-        setMyTickets(response.data)
+        setMyTickets(response.data);
       }
     } catch (error) {
       console.error(error);

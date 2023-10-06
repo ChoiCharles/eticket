@@ -16,21 +16,23 @@ function ReserveButton() {
     //   : movePage(`/login`, null);
 
     if (token === null) {
-      alert('로그인이 필요합니다')
-      movePage(`/login`, null)
+      alert('로그인이 필요합니다');
+      movePage(`/login`, null);
     } else {
       try {
-        const userDataResponse = await instance.get(`/api/users/${JSON.parse(atob(token.split('.')[1]))['sub']}`)
+        const userDataResponse = await instance.get(
+          `/api/users/${JSON.parse(atob(token.split('.')[1]))['sub']}`,
+        );
         if (userDataResponse.status === 200) {
           if (userDataResponse.data.walletAddress) {
-            movePage(`/ConcertCalender/${performanceId}`, null)
+            movePage(`/ConcertCalender/${performanceId}`, null);
           } else {
-            alert('마타마스크 연동이 필요합니다')
+            alert('마타마스크 연동이 필요합니다');
             movePage(`/my`, null);
           }
         }
       } catch (error) {
-        console.log('유저 정보 호출 에러', error)
+        console.error('유저 정보 호출 에러', error);
       }
     }
 

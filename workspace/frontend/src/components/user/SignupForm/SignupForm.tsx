@@ -96,7 +96,6 @@ function SignupForm() {
         }
 
         // 여기서 필요한 추가 로직을 수행할 수 있습니다.
-        // return response;
       } catch (error) {
         console.error('회원가입 실패:', error);
 
@@ -108,13 +107,6 @@ function SignupForm() {
       console.error('에러');
     }
   };
-  // const validationUsernaem = () => {
-  //   setCheckUser(true);
-  //   // console.log(userName);
-  //   // userName을 백엔드로 보내준다.
-  //   // 백엔드는 userName값이 Data에 이미 존재하는지 알려준다.
-  //   // 이미 존재한다
-  // };
 
   const validationUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newUserName = e.target.value;

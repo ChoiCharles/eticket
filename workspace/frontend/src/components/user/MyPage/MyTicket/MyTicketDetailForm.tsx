@@ -8,60 +8,40 @@ import QRcode from 'qrcode.react';
 import { Box, Typography, Modal } from '@mui/material';
 import instance from 'apis/utils/instance';
 import useMovePage from 'hooks/useMovePage';
-
 import SlidingImage from './SlidingImage';
-
-
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  width: '70%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  border: '0px',
-  boxShadow: 24,
-  p: 4,
-};
 
 function MyTicket() {
   const { movePage } = useMovePage();
   const [myTicketData, setMyTicketData] = useState([]);
-
-  // const handleMovePage = () => {
-  //   movePage('/login', null);
-  // };
-
   const { idx } = useParams();
   const [isFlipped, setIsFlipped] = useState(false);
   const [rotate, setRotate] = useState(0);
-
   const [openCancelModal, setOpenCancelModal] = useState(false);
-  
+
   // 예매 취소 api 연결필요
   const { goBack } = useMovePage();
 
   const getUserData = async () => {
-    const token = localStorage.getItem('accesstoken')
-    
-    if (token === null) {
-      movePage(`/login`, null)
-    } else {
+    const token = localStorage.getItem('accesstoken');
 
+    if (token === null) {
+      movePage(`/login`, null);
+    } else {
       try {
-        const response = await instance.get(`/api/tickets/${JSON.parse(atob(token.split('.')[1]))['sub']}`)
-        
+        const response = await instance.get(
+          `/api/tickets/${JSON.parse(atob(token.split('.')[1]))['sub']}`,
+        );
+
         if (response.status === 200) {
-          setMyTicketData(response.data)
+          setMyTicketData(response.data);
         } else {
-          alert('예매 목록을 불러오는데 실패했습니다')
+          alert('예매 목록을 불러오는데 실패했습니다');
         }
       } catch (error) {
-        console.log('예매 정보 호출 에러', error)
+        console.error('예매 정보 호출 에러', error);
       }
-
     }
-  }
+  };
 
   const imageFlip = () => {
     if (isFlipped) {
@@ -74,30 +54,30 @@ function MyTicket() {
   };
 
   const askCancellReservation = () => {
-    setOpenCancelModal(true)
-  }
+    setOpenCancelModal(true);
+  };
 
   const closeCancelModal = () => {
-    setOpenCancelModal(false)
-  }
+    setOpenCancelModal(false);
+  };
 
   const cancellReservation = async () => {
     try {
-      const response = await instance.put(`/api/reservations/${idx}`)
-      
+      const response = await instance.put(`/api/reservations/${idx}`);
+
       if (response.status === 200) {
-        alert('예매 취소되었습니다')
-        goBack()
+        alert('예매 취소되었습니다');
+        goBack();
       }
     } catch (error) {
-      console.log(error)
+      console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
-    getUserData()
-  }, [])
-  console.log(idx)
+    getUserData();
+  }, []);
+
   return (
     <div className="container">
       {myTicketData.map((info: any) => {
@@ -106,7 +86,6 @@ function MyTicket() {
             <div className="my-ticket-detail">
               <div className="my-ticket-info">
                 <h3>{info.performanceSchedule.performance.title}</h3>
-                <h3>좌석, 인원</h3>
                 <h3>{info.performanceSchedule.startDateTime}</h3>
               </div>
               <div className="slide-image">
@@ -118,7 +97,10 @@ function MyTicket() {
                   style={{ transform: `rotateY(${rotate}deg)` }}
                 >
                   <div className="card-front">
-                    <img src={info.performanceSchedule.performance.posterImagePath} alt="" />
+                    <img
+                      src={info.performanceSchedule.performance.posterImagePath}
+                      alt=""
+                    />
                   </div>
                   <div className="card-back">
                     <div className="QRcode">
@@ -151,10 +133,22 @@ function MyTicket() {
         }
       })}
       <Modal open={openCancelModal}>
-        <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h3">
-              정말 취소하시겠습니까?
-            </Typography>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '70%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
+            border: '0px',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography id="modal-modal-title" variant="h6" component="h3">
+            정말 취소하시겠습니까?
+          </Typography>
           <div className="ask-cancel">
             <button className="ask-yes" onClick={() => cancellReservation()}>
               <h3>예</h3>

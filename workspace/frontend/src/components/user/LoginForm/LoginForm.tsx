@@ -49,15 +49,15 @@ function LoginForm() {
         movePage('/', null);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
     if (localStorage.getItem('accesstoken')) {
-      movePage('/', null)
+      movePage('/', null);
     }
-  }, [])
+  }, []);
 
   return (
     <div className="login-box">
@@ -98,7 +98,7 @@ function LoginForm() {
             </Button>
           </div>
         </div>
-        <hr style={{width: '100%'}}/>
+        <hr style={{ width: '100%' }} />
         <Button
           variant="contained"
           type="button"
@@ -115,9 +115,7 @@ function LoginForm() {
             aria-hidden
           >
             <div className="meta-logo-text">
-              <h3 style={{margin: '0'}}>
-                메타마스크로 로그인
-              </h3>
+              <h3 style={{ margin: '0' }}>메타마스크로 로그인</h3>
             </div>
             <div className="meta-logo-box">
               <img
