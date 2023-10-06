@@ -14,14 +14,12 @@ interface stateType {
 function SeatBox({ index, state }: { index: number; state: stateType }) {
   const [isSelected, setIsSelected] = useState(false);
   const [, setSelectedSeats] = useRecoilState(SelectSeatState);
-  // const [SeatId, setSeatId] = useRecoilState(SeatIds);
   const [, setSelectSeatId] = useRecoilState<number | null>(SeatId);
   const handleClick = () => {
     // 인덱스 값이 0일 때만 클릭 가능하도록
     if (state.seatStatus === 'ONSALE') {
       setIsSelected(!isSelected);
       setSelectSeatId(state.id);
-      // setSeatId(state.id);
       // 선택한 좌state.id을 추가 또는 제거
       if (isSelected) {
         setSelectedSeats(prevSelectedSeats =>
@@ -37,7 +35,7 @@ function SeatBox({ index, state }: { index: number; state: stateType }) {
   const boxStyle = {
     backgroundColor:
       // eslint-disable-next-line no-nested-ternary
-      state.seatStatus === 'SALED' ? '#ccc' : isSelected ? '#80c0c0' : 'white',
+      state.seatStatus !== 'ONSALE' ? '#ccc' : isSelected ? '#80c0c0' : 'white',
     color: isSelected && state.seatStatus !== 'ONSALE' ? 'white' : 'black',
     cursor: state.seatStatus === 'ONSALE' ? 'pointer' : 'not-allowed',
   };

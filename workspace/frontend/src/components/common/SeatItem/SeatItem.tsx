@@ -34,6 +34,19 @@ function SeatItem({ object }: { object: sectionInfoType }) {
   const { seatPerformanceScheduleId } = useParams();
   const selectedSeatId = useRecoilValue(SeatId);
 
+  const preemptVacancy = async () => {
+    await instance.post(
+      `/api/schedules/${seatPerformanceScheduleId}/sections/${section}/seats/${selectedSeatId}`,
+    );
+  };
+
+  const clickBuyBtn = () => {
+    movePage(`/checkout/${seatPerformanceScheduleId}/${selectedSeatId}`, {
+      price,
+    });
+    preemptVacancy();
+  };
+
   useEffect(() => {
     instance
       .get(`/api/schedules/${peformanceId}/sections/${section}/vacancies`)
@@ -42,12 +55,6 @@ function SeatItem({ object }: { object: sectionInfoType }) {
       })
       .catch(error => console.error('Error:', error));
   }, []);
-
-  const clickBuyBtn = () => {
-    movePage(`/checkout/${seatPerformanceScheduleId}/${selectedSeatId}`, {
-      price,
-    });
-  };
 
   // eslint-disable-next-line consistent-return
   const turnAlpha = (idx: number) => {
