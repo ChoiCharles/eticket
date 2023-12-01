@@ -30,7 +30,8 @@
 
 ## [서비스 기능](./docs/features.md)
 
-[👀 모든 기능 자세히 둘러보기](./docs/features.md)
+[📑 기능 명세서](https://noon-spider-571.notion.site/3bb123090ddd48a68e68eeec8e417335?v=a328eb746e92433d98957a87ea8f6be9)  
+[👀 모든 기능 자세히 둘러보기](./docs/features.md)  
 
 - [서비스 기능](#서비스-기능)
   - [MetaMask 연동](./docs/features.md#metamask-연동)
